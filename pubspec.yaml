@@ -10,8 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.22.0
+  google_fonts: ^3.0.1
   get: ^4.6.5
+  firebase_core: ^1.22.0
   firebase_auth: ^3.8.0
   cloud_firestore: ^3.4.7
 
@@ -23,3 +24,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.png

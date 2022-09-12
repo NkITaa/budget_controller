@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<ScaffoldMessengerState> messengerKey =
@@ -33,9 +34,12 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
         scaffoldMessengerKey: messengerKey,
         navigatorKey: navigatorKey,
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.dmSansTextTheme(
+            Theme.of(context).textTheme.apply(bodyColor: Colors.white),
+          ),
+          scaffoldBackgroundColor: const Color(0xff7434E6),
         ),
         home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),

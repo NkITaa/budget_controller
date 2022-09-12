@@ -1,7 +1,6 @@
+import 'package:budget_controller/src/Constants/const_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../Constants/const.dart';
 
 class Manager extends StatelessWidget {
   const Manager({super.key});
@@ -15,7 +14,7 @@ class Manager extends StatelessWidget {
           onPressed: () {
             FirebaseAuth.instance.signOut();
           },
-          child: const Text(Const.signOut),
+          child: const Text(CManager.signOut),
         ),
       ],
     );

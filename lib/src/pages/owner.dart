@@ -1,4 +1,4 @@
-import 'package:budget_controller/src/Constants/const.dart';
+import 'package:budget_controller/src/Constants/const_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class Owner extends StatelessWidget {
           onPressed: () {
             FirebaseAuth.instance.signOut();
           },
-          child: const Text(Const.signOut),
+          child: const Text(COwner.signOut),
         ),
       ],
     );
