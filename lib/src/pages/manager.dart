@@ -1,4 +1,4 @@
-import 'package:budget_controller/src/Constants/const_manager.dart';
+import 'package:budget_controller/src/constants/const_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

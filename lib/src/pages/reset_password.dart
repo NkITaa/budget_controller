@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../main.dart';
-import '../Constants/const_resetpassword.dart';
+import '../constants/const_resetpassword.dart';
 import '../controller/UserManagement/user_controller.dart';
 
 class ResetPassword extends StatefulWidget {

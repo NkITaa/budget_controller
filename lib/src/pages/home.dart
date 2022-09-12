@@ -1,7 +1,7 @@
 import 'package:budget_controller/src/pages/admin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../Constants/const.dart';
+import '../constants/const.dart';
 import '../controller/UserManagement/user_controller.dart';
 import 'manager.dart';
 import 'owner.dart';
