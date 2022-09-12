@@ -62,6 +62,10 @@ class CustomBuilder {
           errorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Color(0xffFF4D4D)),
             borderRadius: BorderRadius.circular(20.0),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xffFF4D4D)),
+            borderRadius: BorderRadius.circular(20.0),
           )),
     );
   }
