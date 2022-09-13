@@ -1,6 +1,6 @@
 import 'package:budget_controller/src/constants/const_owner.dart';
 import 'package:budget_controller/src/modells/project.dart';
-import 'package:budget_controller/src/modells/projection.dart';
+import 'package:budget_controller/src/modells/budget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,9 +38,17 @@ class _OwnerState extends State<Owner> {
                     name: "name",
                     ownersId: ["id"],
                     costs: [],
-                    projections: [Projection(type: "type", value: 2)]));
+                    budgets: [Budget(type: "type", value: 2)]));
           },
           child: const Text("bo"),
+        ),
+        OutlinedButton(
+          onPressed: () async {
+            List<Project> temp = await projectController
+                .loadProjects(ids: ["0YywXthlgRMYwO64UBNa"]);
+            print(temp);
+          },
+          child: const Text("bobo"),
         ),
       ],
     );

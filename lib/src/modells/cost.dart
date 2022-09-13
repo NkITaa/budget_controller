@@ -22,7 +22,7 @@ class Cost {
     };
   }
 
-  static Cost fromJson(DocumentSnapshot<Object?> cost) {
+  static Cost fromJson(dynamic cost) {
     return Cost(
       responsibility: cost["responsibility"],
       type: cost["type"],

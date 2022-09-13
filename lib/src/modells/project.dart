@@ -1,4 +1,4 @@
-import 'package:budget_controller/src/modells/projection.dart';
+import 'package:budget_controller/src/modells/budget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cost.dart';
 
@@ -7,37 +7,44 @@ class Project {
   String name;
   List<String> ownersId;
   List<Cost?> costs;
-  List<Projection> projections;
+  List<Budget> budgets;
 
   Project({
     required this.id,
     required this.name,
     required this.ownersId,
     required this.costs,
-    required this.projections,
+    required this.budgets,
   });
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
       "name": name,
-      "owners": ownersId,
+      "ownersId": ownersId,
       "costs":
           costs.isNotEmpty ? costs.map((cost) => cost!.toJson()).toList() : [],
-      "projections":
-          projections.map((projection) => projection.toJson()).toList(),
+      "budgets": budgets.map((budget) => budget.toJson()).toList(),
     };
   }
 
   static Project fromJson(DocumentSnapshot<Object?> project) {
     List<dynamic> ownersId = project["ownersId"];
-    List<dynamic> costs = project["costs"];
-    List<dynamic> projections = project["projections"];
+    List<dynamic> costsUnserialized = project["costs"];
+    List<dynamic> budgetsUnserialized = project["budgets"];
+
+    List<Cost?> costs = costsUnserialized.isNotEmpty
+        ? costsUnserialized.map((cost) => Cost.fromJson(cost)).toList()
+        : [null];
+    List<Budget> budgets = budgetsUnserialized.map((budget) {
+      return Budget.fromJson(budget);
+    }).toList();
+
     return Project(
         id: project["id"],
         name: project["name"],
         ownersId: ownersId.cast<String>(),
-        costs: project["costs"],
-        projections: project["projections"]);
+        costs: costs,
+        budgets: budgets);
   }
 }

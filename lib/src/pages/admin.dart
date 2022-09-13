@@ -46,7 +46,7 @@ class _AdminState extends State<Admin> {
               await userController.signUp(
                   email: emailController.text.trim(),
                   password: passwordController.text.trim(),
-                  projectsId: [""],
+                  projectsId: [null],
                   role: selectedRole,
                   context: context);
               navigatorKey.currentState!.popUntil((route) => route.isFirst);
