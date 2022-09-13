@@ -2,19 +2,29 @@ import 'package:budget_controller/src/constants/const_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Manager extends StatelessWidget {
+class Manager extends StatefulWidget {
   const Manager({super.key});
+
+  @override
+  State<Manager> createState() => _ManagerState();
+}
+
+class _ManagerState extends State<Manager> {
+  final TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Owner"),
+        const Text("Manager"),
         OutlinedButton(
           onPressed: () {
             FirebaseAuth.instance.signOut();
           },
           child: const Text(CManager.signOut),
+        ),
+        TextField(
+          controller: nameController,
         ),
       ],
     );

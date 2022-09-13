@@ -12,4 +12,22 @@ class Cost {
     required this.value,
     required this.creation,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      "responsibility": responsibility,
+      "type": type,
+      "value": value,
+      "creation": creation
+    };
+  }
+
+  static Cost fromJson(DocumentSnapshot<Object?> cost) {
+    return Cost(
+      responsibility: cost["responsibility"],
+      type: cost["type"],
+      value: cost["value"],
+      creation: cost["creation"],
+    );
+  }
 }

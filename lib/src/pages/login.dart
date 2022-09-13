@@ -1,5 +1,5 @@
 import 'package:budget_controller/src/constants/const_login.dart';
-import 'package:budget_controller/src/controller/UserManagement/user_controller.dart';
+import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:budget_controller/src/pages/reset_password.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

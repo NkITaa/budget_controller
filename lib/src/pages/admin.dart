@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../main.dart';
-import '../controller/UserManagement/user_controller.dart';
+import '../controller/user_controller.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key});
@@ -46,6 +46,7 @@ class _AdminState extends State<Admin> {
               await userController.signUp(
                   email: emailController.text.trim(),
                   password: passwordController.text.trim(),
+                  projectsId: [""],
                   role: selectedRole,
                   context: context);
               navigatorKey.currentState!.popUntil((route) => route.isFirst);

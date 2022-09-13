@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../main.dart';
 import '../constants/const_resetpassword.dart';
-import '../controller/UserManagement/user_controller.dart';
+import '../controller/user_controller.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});

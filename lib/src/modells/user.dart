@@ -1,7 +1,21 @@
-class User {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class CustomUser {
   String id;
-  String project;
+  List<String?> projectsId;
   String role;
 
-  User({required this.id, required this.project, required this.role});
+  CustomUser({required this.id, required this.projectsId, required this.role});
+
+  Map<String, dynamic> toJson() {
+    return {"id": id, "projectsId": projectsId, "role": role};
+  }
+
+  static CustomUser fromJson(DocumentSnapshot<Object?> user) {
+    return CustomUser(
+      id: user["id"],
+      projectsId: user["projectsId"],
+      role: user["role"],
+    );
+  }
 }
