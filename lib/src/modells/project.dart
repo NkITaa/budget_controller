@@ -6,7 +6,7 @@ class Project {
   String id;
   String name;
   List<String> ownersId;
-  List<Cost?> costs;
+  List<Cost>? costs;
   List<Budget> budgets;
 
   Project({
@@ -23,7 +23,7 @@ class Project {
       "name": name,
       "ownersId": ownersId,
       "costs":
-          costs.isNotEmpty ? costs.map((cost) => cost!.toJson()).toList() : [],
+          costs != null ? costs!.map((cost) => cost.toJson()).toList() : null,
       "budgets": budgets.map((budget) => budget.toJson()).toList(),
     };
   }
@@ -33,9 +33,9 @@ class Project {
     List<dynamic> costsUnserialized = project["costs"];
     List<dynamic> budgetsUnserialized = project["budgets"];
 
-    List<Cost?> costs = costsUnserialized.isNotEmpty
+    List<Cost>? costs = costsUnserialized.isNotEmpty
         ? costsUnserialized.map((cost) => Cost.fromJson(cost)).toList()
-        : [null];
+        : null;
     List<Budget> budgets = budgetsUnserialized.map((budget) {
       return Budget.fromJson(budget);
     }).toList();

@@ -16,8 +16,9 @@ class UserController extends GetxController {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       return await getUser();
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return null;
     }
   }
 
@@ -36,7 +37,7 @@ class UserController extends GetxController {
               id: FirebaseAuth.instance.currentUser!.uid,
               projectsId: projectsId,
               role: role));
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
     }
   }
@@ -48,7 +49,7 @@ class UserController extends GetxController {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       CustomBuilder.customSnackBar(
           message: "Rücksetzungsmail gesendet", error: false);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
     }
   }
@@ -58,7 +59,7 @@ class UserController extends GetxController {
         FirebaseFirestore.instance.collection("user");
     try {
       await userCollection.doc(user.id).set(user.toJson());
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
     }
   }
