@@ -7,7 +7,7 @@ import '../Constants/const.dart';
 import '../widget_builder.dart';
 
 class UserController extends GetxController {
-  Future<String> signIn(
+  Future<CustomUser?> signIn(
       {required String email,
       required String password,
       required BuildContext context}) async {
@@ -15,10 +15,9 @@ class UserController extends GetxController {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      return await getRole();
+      return await getUser();
     } on FirebaseAuthException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
-      return e.toString();
     }
   }
 
@@ -83,14 +82,13 @@ class UserController extends GetxController {
     return owners;
   }
 
-//toDO getUser instead of getRole
-  Future<String> getRole() async {
+  Future<CustomUser> getUser() async {
     final String uid = FirebaseAuth.instance.currentUser!.uid;
     final CollectionReference userCollection =
         FirebaseFirestore.instance.collection("user");
 
-    return userCollection.doc(uid).get().then((value) {
-      return value["role"];
+    return userCollection.doc(uid).get().then((user) {
+      return CustomUser.fromJson(user);
     });
   }
 }

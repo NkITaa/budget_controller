@@ -1,15 +1,16 @@
 import 'package:budget_controller/src/constants/const_owner.dart';
 import 'package:budget_controller/src/modells/project.dart';
 import 'package:budget_controller/src/modells/projection.dart';
-import 'package:budget_controller/src/modells/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controller/project_controller.dart';
+import '../modells/user.dart';
 
 class Owner extends StatefulWidget {
-  const Owner({super.key});
+  const Owner({super.key, required this.user});
+  final CustomUser user;
 
   @override
   State<Owner> createState() => _OwnerState();

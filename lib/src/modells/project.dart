@@ -30,10 +30,13 @@ class Project {
   }
 
   static Project fromJson(DocumentSnapshot<Object?> project) {
+    List<dynamic> ownersId = project["ownersId"];
+    List<dynamic> costs = project["costs"];
+    List<dynamic> projections = project["projections"];
     return Project(
         id: project["id"],
         name: project["name"],
-        ownersId: project["ownersId"],
+        ownersId: ownersId.cast<String>(),
         costs: project["costs"],
         projections: project["projections"]);
   }

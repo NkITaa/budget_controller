@@ -12,9 +12,10 @@ class CustomUser {
   }
 
   static CustomUser fromJson(DocumentSnapshot<Object?> user) {
+    List<dynamic> projectsID = user["projectsId"];
     return CustomUser(
       id: user["id"],
-      projectsId: user["projectsId"],
+      projectsId: projectsID.cast<String>(),
       role: user["role"],
     );
   }

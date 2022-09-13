@@ -2,9 +2,11 @@ import 'package:budget_controller/src/constants/const_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Manager extends StatefulWidget {
-  const Manager({super.key});
+import '../modells/user.dart';
 
+class Manager extends StatefulWidget {
+  const Manager({super.key, required this.user});
+  final CustomUser user;
   @override
   State<Manager> createState() => _ManagerState();
 }

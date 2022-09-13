@@ -1,3 +1,4 @@
+import 'package:budget_controller/src/modells/user.dart';
 import 'package:budget_controller/src/pages/admin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,16 +16,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final UserController userController = Get.find();
-  late Future<String> role = userController.getRole();
+  late Future<CustomUser> user = userController.getUser();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<String>(
-      future: role,
+        body: FutureBuilder<CustomUser>(
+      future: user,
       builder: (
         BuildContext context,
-        AsyncSnapshot<String> snapshot,
+        AsyncSnapshot<CustomUser> snapshot,
       ) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -34,14 +35,21 @@ class _HomeState extends State<Home> {
               child: Text(snapshot.error.toString()),
             );
           } else {
-            if (snapshot.data == Const.userRoles[0]) {
-              return const Manager();
+            CustomUser user = snapshot.data!;
+            if (user.role == Const.userRoles[0]) {
+              return Manager(
+                user: user,
+              );
             }
-            if (snapshot.data == Const.userRoles[1]) {
-              return const Owner();
+            if (user.role == Const.userRoles[1]) {
+              return Owner(
+                user: user,
+              );
             }
-            if (snapshot.data == Const.userRoles[2]) {
-              return const Admin();
+            if (user.role == Const.userRoles[2]) {
+              return Admin(
+                user: user,
+              );
             } else {
               return const Center(
                   child: Text(

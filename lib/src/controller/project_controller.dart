@@ -29,7 +29,6 @@ class ProjectController extends GetxController {
       {required String id, required List<Projection> projections}) async {
     final DocumentReference projectsCollection =
         FirebaseFirestore.instance.collection("project").doc(id);
-
     projectsCollection.update(({
       'projection': FieldValue.delete(),
     }));
