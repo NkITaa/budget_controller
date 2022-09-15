@@ -35,35 +35,57 @@ class TableData extends DataTableSource {
         TextEditingController(text: OwnerBuilder.costs[index].value.toString());
     TextEditingController responsibility = TextEditingController(
         text: OwnerBuilder.costs[index].responsibility.toString());
+
+    InputDecoration decoration = const InputDecoration(
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+      ),
+      disabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+      ),
+    );
     return DataRow.byIndex(index: index, cells: [
       DataCell(TextField(
         enabled: enabled,
         controller: creation,
-        style: const TextStyle(color: Colors.black),
+        decoration: decoration,
+        style:
+            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
       )),
       DataCell(TextField(
         enabled: enabled,
         controller: name,
-        style: const TextStyle(color: Colors.black),
+        decoration: decoration,
+        style:
+            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
       )),
       DataCell(TextField(
         enabled: enabled,
         controller: type,
-        style: const TextStyle(color: Colors.black),
+        decoration: decoration,
+        style:
+            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
       )),
       DataCell(TextField(
         enabled: enabled,
         controller: value,
-        style: const TextStyle(color: Colors.black),
+        decoration: decoration,
+        style:
+            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
       )),
       DataCell(TextField(
         enabled: enabled,
         controller: responsibility,
-        style: const TextStyle(color: Colors.black),
+        decoration: decoration,
+        style:
+            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
       )),
       DataCell(
         IconButton(
-          icon: const Icon(Icons.edit),
+          icon: Icon(
+            Icons.edit,
+            color: enabled ? const Color(0xff7434E6) : Colors.black,
+          ),
           onPressed: () {
             toggle();
           },

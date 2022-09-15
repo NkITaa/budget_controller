@@ -164,7 +164,14 @@ class OwnerBuilder {
               children: [
                 TextFormField(
                   controller: datum,
-                  decoration: const InputDecoration(hintText: "Datum"),
+                  cursorColor: const Color(0xff7434E6),
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    hintText: "Datum",
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xff7434E6)),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: 300,
@@ -176,13 +183,12 @@ class OwnerBuilder {
                         color: Colors.grey,
                       ),
                       decoration: const InputDecoration(
-                        focusColor: Color(0xffF6CD9D),
-                        hoverColor: Color(0xffF6CD9D),
+                        focusColor: Colors.grey,
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffF6CD9D)),
+                          borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffF6CD9D)),
+                          borderSide: BorderSide(color: Color(0xff7434E6)),
                         ),
                       ),
                       value: gewaehlteArt,
@@ -200,12 +206,32 @@ class OwnerBuilder {
                       }),
                 ),
                 TextFormField(
+                  cursorColor: const Color(0xff7434E6),
+                  style: const TextStyle(color: Colors.black),
                   controller: grund,
-                  decoration: const InputDecoration(hintText: "Grund"),
+                  decoration: const InputDecoration(
+                    hintText: "Grund",
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xff7434E6)),
+                    ),
+                  ),
                 ),
                 TextFormField(
+                  cursorColor: const Color(0xff7434E6),
+                  style: const TextStyle(color: Colors.black),
                   controller: summe,
-                  decoration: const InputDecoration(hintText: "Summe"),
+                  decoration: const InputDecoration(
+                    hintText: "Summe",
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xff7434E6)),
+                    ),
+                  ),
                 ),
               ],
             ),
