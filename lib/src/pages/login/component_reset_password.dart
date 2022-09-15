@@ -2,9 +2,9 @@ import 'package:budget_controller/src/widget_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../main.dart';
-import '../constants/const_resetpassword.dart';
-import '../controller/user_controller.dart';
+import '../../../main.dart';
+import '../../controller/user_controller.dart';
+import 'const_login.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -38,7 +38,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         height: 230,
                       ),
                       const Text(
-                        CRPassword.resetHeadline,
+                        CLogin.resetHeadline,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 20),
                       ),
@@ -47,13 +47,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
                       CustomBuilder.customTextFormField(
                           controller: emailController,
-                          hint: CRPassword.mailHint,
+                          hint: CLogin.mailHint,
                           password: false),
                       const SizedBox(
                         height: 20,
                       ),
                       CustomBuilder.customButton(
-                        text: CRPassword.reset,
+                        text: CLogin.reset,
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             await userController.resetPassword(

@@ -1,11 +1,11 @@
-import 'package:budget_controller/src/constants/const_login.dart';
+import 'package:budget_controller/src/pages/login/const_login.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
-import 'package:budget_controller/src/pages/reset_password.dart';
+import 'package:budget_controller/src/pages/login/component_reset_password.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../main.dart';
-import '../widget_builder.dart';
+import '../../../main.dart';
+import '../../widget_builder.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

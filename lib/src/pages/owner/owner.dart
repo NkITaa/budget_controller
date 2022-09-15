@@ -1,16 +1,11 @@
-import 'package:budget_controller/src/constants/const_owner.dart';
 import 'package:budget_controller/src/modells/cost.dart';
 import 'package:budget_controller/src/modells/project.dart';
-import 'package:budget_controller/src/pages/detaills.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_table_2/data_table_2.dart';
-import 'package:flutter/gestures.dart';
+import 'package:budget_controller/src/pages/Owner/owner_components.dart';
+import 'package:budget_controller/src/pages/owner/components/table.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../components/owner_components.dart';
-import '../controller/project_controller.dart';
-import '../modells/user.dart';
+import '../../controller/project_controller.dart';
+import '../../modells/user.dart';
 
 class Owner extends StatefulWidget {
   const Owner({super.key, required this.user});
@@ -80,7 +75,7 @@ class _OwnerState extends State<Owner> {
                     sortAscending: sortAscending,
                     sortColumnIndex: sortColumnIndex),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               )
             ],

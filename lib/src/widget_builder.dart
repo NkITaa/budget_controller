@@ -1,7 +1,7 @@
 import 'package:budget_controller/main.dart';
 import 'package:flutter/material.dart';
 
-import 'constants/const.dart';
+import 'const.dart';
 
 class CustomBuilder {
   static void customProgressIndicator({required BuildContext context}) {

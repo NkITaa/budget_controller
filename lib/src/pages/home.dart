@@ -1,14 +1,14 @@
 import 'package:budget_controller/src/modells/user.dart';
-import 'package:budget_controller/src/pages/admin.dart';
+import 'package:budget_controller/src/pages/admin/admin.dart';
 import 'package:budget_controller/src/widget_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../constants/const.dart';
-import '../constants/const_owner.dart';
+import '../const.dart';
+import 'owner/const_owner.dart';
 import '../controller/user_controller.dart';
-import 'manager.dart';
-import 'owner.dart';
+import 'manager/manager.dart';
+import 'owner/owner.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

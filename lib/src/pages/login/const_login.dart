@@ -8,4 +8,9 @@ class CLogin {
   static const String fPassword = "Passwort Vergessen?";
 
   static const String login = "Anmelden";
+
+  static const String resetHeadline =
+      "Fordere eine E-Mail an um dein Passwort zurückzusetzen";
+
+  static const String reset = "Zurücksetzen";
 }

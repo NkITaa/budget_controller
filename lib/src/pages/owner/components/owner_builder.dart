@@ -1,13 +1,27 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/const_owner.dart';
-import '../modells/cost.dart';
-import '../pages/detaills.dart';
+import 'table.dart';
+import '../const_owner.dart';
+import '../../../modells/cost.dart';
+import 'detaills.dart';
 
-class OwnerComponents {
+class OwnerBuilder {
+  static List<Cost> costs = [
+    Cost(
+        responsibility: "responsibility",
+        name: "name",
+        type: "type",
+        value: 3,
+        creation: Timestamp.now()),
+    Cost(
+        responsibility: "responsibility",
+        name: "name",
+        type: "type",
+        value: 5,
+        creation: Timestamp.now())
+  ];
+
   static Widget buildComparison(
       {required double isPrice,
       required double shouldPrice,
@@ -130,76 +144,5 @@ class OwnerComponents {
       sortColumnIndex: sortColumnIndex,
       sortAscending: sortAscending,
     );
-  }
-}
-
-class TableData extends DataTableSource {
-  TableData({required this.enabled, required this.toggle});
-  final bool enabled;
-  final Function toggle;
-
-  sortMe<T>(Comparable<T> Function(Cost cost) getField, bool ascending) {
-    return COwner.costs.sort((a, b) {
-      final Comparable<T> aValue = getField(a);
-      final Comparable<T> bValue = getField(b);
-      return ascending
-          ? Comparable.compare(aValue, bValue)
-          : Comparable.compare(bValue, aValue);
-    });
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => COwner.costs.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    TextEditingController creation =
-        TextEditingController(text: COwner.costs[index].creation.toString());
-    TextEditingController name =
-        TextEditingController(text: COwner.costs[index].name.toString());
-    TextEditingController type =
-        TextEditingController(text: COwner.costs[index].type.toString());
-    TextEditingController value =
-        TextEditingController(text: COwner.costs[index].value.toString());
-    TextEditingController responsibility = TextEditingController(
-        text: COwner.costs[index].responsibility.toString());
-    return DataRow.byIndex(index: index, cells: [
-      DataCell(TextField(
-        enabled: enabled,
-        controller: creation,
-        style: const TextStyle(color: Colors.black),
-      )),
-      DataCell(TextField(
-        enabled: enabled,
-        controller: name,
-        style: const TextStyle(color: Colors.black),
-      )),
-      DataCell(TextField(
-        enabled: enabled,
-        controller: type,
-        style: const TextStyle(color: Colors.black),
-      )),
-      DataCell(TextField(
-        enabled: enabled,
-        controller: value,
-        style: const TextStyle(color: Colors.black),
-      )),
-      DataCell(TextField(
-        enabled: enabled,
-        controller: responsibility,
-        style: const TextStyle(color: Colors.black),
-      )),
-      DataCell(
-        IconButton(
-          icon: const Icon(Icons.edit),
-          onPressed: () {
-            toggle();
-          },
-        ),
-      ),
-    ]);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:budget_controller/firebase_options.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:budget_controller/src/pages/home.dart';
-import 'package:budget_controller/src/pages/login.dart';
+import 'package:budget_controller/src/pages/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

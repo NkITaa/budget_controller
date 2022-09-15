@@ -1,11 +1,11 @@
-import 'package:budget_controller/src/constants/const.dart';
-import 'package:budget_controller/src/constants/const_admin.dart';
+import 'package:budget_controller/src/pages/admin/const_admin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../main.dart';
-import '../controller/user_controller.dart';
-import '../modells/user.dart';
+import '../../../main.dart';
+import '../../Constants/const.dart';
+import '../../controller/user_controller.dart';
+import '../../modells/user.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key, required this.user});
