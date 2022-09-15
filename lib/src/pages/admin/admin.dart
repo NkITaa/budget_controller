@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../main.dart';
-import '../../Constants/const.dart';
+import '../../const.dart';
 import '../../controller/user_controller.dart';
 import '../../modells/user.dart';
 

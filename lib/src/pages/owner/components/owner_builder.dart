@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import '../../../widget_builder.dart';
 import 'table.dart';
 import '../const_owner.dart';
 import '../../../modells/cost.dart';
@@ -127,12 +128,10 @@ class OwnerBuilder {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
-              IconButton(
                 icon: const Icon(Icons.add),
-                onPressed: () {},
+                onPressed: () {
+                  buildAddCostPopup();
+                },
               ),
             ],
           ),
@@ -144,5 +143,98 @@ class OwnerBuilder {
       sortColumnIndex: sortColumnIndex,
       sortAscending: sortAscending,
     );
+  }
+
+  static buildAddCostPopup() {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    TextEditingController datum = TextEditingController();
+    TextEditingController grund = TextEditingController();
+    TextEditingController summe = TextEditingController();
+    String? gewaehlteArt = COwner.arten[0];
+
+    return Get.defaultDialog(
+        title: "Kosten Hinzufügen",
+        titleStyle: const TextStyle(color: Colors.black),
+        content: SizedBox(
+          height: 200,
+          width: 300,
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: datum,
+                  decoration: const InputDecoration(hintText: "Datum"),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: DropdownButtonFormField(
+                      focusColor: Colors.transparent,
+                      style: const TextStyle(color: Colors.black),
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.grey,
+                      ),
+                      decoration: const InputDecoration(
+                        focusColor: Color(0xffF6CD9D),
+                        hoverColor: Color(0xffF6CD9D),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffF6CD9D)),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffF6CD9D)),
+                        ),
+                      ),
+                      value: gewaehlteArt,
+                      items: COwner.arten
+                          .map((art) => DropdownMenuItem(
+                                value: art,
+                                child: Text(
+                                  art,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ))
+                          .toList(),
+                      onChanged: (item) {
+                        gewaehlteArt = item;
+                      }),
+                ),
+                TextFormField(
+                  controller: grund,
+                  decoration: const InputDecoration(hintText: "Grund"),
+                ),
+                TextFormField(
+                  controller: summe,
+                  decoration: const InputDecoration(hintText: "Summe"),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomBuilder.customButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    text: "Schließen"),
+                const SizedBox(
+                  width: 10,
+                ),
+                CustomBuilder.customButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        Get.back();
+                      }
+                    },
+                    text: "Hinzufügen")
+              ],
+            ),
+          )
+        ]);
   }
 }

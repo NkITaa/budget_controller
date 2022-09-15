@@ -1,11 +1,11 @@
 import 'package:budget_controller/src/modells/cost.dart';
 import 'package:budget_controller/src/modells/project.dart';
-import 'package:budget_controller/src/pages/Owner/owner_components.dart';
 import 'package:budget_controller/src/pages/owner/components/table.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/project_controller.dart';
 import '../../modells/user.dart';
+import 'components/owner_builder.dart';
 
 class Owner extends StatefulWidget {
   const Owner({super.key, required this.user});
@@ -60,14 +60,14 @@ class _OwnerState extends State<Owner> {
                 "Beispiel Projekt",
                 style: TextStyle(fontSize: 25, color: Colors.black),
               ),
-              OwnerComponents.buildComparison(
+              OwnerBuilder.buildComparison(
                   isPrice: 16, shouldPrice: 20, context: context),
               const SizedBox(
                 height: 50,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: OwnerComponents.buildTable(
+                child: OwnerBuilder.buildTable(
                     cells: ["cells"],
                     enabled: enabled,
                     toggle: toggle,

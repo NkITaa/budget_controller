@@ -9,6 +9,8 @@ class COwner {
 
   static const String details = "Detaills";
 
+  static List<String> arten = ["Garage", "Mensa", "Personal"];
+
   static const List<String> columns = [
     "Datum",
     "Bezeichnung",
