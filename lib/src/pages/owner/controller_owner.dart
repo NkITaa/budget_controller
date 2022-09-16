@@ -29,4 +29,24 @@ class ControllerOwner {
                                 columnIndex, ascending, source)
                             : null;
   }
+
+  static String formatInput({required String item}) {
+    item = item.replaceAll(",", ".");
+    if (".".allMatches(item).length > 1) {
+      for (int i = item.indexOf(".") + 1; i < item.length; i++) {
+        if (item[i] == ".") {
+          item = item.replaceRange(i, i + 1, "");
+        }
+      }
+    }
+    if (item.contains(".")) {
+      for (int i = item.indexOf(".") + 3; i < item.length; i++) {
+        if (item[i] != "€") {
+          item = item.replaceRange(i, i + 1, "");
+        }
+      }
+    }
+    item = item.replaceAll("€", "");
+    return "$item€";
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../modells/cost.dart';
@@ -98,7 +99,7 @@ class TableData extends DataTableSource {
             )),
       enabled && selectedRow
           ? DataCell(OwnerBuilder.categoryDropDown(
-              gewaehlteArt: gewaehlteArt, setArt: setArt))
+              table: true, gewaehlteArt: gewaehlteArt, setArt: setArt))
           : DataCell(TextFormField(
               enabled: true,
               controller: category,
@@ -107,7 +108,15 @@ class TableData extends DataTableSource {
               style: const TextStyle(color: Colors.black),
             )),
       DataCell(TextFormField(
-        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9 €]"))],
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[0-9 .,€]"))
+        ],
+        onChanged: (item) {
+          TextSelection previousSelection = value.selection;
+
+          value.text = ControllerOwner.formatInput(item: item);
+          value.selection = previousSelection;
+        },
         enabled: enabled && selectedRow,
         controller: value,
         maxLength: 10,

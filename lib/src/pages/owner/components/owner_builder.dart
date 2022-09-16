@@ -200,7 +200,9 @@ class OwnerBuilder {
                     SizedBox(
                         width: 200,
                         child: categoryDropDown(
-                            gewaehlteArt: gewaehlteArt, setArt: setArt)),
+                            table: false,
+                            gewaehlteArt: gewaehlteArt,
+                            setArt: setArt)),
                   ],
                 ),
                 popUpTextField(
@@ -269,21 +271,25 @@ class OwnerBuilder {
   }
 
   static Widget categoryDropDown(
-      {required String gewaehlteArt, required Function setArt}) {
+      {required String gewaehlteArt,
+      required Function setArt,
+      required bool table}) {
     return DropdownButtonFormField(
         focusColor: Colors.transparent,
         style: const TextStyle(color: Colors.black),
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_drop_down,
-          color: Colors.grey,
+          color: table ? const Color(0xff7434E6) : Colors.grey,
         ),
-        decoration: const InputDecoration(
-          focusColor: Colors.grey,
+        decoration: InputDecoration(
+          focusColor: table ? Colors.transparent : Colors.grey,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide:
+                BorderSide(color: table ? Colors.transparent : Colors.grey),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xff7434E6)),
+            borderSide: BorderSide(
+                color: table ? Colors.transparent : const Color(0xff7434E6)),
           ),
         ),
         value: gewaehlteArt,
@@ -292,7 +298,8 @@ class OwnerBuilder {
                   value: art,
                   child: Text(
                     art,
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: table ? const Color(0xff7434E6) : Colors.black),
                   ),
                 ))
             .toList(),
