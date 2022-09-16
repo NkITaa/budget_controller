@@ -45,7 +45,7 @@ class TableData extends DataTableSource {
 
     TextEditingController creation = TextEditingController(
         text:
-            "${OwnerBuilder.costs[index].creation.day.toString()}/${OwnerBuilder.costs[index].creation.month.toString()}/${OwnerBuilder.costs[index].creation.year.toString()}");
+            "${OwnerBuilder.costs[index].creation.day.toString()}.${OwnerBuilder.costs[index].creation.month.toString()}.${OwnerBuilder.costs[index].creation.year.toString()}");
 
     TextEditingController reason = TextEditingController(
         text: OwnerBuilder.costs[index].reason.toString());
