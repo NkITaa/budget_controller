@@ -102,10 +102,12 @@ class OwnerBuilder {
       required int sortColumnIndex,
       required int currentIndex,
       required Function toggle,
+      required Function state,
       required Function sort,
       required BuildContext context}) {
     int rowsPerPage = 10;
     TableData source = TableData(
+        state: state,
         currentIndex: currentIndex,
         enabled: enabled,
         toggle: toggle,
@@ -143,7 +145,7 @@ class OwnerBuilder {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  buildAddCostPopup(context: context);
+                  buildAddCostPopup(context: context, state: state);
                 },
               ),
             ],
@@ -157,7 +159,8 @@ class OwnerBuilder {
     );
   }
 
-  static buildAddCostPopup({required BuildContext context}) {
+  static buildAddCostPopup(
+      {required BuildContext context, required Function state}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
     TextEditingController grund = TextEditingController();
@@ -189,11 +192,17 @@ class OwnerBuilder {
                           customDatePicker(context: context, dateTime: dateTime)
                               .then((date) {
                             if (date != null) {
-                              print(date);
+                              dateTime = date;
+                              state();
                             }
                           });
                         },
-                        icon: const Icon(Icons.calendar_month)),
+                        icon: Icon(
+                          Icons.calendar_month,
+                          color: dateTime != null
+                              ? const Color(0xff7434E6)
+                              : Colors.black,
+                        )),
                     const SizedBox(
                       width: 40,
                     ),

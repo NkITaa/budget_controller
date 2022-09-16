@@ -27,6 +27,10 @@ class _OwnerState extends State<Owner> {
     setState(() {});
   }
 
+  void state() {
+    setState(() {});
+  }
+
   int sortColumnIndex = 0;
   bool sortAscending = true;
 
@@ -70,6 +74,7 @@ class _OwnerState extends State<Owner> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: OwnerBuilder.buildTable(
+                    state: state,
                     context: context,
                     cells: ["cells"],
                     enabled: enabled,

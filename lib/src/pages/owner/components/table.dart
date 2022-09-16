@@ -10,10 +10,12 @@ class TableData extends DataTableSource {
       {required this.currentIndex,
       required this.enabled,
       required this.toggle,
+      required this.state,
       required this.context});
   final int currentIndex;
   final bool enabled;
   final Function toggle;
+  final Function state;
   final BuildContext context;
 
   sortMe<T>(Comparable<T> Function(Cost cost) getField, bool ascending) {
@@ -76,18 +78,30 @@ class TableData extends DataTableSource {
     return DataRow.byIndex(index: index, cells: [
       enabled && selectedRow
           ? DataCell(
-              IconButton(
-                  color: const Color(0xff7434E6),
-                  onPressed: () {
-                    OwnerBuilder.customDatePicker(
-                            context: context, dateTime: dateTime)
-                        .then((date) {
-                      if (date != null) {
-                        print(date);
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.calendar_month)),
+              Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      dateTime?.hour.toString() ?? creation.text,
+                      style: const TextStyle(color: Color(0xff7434E6)),
+                    ),
+                  ),
+                  IconButton(
+                      color: const Color(0xff7434E6),
+                      onPressed: () {
+                        OwnerBuilder.customDatePicker(
+                                context: context, dateTime: dateTime)
+                            .then((date) {
+                          if (date != null) {
+                            dateTime = date;
+                            print(dateTime);
+                            state();
+                          }
+                        });
+                      },
+                      icon: const Icon(Icons.calendar_month)),
+                ],
+              ),
             )
           : DataCell(TextFormField(
               enabled: false,
@@ -113,7 +127,6 @@ class TableData extends DataTableSource {
         ],
         onChanged: (item) {
           TextSelection previousSelection = value.selection;
-
           value.text = ControllerOwner.formatInput(item: item);
           value.selection = previousSelection;
         },
