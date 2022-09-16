@@ -13,9 +13,10 @@ class COwner {
 
   static const List<String> columns = [
     "Datum",
-    "Bezeichnung",
     "Kategorie",
     "Summe",
+    "Beschreibung",
+    "Grund",
     "Verantwortlich",
     ""
   ];

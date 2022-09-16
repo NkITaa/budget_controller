@@ -1,37 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Cost {
-  String responsibility;
-  String name;
-  String type;
+  DateTime creation;
+  String category;
   double value;
-  Timestamp creation;
+  String reason;
+  String description;
+  String responsibility;
 
   Cost({
-    required this.responsibility,
-    required this.name,
-    required this.type,
-    required this.value,
     required this.creation,
+    required this.category,
+    required this.value,
+    required this.reason,
+    required this.description,
+    required this.responsibility,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      "responsibility": responsibility,
-      "name": name,
-      "type": type,
+      "creation": creation,
+      "category": category,
       "value": value,
-      "creation": creation
+      "reason": reason,
+      "description": description,
+      "responsibility": responsibility,
     };
   }
 
   static Cost fromJson(dynamic cost) {
     return Cost(
-      responsibility: cost["responsibility"],
-      name: cost["name"],
-      type: cost["type"],
-      value: cost["value"],
       creation: cost["creation"],
+      category: cost["category"],
+      value: cost["value"],
+      reason: cost["reason"],
+      description: cost["description"],
+      responsibility: cost["responsibility"],
     );
   }
 }

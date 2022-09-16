@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../widget_builder.dart';
 import 'table.dart';
@@ -10,17 +11,19 @@ import 'detaills.dart';
 class OwnerBuilder {
   static List<Cost> costs = [
     Cost(
-        responsibility: "responsibility",
-        name: "name",
-        type: "type",
-        value: 3,
-        creation: Timestamp.now()),
+        creation: DateTime.now(),
+        category: "Haushalt",
+        value: 342,
+        reason: "123455678901234567890",
+        description: "123455678901234567890",
+        responsibility: "123455678901234567890"),
     Cost(
-        responsibility: "responsibility",
-        name: "name",
-        type: "type",
-        value: 5,
-        creation: Timestamp.now())
+        creation: DateTime.now(),
+        category: "Haushalt",
+        value: 10,
+        reason: "Nahrung",
+        description: "Wasserkocher",
+        responsibility: "Reichert")
   ];
 
   static Widget buildComparison(
@@ -92,25 +95,33 @@ class OwnerBuilder {
     );
   }
 
-  static Widget buildTable({
-    required List<String> cells,
-    required bool enabled,
-    required bool sortAscending,
-    required int sortColumnIndex,
-    required int currentIndex,
-    required Function toggle,
-    required Function sort,
-  }) {
+  static Widget buildTable(
+      {required List<String> cells,
+      required bool enabled,
+      required bool sortAscending,
+      required int sortColumnIndex,
+      required int currentIndex,
+      required Function toggle,
+      required Function sort,
+      required BuildContext context}) {
     int rowsPerPage = 10;
-    TableData source =
-        TableData(currentIndex: currentIndex, enabled: enabled, toggle: toggle);
+    TableData source = TableData(
+        currentIndex: currentIndex,
+        enabled: enabled,
+        toggle: toggle,
+        context: context);
     return PaginatedDataTable(
       source: source,
       columns: COwner.columns.map((column) {
+        int index = COwner.columns.indexOf(column);
         return DataColumn(
           onSort: (columnIndex, ascending) {
-            sort<num>(
-                (Cost cost) => cost.value, columnIndex, ascending, source);
+            ControllerOwner.specificSort(
+                index: index,
+                columnIndex: columnIndex,
+                ascending: ascending,
+                source: source,
+                sort: sort);
           },
           label: Text(
             column,
@@ -132,7 +143,7 @@ class OwnerBuilder {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  buildAddCostPopup();
+                  buildAddCostPopup(context: context);
                 },
               ),
             ],
@@ -140,19 +151,23 @@ class OwnerBuilder {
         ],
       ),
       rowsPerPage: rowsPerPage,
-      horizontalMargin: 10,
       showCheckboxColumn: false,
       sortColumnIndex: sortColumnIndex,
       sortAscending: sortAscending,
     );
   }
 
-  static buildAddCostPopup() {
+  static buildAddCostPopup({required BuildContext context}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    TextEditingController datum = TextEditingController();
+    DateTime? dateTime;
     TextEditingController grund = TextEditingController();
+    TextEditingController beschreibung = TextEditingController();
     TextEditingController summe = TextEditingController();
-    String? gewaehlteArt = COwner.arten[0];
+    String gewaehlteArt = COwner.arten[0];
+
+    void setArt({required String art}) {
+      gewaehlteArt = art;
+    }
 
     return Get.defaultDialog(
         title: "Kosten Hinzufügen",
@@ -164,77 +179,36 @@ class OwnerBuilder {
             key: formKey,
             child: Column(
               children: [
-                TextFormField(
-                  controller: datum,
-                  cursorColor: const Color(0xff7434E6),
-                  style: const TextStyle(color: Colors.black),
-                  decoration: const InputDecoration(
-                    hintText: "Datum",
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xff7434E6)),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 10,
                     ),
-                  ),
+                    IconButton(
+                        onPressed: () {
+                          customDatePicker(context: context, dateTime: dateTime)
+                              .then((date) {
+                            if (date != null) {
+                              print(date);
+                            }
+                          });
+                        },
+                        icon: const Icon(Icons.calendar_month)),
+                    const SizedBox(
+                      width: 40,
+                    ),
+                    SizedBox(
+                        width: 200,
+                        child: categoryDropDown(
+                            gewaehlteArt: gewaehlteArt, setArt: setArt)),
+                  ],
                 ),
-                SizedBox(
-                  width: 300,
-                  child: DropdownButtonFormField(
-                      focusColor: Colors.transparent,
-                      style: const TextStyle(color: Colors.black),
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                      ),
-                      decoration: const InputDecoration(
-                        focusColor: Colors.grey,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff7434E6)),
-                        ),
-                      ),
-                      value: gewaehlteArt,
-                      items: COwner.arten
-                          .map((art) => DropdownMenuItem(
-                                value: art,
-                                child: Text(
-                                  art,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              ))
-                          .toList(),
-                      onChanged: (item) {
-                        gewaehlteArt = item;
-                      }),
-                ),
-                TextFormField(
-                  cursorColor: const Color(0xff7434E6),
-                  style: const TextStyle(color: Colors.black),
-                  controller: grund,
-                  decoration: const InputDecoration(
-                    hintText: "Grund",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xff7434E6)),
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  cursorColor: const Color(0xff7434E6),
-                  style: const TextStyle(color: Colors.black),
-                  controller: summe,
-                  decoration: const InputDecoration(
-                    hintText: "Summe",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xff7434E6)),
-                    ),
-                  ),
-                ),
+                popUpTextField(
+                    controller: beschreibung,
+                    hint: "Beschreibung",
+                    summe: false),
+                popUpTextField(controller: grund, hint: "Grund", summe: false),
+                popUpTextField(controller: summe, hint: "Summe", summe: true),
               ],
             ),
           ),
@@ -264,6 +238,95 @@ class OwnerBuilder {
             ),
           )
         ]);
+  }
+
+  static Future<DateTime?> customDatePicker(
+      {required BuildContext context, required DateTime? dateTime}) {
+    return showDatePicker(
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.light(
+                primary: Color(0xff7434E6),
+                onPrimary: Colors.white,
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.black,
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xff7434E6),
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+        cancelText: "ABBRECHEN",
+        context: context,
+        initialDate: dateTime ?? DateTime.now(),
+        firstDate: DateTime(2022),
+        lastDate: DateTime.now());
+  }
+
+  static Widget categoryDropDown(
+      {required String gewaehlteArt, required Function setArt}) {
+    return DropdownButtonFormField(
+        focusColor: Colors.transparent,
+        style: const TextStyle(color: Colors.black),
+        icon: const Icon(
+          Icons.arrow_drop_down,
+          color: Colors.grey,
+        ),
+        decoration: const InputDecoration(
+          focusColor: Colors.grey,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xff7434E6)),
+          ),
+        ),
+        value: gewaehlteArt,
+        items: COwner.arten
+            .map((art) => DropdownMenuItem(
+                  value: art,
+                  child: Text(
+                    art,
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ))
+            .toList(),
+        onChanged: (art) {
+          setArt(art: art);
+        });
+  }
+
+  static Widget popUpTextField(
+      {required TextEditingController controller,
+      required String hint,
+      required bool summe}) {
+    return TextFormField(
+      inputFormatters: [
+        summe
+            ? FilteringTextInputFormatter.allow(RegExp("[0-9 €]"))
+            : FilteringTextInputFormatter.allow(
+                RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
+      ],
+      cursorColor: const Color(0xff7434E6),
+      style: const TextStyle(color: Colors.black),
+      controller: controller,
+      maxLength: summe ? 9 : 20,
+      decoration: InputDecoration(
+        hintText: hint,
+        counterText: "",
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+        ),
+        focusedBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xff7434E6)),
+        ),
+      ),
+    );
   }
 
   static Widget detaillsColumn(

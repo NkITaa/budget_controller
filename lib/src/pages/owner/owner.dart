@@ -67,9 +67,10 @@ class _OwnerState extends State<Owner> {
               const SizedBox(
                 height: 50,
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: OwnerBuilder.buildTable(
+                    context: context,
                     cells: ["cells"],
                     enabled: enabled,
                     currentIndex: currentIndex,
