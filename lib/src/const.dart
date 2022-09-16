@@ -10,4 +10,6 @@ class Const {
   static const String nullPasswordError = "Bitte gebe ein Password ein";
 
   static const String nullFieldError = "Das Feld darf nicht leer sein";
+
+  static const String minThreeCharsError = "Mindestens 3 Charaktäre eingeben";
 }

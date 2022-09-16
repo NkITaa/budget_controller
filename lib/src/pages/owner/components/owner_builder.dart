@@ -1,3 +1,4 @@
+import 'package:budget_controller/src/const.dart';
 import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -135,7 +136,7 @@ class OwnerBuilder {
         children: [
           const Center(
             child: Text(
-              "Aufschlüsselung",
+              COwner.details,
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -167,6 +168,7 @@ class OwnerBuilder {
     TextEditingController beschreibung = TextEditingController();
     TextEditingController summe = TextEditingController();
     String gewaehlteArt = COwner.arten[0];
+    bool? dateExists;
 
     void setArt({required String art}) {
       gewaehlteArt = art;
@@ -176,51 +178,63 @@ class OwnerBuilder {
         title: "Kosten Hinzufügen",
         titleStyle: const TextStyle(color: Colors.black),
         content: SizedBox(
-          height: 200,
+          height: 265,
           width: 300,
           child: Form(
             key: formKey,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          customDatePicker(context: context, dateTime: dateTime)
-                              .then((date) {
-                            if (date != null) {
-                              dateTime = date;
-                              state();
-                            }
-                          });
-                        },
-                        icon: Icon(
-                          Icons.calendar_month,
-                          color: dateTime != null
-                              ? const Color(0xff7434E6)
-                              : Colors.black,
-                        )),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    SizedBox(
-                        width: 200,
-                        child: categoryDropDown(
-                            table: false,
-                            gewaehlteArt: gewaehlteArt,
-                            setArt: setArt)),
-                  ],
-                ),
-                popUpTextField(
-                    controller: beschreibung,
-                    hint: "Beschreibung",
-                    summe: false),
-                popUpTextField(controller: grund, hint: "Grund", summe: false),
-                popUpTextField(controller: summe, hint: "Summe", summe: true),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            customDatePicker(
+                              context: context,
+                              dateTime: dateTime,
+                            ).then((date) {
+                              if (date != null) {
+                                dateTime = date;
+                                state();
+                              }
+                            });
+                          },
+                          icon: Icon(
+                            Icons.calendar_month,
+                            color: (dateExists ?? true)
+                                ? dateTime != null
+                                    ? const Color(0xff7434E6)
+                                    : Colors.black
+                                : Colors.red,
+                          )),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      SizedBox(
+                          width: 200,
+                          child: categoryDropDown(
+                              table: false,
+                              gewaehlteArt: gewaehlteArt,
+                              setArt: setArt)),
+                    ],
+                  ),
+                  popUpTextField(
+                      controller: beschreibung,
+                      hint: COwner.costAttributes[0],
+                      summe: false),
+                  popUpTextField(
+                      controller: grund,
+                      hint: COwner.costAttributes[1],
+                      summe: false),
+                  popUpTextField(
+                      controller: summe,
+                      hint: COwner.costAttributes[2],
+                      summe: true),
+                ],
+              ),
             ),
           ),
         ),
@@ -234,17 +248,26 @@ class OwnerBuilder {
                     onPressed: () {
                       Get.back();
                     },
-                    text: "Schließen"),
+                    text: COwner.close),
                 const SizedBox(
                   width: 10,
                 ),
                 CustomBuilder.customButton(
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
+                      if (dateTime == null) {
+                        dateExists = false;
+                        state();
+                      }
+                      if (dateTime != null) {
+                        dateExists = true;
+                        state();
+                      }
+                      if (formKey.currentState!.validate() &&
+                          dateTime != null) {
                         Get.back();
                       }
                     },
-                    text: "Hinzufügen")
+                    text: COwner.add)
               ],
             ),
           )
@@ -272,7 +295,7 @@ class OwnerBuilder {
             child: child!,
           );
         },
-        cancelText: "ABBRECHEN",
+        cancelText: COwner.abort,
         context: context,
         initialDate: dateTime ?? DateTime.now(),
         firstDate: DateTime(2022),
@@ -328,6 +351,9 @@ class OwnerBuilder {
             : FilteringTextInputFormatter.allow(
                 RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
       ],
+      validator: (value) {
+        return value!.length < 3 ? Const.minThreeCharsError : null;
+      },
       cursorColor: const Color(0xff7434E6),
       style: const TextStyle(color: Colors.black),
       controller: controller,
@@ -350,125 +376,152 @@ class OwnerBuilder {
       required bool budget,
       required bool enabled,
       Function? toggle}) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
-    TextEditingController cost = TextEditingController(text: "23423");
+    TextEditingController cost = TextEditingController(text: "23432");
     InputDecoration decoration = const InputDecoration(
+      counterText: "",
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.transparent),
       ),
       disabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.transparent),
       ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+      ),
     );
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.45,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  budget ? "Budget" : "18.12.2001",
-                  style: const TextStyle(color: Colors.black, fontSize: 25),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                budget
-                    ? Container()
-                    : IconButton(
-                        onPressed: () {
-                          toggle!();
-                        },
-                        icon: const Icon(Icons.edit)),
-                budget
-                    ? Container()
-                    : IconButton(
-                        onPressed: () {
-                          showDatePicker(
-                                  builder: (context, child) {
-                                    return Theme(
-                                      data: Theme.of(context).copyWith(
-                                        colorScheme: const ColorScheme.light(
-                                          primary: Color(0xff7434E6),
-                                          onPrimary: Colors.white,
-                                          onSurface: Colors.white,
-                                        ),
-                                        dialogBackgroundColor: Colors.black,
-                                        textButtonTheme: TextButtonThemeData(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor:
-                                                const Color(0xff7434E6),
+    return Form(
+      key: formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.45,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    budget ? COwner.budget : COwner.costs,
+                    style: const TextStyle(color: Colors.black, fontSize: 25),
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  budget
+                      ? Container()
+                      : IconButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              toggle!();
+                            }
+                          },
+                          icon: const Icon(Icons.edit)),
+                  budget
+                      ? Container()
+                      : IconButton(
+                          onPressed: () {
+                            showDatePicker(
+                                    builder: (context, child) {
+                                      return Theme(
+                                        data: Theme.of(context).copyWith(
+                                          colorScheme: const ColorScheme.light(
+                                            primary: Color(0xff7434E6),
+                                            onPrimary: Colors.white,
+                                            onSurface: Colors.white,
+                                          ),
+                                          dialogBackgroundColor: Colors.black,
+                                          textButtonTheme: TextButtonThemeData(
+                                            style: TextButton.styleFrom(
+                                              foregroundColor:
+                                                  const Color(0xff7434E6),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      child: child!,
-                                    );
-                                  },
-                                  cancelText: "ABBRECHEN",
-                                  context: context,
-                                  initialDate: dateTime ?? DateTime.now(),
-                                  firstDate: DateTime(2022),
-                                  lastDate: DateTime.now())
-                              .then((date) {
-                            if (date != null) {}
-                          });
-                        },
-                        icon: const Icon(Icons.calendar_month)),
-              ],
-            ),
-            Row(
-              children: const [
-                SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  "18.12.2001",
-                  style: TextStyle(color: Colors.black, fontSize: 18),
-                ),
-              ],
-            ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: COwner.arten.length,
-                itemBuilder: (context, index) {
-                  return ExpansionTile(
-                    title: Row(
+                                        child: child!,
+                                      );
+                                    },
+                                    cancelText: COwner.abort,
+                                    context: context,
+                                    initialDate: dateTime ?? DateTime.now(),
+                                    firstDate: DateTime(2022),
+                                    lastDate: DateTime.now())
+                                .then((date) {
+                              if (date != null) {}
+                            });
+                          },
+                          icon: const Icon(Icons.calendar_month)),
+                ],
+              ),
+              Row(
+                children: const [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    "18.12.2001",
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                ],
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: COwner.arten.length,
+                  itemBuilder: (context, index) {
+                    return ExpansionTile(
+                      title: Row(
+                        children: [
+                          Text("${COwner.arten[index]}: ",
+                              style: const TextStyle(color: Colors.black)),
+                          Flexible(
+                            child: TextFormField(
+                              validator: (value) {
+                                return value!.length < 2
+                                    ? Const.nullFieldError
+                                    : null;
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9 .,€]"))
+                              ],
+                              maxLength: 10,
+                              enabled: enabled && !budget,
+                              controller: cost,
+                              onChanged: (item) {
+                                TextSelection previousSelection =
+                                    cost.selection;
+                                cost.text =
+                                    ControllerOwner.formatInput(item: item);
+                                cost.selection = previousSelection;
+                              },
+                              decoration: decoration,
+                              style: TextStyle(
+                                  color: enabled && !budget
+                                      ? const Color(0xff7434E6)
+                                      : Colors.black),
+                            ),
+                          )
+                        ],
+                      ),
+                      iconColor: const Color(0xff7434E6),
+                      collapsedIconColor: Colors.black,
+                      controlAffinity: ListTileControlAffinity.leading,
                       children: [
-                        Text("${COwner.arten[index]}: ",
-                            style: const TextStyle(color: Colors.black)),
-                        Flexible(
-                          child: TextField(
-                            enabled: enabled && !budget,
-                            controller: cost,
-                            decoration: decoration,
-                            style: TextStyle(
-                                color: enabled && !budget
-                                    ? const Color(0xff7434E6)
-                                    : Colors.black),
-                          ),
-                        )
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return const Text('Detaills',
+                                  style: TextStyle(color: Colors.black));
+                            })
                       ],
-                    ),
-                    iconColor: const Color(0xff7434E6),
-                    collapsedIconColor: Colors.black,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    children: [
-                      ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return const Text('Detaills',
-                                style: TextStyle(color: Colors.black));
-                          })
-                    ],
-                  );
-                }),
-          ],
+                    );
+                  }),
+            ],
+          ),
         ),
       ),
     );
