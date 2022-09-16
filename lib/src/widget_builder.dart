@@ -1,4 +1,6 @@
 import 'package:budget_controller/main.dart';
+import 'package:budget_controller/src/pages/owner/const_owner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'const.dart';
@@ -103,6 +105,44 @@ class CustomBuilder {
         fit: BoxFit.fill,
         image: AssetImage("assets/logo.png"),
       )),
+    );
+  }
+
+  static PreferredSizeWidget customAppBar({required BuildContext context}) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(100),
+      child: AppBar(
+        backgroundColor: const Color(0xff7434E6),
+        elevation: 0,
+        actions: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomBuilder.customLogo(size: 50),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  static Widget customDrawer() {
+    return Drawer(
+      backgroundColor: const Color(0xff7434E6),
+      child: Column(
+        children: [
+          const Text("Owner"),
+          OutlinedButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: const Text(COwner.signOut),
+          ),
+        ],
+      ),
     );
   }
 }

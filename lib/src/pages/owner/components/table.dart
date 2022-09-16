@@ -3,7 +3,11 @@ import '../../../modells/cost.dart';
 import 'owner_builder.dart';
 
 class TableData extends DataTableSource {
-  TableData({required this.enabled, required this.toggle});
+  TableData(
+      {required this.currentIndex,
+      required this.enabled,
+      required this.toggle});
+  final int currentIndex;
   final bool enabled;
   final Function toggle;
 
@@ -44,50 +48,62 @@ class TableData extends DataTableSource {
         borderSide: BorderSide(color: Colors.transparent),
       ),
     );
+    final bool selectedRow = currentIndex == index;
     return DataRow.byIndex(index: index, cells: [
       DataCell(TextField(
-        enabled: enabled,
+        enabled: enabled && selectedRow,
         controller: creation,
         decoration: decoration,
-        style:
-            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
+        style: TextStyle(
+            color: enabled && selectedRow
+                ? const Color(0xff7434E6)
+                : Colors.black),
       )),
       DataCell(TextField(
-        enabled: enabled,
+        enabled: enabled && selectedRow,
         controller: name,
         decoration: decoration,
-        style:
-            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
+        style: TextStyle(
+            color: enabled && selectedRow
+                ? const Color(0xff7434E6)
+                : Colors.black),
       )),
       DataCell(TextField(
         enabled: enabled,
         controller: type,
         decoration: decoration,
-        style:
-            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
+        style: TextStyle(
+            color: enabled && selectedRow
+                ? const Color(0xff7434E6)
+                : Colors.black),
       )),
       DataCell(TextField(
-        enabled: enabled,
+        enabled: enabled && selectedRow,
         controller: value,
         decoration: decoration,
-        style:
-            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
+        style: TextStyle(
+            color: enabled && selectedRow
+                ? const Color(0xff7434E6)
+                : Colors.black),
       )),
       DataCell(TextField(
-        enabled: enabled,
+        enabled: enabled && selectedRow,
         controller: responsibility,
         decoration: decoration,
-        style:
-            TextStyle(color: enabled ? const Color(0xff7434E6) : Colors.black),
+        style: TextStyle(
+            color: enabled && selectedRow
+                ? const Color(0xff7434E6)
+                : Colors.black),
       )),
       DataCell(
         IconButton(
           icon: Icon(
             Icons.edit,
-            color: enabled ? const Color(0xff7434E6) : Colors.black,
+            color:
+                enabled && selectedRow ? const Color(0xff7434E6) : Colors.black,
           ),
           onPressed: () {
-            toggle();
+            toggle(index: index);
           },
         ),
       ),

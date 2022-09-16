@@ -18,9 +18,11 @@ class Owner extends StatefulWidget {
 class _OwnerState extends State<Owner> {
   ProjectController projectController = Get.put(ProjectController());
   bool enabled = false;
+  int currentIndex = 0;
   Project? project;
 
-  void toggle() {
+  void toggle({required int index}) {
+    currentIndex = index;
     enabled = !enabled;
     setState(() {});
   }
@@ -70,6 +72,7 @@ class _OwnerState extends State<Owner> {
                 child: OwnerBuilder.buildTable(
                     cells: ["cells"],
                     enabled: enabled,
+                    currentIndex: currentIndex,
                     toggle: toggle,
                     sort: sort,
                     sortAscending: sortAscending,

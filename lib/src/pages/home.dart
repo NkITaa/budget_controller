@@ -1,11 +1,9 @@
 import 'package:budget_controller/src/modells/user.dart';
 import 'package:budget_controller/src/pages/admin/admin.dart';
 import 'package:budget_controller/src/widget_builder.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../const.dart';
-import 'owner/const_owner.dart';
 import '../controller/user_controller.dart';
 import 'manager/manager.dart';
 import 'owner/owner.dart';
@@ -24,35 +22,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xff7434E6),
-          elevation: 0,
-          actions: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomBuilder.customLogo(size: 50),
-                ],
-              ),
-            )
-          ],
-        ),
-        drawer: Drawer(
-          backgroundColor: const Color(0xff7434E6),
-          child: Column(
-            children: [
-              const Text("Owner"),
-              OutlinedButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                },
-                child: const Text(COwner.signOut),
-              ),
-            ],
-          ),
-        ),
+        appBar: CustomBuilder.customAppBar(context: context),
+        drawer: CustomBuilder.customDrawer(),
         body: FutureBuilder<CustomUser>(
           future: user,
           builder: (

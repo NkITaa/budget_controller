@@ -97,11 +97,13 @@ class OwnerBuilder {
     required bool enabled,
     required bool sortAscending,
     required int sortColumnIndex,
+    required int currentIndex,
     required Function toggle,
     required Function sort,
   }) {
     int rowsPerPage = 10;
-    TableData source = TableData(enabled: enabled, toggle: toggle);
+    TableData source =
+        TableData(currentIndex: currentIndex, enabled: enabled, toggle: toggle);
     return PaginatedDataTable(
       source: source,
       columns: COwner.columns.map((column) {
@@ -262,5 +264,134 @@ class OwnerBuilder {
             ),
           )
         ]);
+  }
+
+  static Widget detaillsColumn(
+      {required BuildContext context,
+      required bool budget,
+      required bool enabled,
+      Function? toggle}) {
+    DateTime? dateTime;
+    TextEditingController cost = TextEditingController(text: "23423");
+    InputDecoration decoration = const InputDecoration(
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+      ),
+      disabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+      ),
+    );
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.45,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  budget ? "Budget" : "18.12.2001",
+                  style: const TextStyle(color: Colors.black, fontSize: 25),
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                budget
+                    ? Container()
+                    : IconButton(
+                        onPressed: () {
+                          toggle!();
+                        },
+                        icon: const Icon(Icons.edit)),
+                budget
+                    ? Container()
+                    : IconButton(
+                        onPressed: () {
+                          showDatePicker(
+                                  builder: (context, child) {
+                                    return Theme(
+                                      data: Theme.of(context).copyWith(
+                                        colorScheme: const ColorScheme.light(
+                                          primary: Color(0xff7434E6),
+                                          onPrimary: Colors.white,
+                                          onSurface: Colors.white,
+                                        ),
+                                        dialogBackgroundColor: Colors.black,
+                                        textButtonTheme: TextButtonThemeData(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor:
+                                                const Color(0xff7434E6),
+                                          ),
+                                        ),
+                                      ),
+                                      child: child!,
+                                    );
+                                  },
+                                  cancelText: "ABBRECHEN",
+                                  context: context,
+                                  initialDate: dateTime ?? DateTime.now(),
+                                  firstDate: DateTime(2022),
+                                  lastDate: DateTime.now())
+                              .then((date) {
+                            if (date != null) {}
+                          });
+                        },
+                        icon: const Icon(Icons.calendar_month)),
+              ],
+            ),
+            Row(
+              children: const [
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  "18.12.2001",
+                  style: TextStyle(color: Colors.black, fontSize: 18),
+                ),
+              ],
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: COwner.arten.length,
+                itemBuilder: (context, index) {
+                  return ExpansionTile(
+                    title: Row(
+                      children: [
+                        Text("${COwner.arten[index]}: ",
+                            style: const TextStyle(color: Colors.black)),
+                        Flexible(
+                          child: TextField(
+                            enabled: enabled && !budget,
+                            controller: cost,
+                            decoration: decoration,
+                            style: TextStyle(
+                                color: enabled && !budget
+                                    ? const Color(0xff7434E6)
+                                    : Colors.black),
+                          ),
+                        )
+                      ],
+                    ),
+                    iconColor: const Color(0xff7434E6),
+                    collapsedIconColor: Colors.black,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    children: [
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return const Text('Detaills',
+                                style: TextStyle(color: Colors.black));
+                          })
+                    ],
+                  );
+                }),
+          ],
+        ),
+      ),
+    );
   }
 }
