@@ -1,8 +1,6 @@
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../const.dart';
 import '../../modells/user.dart';
 import 'admin_builder.dart';
 
@@ -15,18 +13,6 @@ class Admin extends StatefulWidget {
 
 class _AdminState extends State<Admin> {
   UserController userController = Get.find();
-  String selectedRole = Const.userRoles[0];
-  List<String>? selectedProjects;
-
-  stateRole({required String art}) {
-    selectedRole = art;
-    setState(() {});
-  }
-
-  stateProjects({required List<String> arten}) {
-    selectedProjects = arten;
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +42,18 @@ class _AdminState extends State<Admin> {
                         IconButton(
                             onPressed: () {
                               AdminBuilder.addUserPopup(
-                                  selectedRole: selectedRole,
-                                  selectedProjects: selectedProjects,
-                                  context: context,
-                                  userController: userController,
-                                  stateRole: stateRole,
-                                  stateProjects: stateProjects);
+                                context: context,
+                                userController: userController,
+                              );
                             },
                             icon: const Icon(Icons.person_add_outlined,
                                 color: Color(0xff7434E6))),
                         IconButton(
                             onPressed: () {
                               AdminBuilder.changeRolePopup(
-                                  selectedRole: selectedRole,
-                                  context: context,
-                                  userController: userController,
-                                  state: stateRole);
+                                context: context,
+                                userController: userController,
+                              );
                             },
                             icon: const Icon(
                               Icons.change_circle_outlined,
