@@ -2,6 +2,7 @@ import 'package:budget_controller/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multiselect/multiselect.dart';
 
 import 'const.dart';
 
@@ -256,6 +257,47 @@ class CustomBuilder {
             .toList(),
         onChanged: (art) {
           setArt(art: art);
+        });
+  }
+
+  static Widget popupDropDownList({
+    required List<String> gewaehlteArten,
+    required List<String> arten,
+    required Function setArten,
+    bool? isTable,
+  }) {
+    bool table = isTable ?? false;
+    return DropDownMultiSelect(
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: table ? const Color(0xff7434E6) : Colors.grey,
+        ),
+        decoration: InputDecoration(
+          focusColor: table ? Colors.transparent : Colors.grey,
+          enabledBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: table ? Colors.transparent : Colors.grey),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+                color: table ? Colors.transparent : const Color(0xff7434E6)),
+          ),
+        ),
+        childBuilder: (selectedValues) {
+          if (selectedValues.isNotEmpty) {
+            return Text(
+              selectedValues.reduce((a, b) => '$a , $b'),
+              style: const TextStyle(color: Colors.black),
+            );
+          }
+          return const Text("");
+        },
+        hintStyle: const TextStyle(color: Colors.black),
+        selectedValues: gewaehlteArten,
+        whenEmpty: "",
+        options: arten,
+        onChanged: (List<String> specificArten) {
+          setArten(arten: specificArten);
         });
   }
 }

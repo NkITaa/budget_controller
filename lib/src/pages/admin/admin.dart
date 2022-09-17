@@ -16,9 +16,15 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   UserController userController = Get.find();
   String selectedRole = Const.userRoles[0];
+  List<String> selectedProjects = [];
 
-  state({required String art}) {
+  stateRole({required String art}) {
     selectedRole = art;
+    setState(() {});
+  }
+
+  stateProjects({required List<String> arten}) {
+    selectedProjects = arten;
     setState(() {});
   }
 
@@ -51,9 +57,11 @@ class _AdminState extends State<Admin> {
                             onPressed: () {
                               AdminBuilder.addUserPopup(
                                   selectedRole: selectedRole,
+                                  selectedProjects: selectedProjects,
                                   context: context,
                                   userController: userController,
-                                  state: state);
+                                  stateRole: stateRole,
+                                  stateProjects: stateProjects);
                             },
                             icon: const Icon(Icons.person_add_outlined,
                                 color: Color(0xff7434E6))),
@@ -63,7 +71,7 @@ class _AdminState extends State<Admin> {
                                   selectedRole: selectedRole,
                                   context: context,
                                   userController: userController,
-                                  state: state);
+                                  state: stateRole);
                             },
                             icon: const Icon(
                               Icons.change_circle_outlined,

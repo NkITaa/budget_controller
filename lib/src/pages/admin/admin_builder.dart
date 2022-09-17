@@ -11,9 +11,11 @@ import '../owner/const_owner.dart';
 class AdminBuilder {
   static addUserPopup({
     required String selectedRole,
+    required List<String> selectedProjects,
     required UserController userController,
     required BuildContext context,
-    required Function state,
+    required Function stateRole,
+    required Function stateProjects,
   }) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Random generator = Random.secure();
@@ -53,7 +55,7 @@ class AdminBuilder {
                           child: CustomBuilder.popupDropDown(
                             arten: Const.userRoles,
                             gewaehlteArt: selectedRole,
-                            setArt: state,
+                            setArt: stateRole,
                           ),
                         ),
                       ],
@@ -88,11 +90,10 @@ class AdminBuilder {
                           ),
                           SizedBox(
                               width: 150,
-                              child: CustomBuilder.popupDropDown(
-                                arten: Const.userRoles,
-                                gewaehlteArt: selectedRole,
-                                setArt: state,
-                              )),
+                              child: CustomBuilder.popupDropDownList(
+                                  gewaehlteArten: selectedProjects,
+                                  arten: ["a", "b", "c", "d"],
+                                  setArten: stateProjects)),
                         ],
                       ),
                     ),
