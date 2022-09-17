@@ -21,49 +21,57 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: CustomBuilder.customAppBar(context: context),
-        drawer: CustomBuilder.customDrawer(),
-        body: FutureBuilder<CustomUser>(
-          future: user,
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<CustomUser> snapshot,
-          ) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              } else {
-                CustomUser user = snapshot.data!;
-                if (user.role == Const.userRoles[0]) {
-                  return Manager(
+    return SizedBox(
+        child: FutureBuilder<CustomUser>(
+      future: user,
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<CustomUser> snapshot,
+      ) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          } else {
+            CustomUser user = snapshot.data!;
+            if (user.role == Const.userRoles[0]) {
+              return Scaffold(
+                  appBar: CustomBuilder.customAppBar(context: context),
+                  drawer: CustomBuilder.customDrawer(userGroup: "Manager"),
+                  body: Manager(
                     user: user,
-                  );
-                }
-                if (user.role == Const.userRoles[1]) {
-                  return Owner(
-                    user: user,
-                  );
-                }
-                if (user.role == Const.userRoles[2]) {
-                  return Admin(
-                    user: user,
-                  );
-                } else {
-                  return const Center(
-                      child: Text(
-                    Const.unknownError,
                   ));
-                }
-              }
-            } else {
-              return Center(child: Text('State: ${snapshot.connectionState}'));
             }
-          },
-        ));
+            if (user.role == Const.userRoles[1]) {
+              return Scaffold(
+                  appBar: CustomBuilder.customAppBar(context: context),
+                  drawer: CustomBuilder.customDrawer(userGroup: "Owner"),
+                  body: Owner(
+                    user: user,
+                  ));
+            }
+            if (user.role == Const.userRoles[2]) {
+              return Scaffold(
+                appBar: CustomBuilder.customAppBar(context: context),
+                drawer: CustomBuilder.customDrawer(userGroup: "Admin"),
+                body: Admin(
+                  user: user,
+                ),
+              );
+            } else {
+              return const Center(
+                  child: Text(
+                Const.unknownError,
+              ));
+            }
+          }
+        } else {
+          return Center(child: Text('State: ${snapshot.connectionState}'));
+        }
+      },
+    ));
   }
 }

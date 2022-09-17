@@ -2,6 +2,7 @@ import 'package:budget_controller/main.dart';
 import 'package:budget_controller/src/pages/owner/const_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'const.dart';
 
@@ -102,7 +103,7 @@ class CustomBuilder {
       width: size,
       decoration: const BoxDecoration(
           image: DecorationImage(
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
         image: AssetImage("assets/logo.png"),
       )),
     );
@@ -110,8 +111,9 @@ class CustomBuilder {
 
   static PreferredSizeWidget customAppBar({required BuildContext context}) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(100),
+      preferredSize: const Size.fromHeight(60),
       child: AppBar(
+        toolbarHeight: 50,
         backgroundColor: const Color(0xff7434E6),
         elevation: 0,
         actions: [
@@ -120,7 +122,7 @@ class CustomBuilder {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomBuilder.customLogo(size: 50),
+                CustomBuilder.customLogo(size: 40),
               ],
             ),
           )
@@ -129,12 +131,12 @@ class CustomBuilder {
     );
   }
 
-  static Widget customDrawer() {
+  static Widget customDrawer({required String userGroup}) {
     return Drawer(
       backgroundColor: const Color(0xff7434E6),
       child: Column(
         children: [
-          const Text("Owner"),
+          Text(userGroup),
           OutlinedButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
@@ -144,5 +146,82 @@ class CustomBuilder {
         ],
       ),
     );
+  }
+
+  static Widget popUpTextField(
+      {required TextEditingController controller,
+      required String hint,
+      bool? isUid,
+      bool? isSumme}) {
+    bool summe = isSumme ?? false;
+    bool uid = isUid ?? false;
+    return TextFormField(
+      inputFormatters: [
+        summe
+            ? FilteringTextInputFormatter.allow(RegExp("[0-9 €]"))
+            : FilteringTextInputFormatter.allow(
+                RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
+      ],
+      validator: (value) {
+        return uid
+            ? (value!.length < 20 ? Const.minUidError : null)
+            : (value!.length < 3 ? Const.minThreeCharsError : null);
+      },
+      cursorColor: const Color(0xff7434E6),
+      style: const TextStyle(color: Colors.black),
+      controller: controller,
+      maxLength: summe ? 9 : 20,
+      decoration: InputDecoration(
+        hintText: hint,
+        counterText: uid ? null : "",
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+        ),
+        focusedBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xff7434E6)),
+        ),
+      ),
+    );
+  }
+
+  static Widget popupDropDown({
+    required String gewaehlteArt,
+    required List<String> arten,
+    required Function setArt,
+    bool? isTable,
+  }) {
+    bool table = isTable ?? false;
+    return DropdownButtonFormField(
+        focusColor: Colors.transparent,
+        style: const TextStyle(color: Colors.black),
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: table ? const Color(0xff7434E6) : Colors.grey,
+        ),
+        decoration: InputDecoration(
+          focusColor: table ? Colors.transparent : Colors.grey,
+          enabledBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: table ? Colors.transparent : Colors.grey),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+                color: table ? Colors.transparent : const Color(0xff7434E6)),
+          ),
+        ),
+        value: gewaehlteArt,
+        items: arten
+            .map((art) => DropdownMenuItem(
+                  value: art,
+                  child: Text(
+                    art,
+                    style: TextStyle(
+                        color: table ? const Color(0xff7434E6) : Colors.black),
+                  ),
+                ))
+            .toList(),
+        onChanged: (art) {
+          setArt(art: art);
+        });
   }
 }

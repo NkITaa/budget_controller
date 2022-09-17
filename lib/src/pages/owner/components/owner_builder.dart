@@ -215,24 +215,24 @@ class OwnerBuilder {
                       ),
                       SizedBox(
                           width: 200,
-                          child: categoryDropDown(
-                              table: false,
+                          child: CustomBuilder.popupDropDown(
+                              arten: COwner.arten,
                               gewaehlteArt: gewaehlteArt,
                               setArt: setArt)),
                     ],
                   ),
-                  popUpTextField(
-                      controller: beschreibung,
-                      hint: COwner.costAttributes[0],
-                      summe: false),
-                  popUpTextField(
-                      controller: grund,
-                      hint: COwner.costAttributes[1],
-                      summe: false),
-                  popUpTextField(
-                      controller: summe,
-                      hint: COwner.costAttributes[2],
-                      summe: true),
+                  CustomBuilder.popUpTextField(
+                    controller: beschreibung,
+                    hint: COwner.costAttributes[0],
+                  ),
+                  CustomBuilder.popUpTextField(
+                    controller: grund,
+                    hint: COwner.costAttributes[1],
+                  ),
+                  CustomBuilder.popUpTextField(
+                    controller: summe,
+                    hint: COwner.costAttributes[2],
+                  ),
                 ],
               ),
             ),
@@ -300,75 +300,6 @@ class OwnerBuilder {
         initialDate: dateTime ?? DateTime.now(),
         firstDate: DateTime(2022),
         lastDate: DateTime.now());
-  }
-
-  static Widget categoryDropDown(
-      {required String gewaehlteArt,
-      required Function setArt,
-      required bool table}) {
-    return DropdownButtonFormField(
-        focusColor: Colors.transparent,
-        style: const TextStyle(color: Colors.black),
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: table ? const Color(0xff7434E6) : Colors.grey,
-        ),
-        decoration: InputDecoration(
-          focusColor: table ? Colors.transparent : Colors.grey,
-          enabledBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: table ? Colors.transparent : Colors.grey),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-                color: table ? Colors.transparent : const Color(0xff7434E6)),
-          ),
-        ),
-        value: gewaehlteArt,
-        items: COwner.arten
-            .map((art) => DropdownMenuItem(
-                  value: art,
-                  child: Text(
-                    art,
-                    style: TextStyle(
-                        color: table ? const Color(0xff7434E6) : Colors.black),
-                  ),
-                ))
-            .toList(),
-        onChanged: (art) {
-          setArt(art: art);
-        });
-  }
-
-  static Widget popUpTextField(
-      {required TextEditingController controller,
-      required String hint,
-      required bool summe}) {
-    return TextFormField(
-      inputFormatters: [
-        summe
-            ? FilteringTextInputFormatter.allow(RegExp("[0-9 €]"))
-            : FilteringTextInputFormatter.allow(
-                RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
-      ],
-      validator: (value) {
-        return value!.length < 3 ? Const.minThreeCharsError : null;
-      },
-      cursorColor: const Color(0xff7434E6),
-      style: const TextStyle(color: Colors.black),
-      controller: controller,
-      maxLength: summe ? 9 : 20,
-      decoration: InputDecoration(
-        hintText: hint,
-        counterText: "",
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xff7434E6)),
-        ),
-      ),
-    );
   }
 
   static Widget detaillsColumn(

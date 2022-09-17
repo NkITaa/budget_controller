@@ -2,6 +2,7 @@ import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../modells/cost.dart';
+import '../../../widget_builder.dart';
 import '../const_owner.dart';
 import 'owner_builder.dart';
 
@@ -112,8 +113,11 @@ class TableData extends DataTableSource {
               style: const TextStyle(color: Colors.black),
             )),
       enabled && selectedRow
-          ? DataCell(OwnerBuilder.categoryDropDown(
-              table: true, gewaehlteArt: gewaehlteArt, setArt: setArt))
+          ? DataCell(CustomBuilder.popupDropDown(
+              arten: COwner.arten,
+              isTable: true,
+              gewaehlteArt: gewaehlteArt,
+              setArt: setArt))
           : DataCell(TextFormField(
               enabled: true,
               controller: category,

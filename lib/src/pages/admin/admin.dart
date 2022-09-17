@@ -1,11 +1,10 @@
-import 'package:budget_controller/src/pages/admin/const_admin.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../main.dart';
+
 import '../../const.dart';
-import '../../controller/user_controller.dart';
 import '../../modells/user.dart';
+import 'admin_builder.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key, required this.user});
@@ -15,56 +14,76 @@ class Admin extends StatefulWidget {
 }
 
 class _AdminState extends State<Admin> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final UserController userController = Get.find();
-
+  UserController userController = Get.find();
   String selectedRole = Const.userRoles[0];
+
+  state({required String art}) {
+    selectedRole = art;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          OutlinedButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: const Text(CAdmin.signOut),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+      child: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - 70,
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
+                  children: [
+                    const Center(
+                        child: Text(
+                      "Nachrichten",
+                      style: TextStyle(fontSize: 28, color: Colors.black),
+                    )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              AdminBuilder.addUserPopup(
+                                  selectedRole: selectedRole,
+                                  context: context,
+                                  userController: userController,
+                                  state: state);
+                            },
+                            icon: const Icon(Icons.person_add_outlined,
+                                color: Color(0xff7434E6))),
+                        IconButton(
+                            onPressed: () {
+                              AdminBuilder.changeRolePopup(
+                                  selectedRole: selectedRole,
+                                  context: context,
+                                  userController: userController,
+                                  state: state);
+                            },
+                            icon: const Icon(
+                              Icons.change_circle_outlined,
+                              color: Color(0xff7434E6),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: 5,
+                itemBuilder: ((context, index) {
+                  return ListTile();
+                }),
+              )
+            ],
           ),
-          TextField(
-            controller: emailController,
-          ),
-          const SizedBox(
-            height: 4,
-          ),
-          TextField(
-            controller: passwordController,
-          ),
-          OutlinedButton(
-            onPressed: () async {
-              await userController.signUp(
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                  projectsId: [null],
-                  role: selectedRole,
-                  context: context);
-              navigatorKey.currentState!.popUntil((route) => route.isFirst);
-            },
-            child: const Text(""),
-          ),
-          DropdownButton(
-              value: selectedRole,
-              items: Const.userRoles
-                  .map((String role) => DropdownMenuItem<String>(
-                      value: role,
-                      child: Text(
-                        role,
-                      )))
-                  .toList(),
-              onChanged: (String? role) =>
-                  setState(() => selectedRole = role!)),
-        ],
+        ),
       ),
     );
   }
