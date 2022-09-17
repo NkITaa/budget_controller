@@ -41,7 +41,7 @@ class AdminBuilder {
           }
 
           return SizedBox(
-              height: 200,
+              height: 196,
               width: 500,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -117,37 +117,34 @@ class AdminBuilder {
               ));
         }),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CustomBuilder.customButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    text: COwner.close),
-                const SizedBox(
-                  width: 10,
-                ),
-                CustomBuilder.customButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      await userController.signUp(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          role: selectedRole,
-                          projectsId: selectedProjects,
-                          context: context);
-
-                      navigatorKey.currentState!
-                          .popUntil((route) => route.isFirst);
-                    }
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              CustomBuilder.customButton(
+                  onPressed: () {
+                    Get.back();
                   },
-                  text: "Hinzufügen",
-                )
-              ],
-            ),
+                  text: COwner.close),
+              const SizedBox(
+                width: 10,
+              ),
+              CustomBuilder.customButton(
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    await userController.signUp(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        role: selectedRole,
+                        projectsId: selectedProjects,
+                        context: context);
+
+                    navigatorKey.currentState!
+                        .popUntil((route) => route.isFirst);
+                  }
+                },
+                text: "Hinzufügen",
+              )
+            ],
           )
         ]);
   }

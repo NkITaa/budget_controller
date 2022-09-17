@@ -47,7 +47,7 @@ class _AdminState extends State<Admin> {
                               );
                             },
                             icon: const Icon(Icons.person_add_outlined,
-                                color: Color(0xff7434E6))),
+                                color: Colors.grey)),
                         IconButton(
                             onPressed: () {
                               AdminBuilder.changeRolePopup(
@@ -57,7 +57,7 @@ class _AdminState extends State<Admin> {
                             },
                             icon: const Icon(
                               Icons.change_circle_outlined,
-                              color: Color(0xff7434E6),
+                              color: Colors.grey,
                             )),
                       ],
                     ),

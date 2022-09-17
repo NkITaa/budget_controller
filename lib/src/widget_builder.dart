@@ -34,7 +34,7 @@ class CustomBuilder {
   }) {
     bool password = isPassword ?? false;
     return SizedBox(
-      height: 35,
+      height: 60,
       child: TextFormField(
         controller: controller,
         obscureText: password,
@@ -54,6 +54,7 @@ class CustomBuilder {
           }
         },
         decoration: InputDecoration(
+            helperText: " ",
             contentPadding: const EdgeInsets.only(left: 20),
             filled: true,
             hintStyle: TextStyle(color: Colors.grey[800]),

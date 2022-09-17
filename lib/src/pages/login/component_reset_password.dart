@@ -50,7 +50,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     hint: CLogin.mailHint,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 5,
                   ),
                   CustomBuilder.customButton(
                     text: CLogin.reset,

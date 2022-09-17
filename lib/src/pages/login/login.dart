@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
                   height: 20,
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left: 8.0, bottom: 8),
                   child: SizedBox(
                     width: 400,
                     child: Text(CLogin.mailHeading),
@@ -51,11 +51,8 @@ class _LoginState extends State<Login> {
                   controller: emailController,
                   hint: CLogin.mailHint,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left: 8.0, bottom: 8),
                   child: SizedBox(
                     width: 400,
                     child: Text(CLogin.passwordHeading),
@@ -65,21 +62,17 @@ class _LoginState extends State<Login> {
                     controller: passwordController,
                     hint: CLogin.passwordHint,
                     isPassword: true),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RichText(
-                      text: TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ResetPassword())),
-                          text: CLogin.fPassword,
-                          style: const TextStyle(color: Colors.white))),
-                ),
+                RichText(
+                    text: TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ResetPassword())),
+                        text: CLogin.fPassword,
+                        style: const TextStyle(color: Colors.white))),
                 const SizedBox(
-                  height: 25,
+                  height: 10,
                 ),
                 CustomBuilder.customButton(
                     onPressed: () async {
