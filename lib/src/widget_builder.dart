@@ -1,5 +1,4 @@
 import 'package:budget_controller/main.dart';
-import 'package:budget_controller/src/pages/owner/const_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -134,15 +133,50 @@ class CustomBuilder {
   static Widget customDrawer({required String userGroup}) {
     return Drawer(
       backgroundColor: const Color(0xff7434E6),
-      child: Column(
+      child: Stack(
         children: [
-          Text(userGroup),
-          OutlinedButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: const Text(COwner.signOut),
+          Column(
+            children: [
+              customLogo(size: 100),
+              Text(
+                userGroup,
+                style: const TextStyle(fontSize: 25),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    FirebaseAuth.instance.currentUser!.uid,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(
+                            text: FirebaseAuth.instance.currentUser!.uid));
+                      },
+                      icon: const Icon(
+                        Icons.copy_all_outlined,
+                        color: Colors.white,
+                      ))
+                ],
+              ),
+            ],
           ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Center(
+                child: customButton(
+                    text: Const.signOut,
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    }),
+              ),
+              const SizedBox(
+                height: 15,
+              )
+            ],
+          )
         ],
       ),
     );

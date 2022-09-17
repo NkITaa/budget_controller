@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../const.dart';
 import '../../widget_builder.dart';
@@ -14,11 +15,11 @@ class AdminBuilder {
     required BuildContext context,
     required Function state,
   }) {
-    final TextEditingController emailController = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Random generator = Random.secure();
     late String tempPassword = generator.nextDouble().toString();
 
+    final TextEditingController emailController = TextEditingController();
     late TextEditingController passwordController =
         TextEditingController(text: tempPassword);
 
@@ -66,14 +67,24 @@ class AdminBuilder {
                     child: SizedBox(
                       child: Row(
                         children: [
-                          Flexible(
+                          SizedBox(
+                            width: 224,
                             child: CustomBuilder.popUpTextField(
                               controller: passwordController,
                               hint: "User Passwort",
                             ),
                           ),
+                          IconButton(
+                              onPressed: () {
+                                Clipboard.setData(ClipboardData(
+                                    text: passwordController.text));
+                              },
+                              icon: const Icon(
+                                Icons.copy_all_outlined,
+                                color: Colors.black,
+                              )),
                           const SizedBox(
-                            width: 50,
+                            width: 30,
                           ),
                           SizedBox(
                               width: 150,
