@@ -37,6 +37,8 @@ class UserController extends GetxController {
               id: FirebaseAuth.instance.currentUser!.uid,
               projectsId: projectsId,
               role: role));
+
+      CustomBuilder.customSnackBar(message: "User angelegt", error: false);
     } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
     }
@@ -49,6 +51,21 @@ class UserController extends GetxController {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       CustomBuilder.customSnackBar(
           message: "Rücksetzungsmail gesendet", error: false);
+    } on FirebaseException catch (e) {
+      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+    }
+  }
+
+  Future<void> changeRole(
+      {required String uid,
+      required String role,
+      required BuildContext context}) async {
+    final CollectionReference userCollection =
+        FirebaseFirestore.instance.collection("user");
+    CustomBuilder.customProgressIndicator(context: context);
+    try {
+      await userCollection.doc(uid).update({'projectsId': role});
+      CustomBuilder.customSnackBar(message: "Rolle geändert", error: false);
     } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
     }

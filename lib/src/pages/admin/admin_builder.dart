@@ -156,7 +156,7 @@ class AdminBuilder {
     required BuildContext context,
   }) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController userController = TextEditingController();
+    final TextEditingController idController = TextEditingController();
     String selectedRole = Const.userRoles[0];
     return Get.defaultDialog(
         title: "Rolle ändern",
@@ -176,7 +176,7 @@ class AdminBuilder {
                       key: formKey,
                       child: Column(children: [
                         CustomBuilder.popUpTextField(
-                          controller: userController,
+                          controller: idController,
                           hint: "User ID",
                           isUid: true,
                         ),
@@ -206,7 +206,12 @@ class AdminBuilder {
                 CustomBuilder.customButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      Get.back();
+                      userController.changeRole(
+                          uid: idController.text,
+                          role: selectedRole,
+                          context: context);
+                      navigatorKey.currentState!
+                          .popUntil((route) => route.isFirst);
                     }
                   },
                   text: "Hinzufügen",
