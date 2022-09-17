@@ -1,4 +1,6 @@
+import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/main.dart';
+import 'package:budget_controller/src/pages/login/component_reset_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,11 +27,12 @@ class CustomBuilder {
       ..showSnackBar(snackBar);
   }
 
-  static Widget customTextFormField({
+  static Widget loginTextFormField({
     required TextEditingController controller,
     required String hint,
-    required bool password,
+    bool? isPassword,
   }) {
+    bool password = isPassword ?? false;
     return SizedBox(
       height: 35,
       child: TextFormField(
@@ -131,38 +134,60 @@ class CustomBuilder {
     );
   }
 
-  static Widget customDrawer({required String userGroup}) {
+  static Widget customDrawer(
+      {required String userGroup, required BuildContext context}) {
+    AnimateIconController controller = AnimateIconController();
     return Drawer(
       backgroundColor: const Color(0xff7434E6),
       child: Stack(
         children: [
-          Column(
-            children: [
-              customLogo(size: 100),
-              Text(
-                userGroup,
-                style: const TextStyle(fontSize: 25),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    FirebaseAuth.instance.currentUser!.uid,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(
-                            text: FirebaseAuth.instance.currentUser!.uid));
-                      },
-                      icon: const Icon(
-                        Icons.copy_all_outlined,
-                        color: Colors.white,
-                      ))
-                ],
-              ),
-            ],
-          ),
+          StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                customLogo(size: 70),
+                Text(
+                  userGroup,
+                  style: const TextStyle(fontSize: 25),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      FirebaseAuth.instance.currentUser!.uid,
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                    animateCheckmark(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(
+                              text: FirebaseAuth.instance.currentUser!.uid));
+                          return true;
+                        },
+                        controller: controller)
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
+                  color: Colors.white,
+                ),
+                ListTile(
+                    leading: const Icon(Icons.password),
+                    iconColor: Colors.white,
+                    title: const Text("Password ändern"),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ResetPassword())))
+              ],
+            );
+          }),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -305,5 +330,23 @@ class CustomBuilder {
         onChanged: (List<String> specificArten) {
           setArten(arten: specificArten);
         });
+  }
+
+  static Widget animateCheckmark(
+      {required bool Function() onPressed,
+      required AnimateIconController controller,
+      bool? isDark}) {
+    bool dark = isDark ?? false;
+    return AnimateIcons(
+      startIcon: Icons.copy_all_outlined,
+      endIcon: Icons.check,
+      controller: controller,
+      onStartIconPress: onPressed,
+      onEndIconPress: onPressed,
+      duration: const Duration(milliseconds: 100),
+      startIconColor: dark ? Colors.black : Colors.white,
+      endIconColor: const Color.fromARGB(255, 0, 255, 8),
+      clockwise: false,
+    );
   }
 }

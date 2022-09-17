@@ -26,47 +26,45 @@ class _ResetPasswordState extends State<ResetPassword> {
         child: SizedBox(
           width: 400,
           child: Form(
-            child: Stack(
-              alignment: AlignmentDirectional.topCenter,
-              children: [
-                CustomBuilder.customLogo(size: 250),
-                Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 230,
-                      ),
-                      const Text(
-                        CLogin.resetHeadline,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomBuilder.customTextFormField(
-                          controller: emailController,
-                          hint: CLogin.mailHint,
-                          password: false),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomBuilder.customButton(
-                        text: CLogin.reset,
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            await userController.resetPassword(
-                                email: emailController.text, context: context);
-                            navigatorKey.currentState!
-                                .popUntil((route) => route.isFirst);
-                          }
-                        },
-                      )
-                    ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
                   ),
-                ),
-              ],
+                  CustomBuilder.customLogo(size: 100),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    CLogin.resetHeadline,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomBuilder.loginTextFormField(
+                    controller: emailController,
+                    hint: CLogin.mailHint,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomBuilder.customButton(
+                    text: CLogin.reset,
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        await userController.resetPassword(
+                            email: emailController.text, context: context);
+                        navigatorKey.currentState!
+                            .popUntil((route) => route.isFirst);
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

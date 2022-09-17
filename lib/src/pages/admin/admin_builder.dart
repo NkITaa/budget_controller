@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class AdminBuilder {
         title: "Benutzer Hinzufügen",
         titleStyle: const TextStyle(color: Colors.black),
         content: StatefulBuilder(builder: (context, setState) {
+          AnimateIconController controller = AnimateIconController();
           stateRole({required String art}) {
             selectedRole = art;
             setState(() {});
@@ -86,15 +88,14 @@ class AdminBuilder {
                                   hint: "User Passwort",
                                 ),
                               ),
-                              IconButton(
+                              CustomBuilder.animateCheckmark(
+                                  isDark: true,
+                                  controller: controller,
                                   onPressed: () {
                                     Clipboard.setData(ClipboardData(
                                         text: passwordController.text));
-                                  },
-                                  icon: const Icon(
-                                    Icons.copy_all_outlined,
-                                    color: Colors.black,
-                                  )),
+                                    return true;
+                                  }),
                               const SizedBox(
                                 width: 30,
                               ),

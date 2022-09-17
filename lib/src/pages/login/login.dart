@@ -47,10 +47,10 @@ class _LoginState extends State<Login> {
                     child: Text(CLogin.mailHeading),
                   ),
                 ),
-                CustomBuilder.customTextFormField(
-                    controller: emailController,
-                    hint: CLogin.mailHint,
-                    password: false),
+                CustomBuilder.loginTextFormField(
+                  controller: emailController,
+                  hint: CLogin.mailHint,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -61,10 +61,10 @@ class _LoginState extends State<Login> {
                     child: Text(CLogin.passwordHeading),
                   ),
                 ),
-                CustomBuilder.customTextFormField(
+                CustomBuilder.loginTextFormField(
                     controller: passwordController,
                     hint: CLogin.passwordHint,
-                    password: true),
+                    isPassword: true),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: RichText(

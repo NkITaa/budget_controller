@@ -40,7 +40,8 @@ class _HomeState extends State<Home> {
             if (user.role == Const.userRoles[0]) {
               return Scaffold(
                   appBar: CustomBuilder.customAppBar(context: context),
-                  drawer: CustomBuilder.customDrawer(userGroup: "Manager"),
+                  drawer: CustomBuilder.customDrawer(
+                      userGroup: "Manager", context: context),
                   body: Manager(
                     user: user,
                   ));
@@ -48,7 +49,8 @@ class _HomeState extends State<Home> {
             if (user.role == Const.userRoles[1]) {
               return Scaffold(
                   appBar: CustomBuilder.customAppBar(context: context),
-                  drawer: CustomBuilder.customDrawer(userGroup: "Owner"),
+                  drawer: CustomBuilder.customDrawer(
+                      userGroup: "Owner", context: context),
                   body: Owner(
                     user: user,
                   ));
@@ -56,7 +58,8 @@ class _HomeState extends State<Home> {
             if (user.role == Const.userRoles[2]) {
               return Scaffold(
                 appBar: CustomBuilder.customAppBar(context: context),
-                drawer: CustomBuilder.customDrawer(userGroup: "Admin"),
+                drawer: CustomBuilder.customDrawer(
+                    userGroup: "Admin", context: context),
                 body: Admin(
                   user: user,
                 ),
