@@ -4,14 +4,16 @@ import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../main.dart';
 import '../../const.dart';
+import '../../modells/user.dart';
 import '../../widget_builder.dart';
 import '../owner/const_owner.dart';
 
 class AdminBuilder {
   static addUserPopup({
     required String selectedRole,
-    required List<String> selectedProjects,
+    required List<String>? selectedProjects,
     required UserController userController,
     required BuildContext context,
     required Function stateRole,
@@ -43,9 +45,9 @@ class AdminBuilder {
                       children: [
                         Flexible(
                           child: CustomBuilder.popUpTextField(
-                            controller: emailController,
-                            hint: "User Mail",
-                          ),
+                              controller: emailController,
+                              hint: "User Mail",
+                              isMail: true),
                         ),
                         const SizedBox(
                           width: 50,
@@ -118,9 +120,17 @@ class AdminBuilder {
                   width: 10,
                 ),
                 CustomBuilder.customButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      Get.back();
+                      await userController.signUp(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          role: selectedRole,
+                          projectsId: selectedProjects,
+                          context: context);
+
+                      navigatorKey.currentState!
+                          .popUntil((route) => route.isFirst);
                     }
                   },
                   text: "Hinzufügen",

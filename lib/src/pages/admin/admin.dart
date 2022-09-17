@@ -16,7 +16,7 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   UserController userController = Get.find();
   String selectedRole = Const.userRoles[0];
-  List<String> selectedProjects = [];
+  List<String>? selectedProjects;
 
   stateRole({required String art}) {
     selectedRole = art;

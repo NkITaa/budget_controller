@@ -26,7 +26,7 @@ class UserController extends GetxController {
       {required String email,
       required String password,
       required String role,
-      required List<String?> projectsId,
+      required List<String>? projectsId,
       required BuildContext context}) async {
     CustomBuilder.customProgressIndicator(context: context);
     try {

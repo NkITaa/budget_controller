@@ -186,10 +186,12 @@ class CustomBuilder {
   static Widget popUpTextField(
       {required TextEditingController controller,
       required String hint,
+      bool? isMail,
       bool? isUid,
       bool? isSumme}) {
     bool summe = isSumme ?? false;
     bool uid = isUid ?? false;
+    bool mail = isMail ?? false;
     return TextFormField(
       inputFormatters: [
         summe
@@ -205,7 +207,11 @@ class CustomBuilder {
       cursorColor: const Color(0xff7434E6),
       style: const TextStyle(color: Colors.black),
       controller: controller,
-      maxLength: summe ? 9 : 20,
+      maxLength: summe
+          ? 9
+          : mail
+              ? 50
+              : 20,
       decoration: InputDecoration(
         hintText: hint,
         counterText: uid ? null : "",
@@ -261,7 +267,7 @@ class CustomBuilder {
   }
 
   static Widget popupDropDownList({
-    required List<String> gewaehlteArten,
+    required List<String>? gewaehlteArten,
     required List<String> arten,
     required Function setArten,
     bool? isTable,
@@ -293,7 +299,7 @@ class CustomBuilder {
           return const Text("");
         },
         hintStyle: const TextStyle(color: Colors.black),
-        selectedValues: gewaehlteArten,
+        selectedValues: gewaehlteArten ?? [],
         whenEmpty: "",
         options: arten,
         onChanged: (List<String> specificArten) {
