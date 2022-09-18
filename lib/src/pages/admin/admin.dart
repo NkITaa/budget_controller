@@ -98,6 +98,36 @@ class _AdminState extends State<Admin> {
                               Icons.change_circle_outlined,
                               color: Colors.grey,
                             )),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ScaffoldMessenger(
+                                    child: Builder(
+                                      builder: (context) => Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: GestureDetector(
+                                              onTap: () {},
+                                              child: AdminBuilder.resetPassword(
+                                                context: context,
+                                                userController: userController,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.key_outlined,
+                              color: Colors.grey,
+                            )),
                       ],
                     ),
                   ],

@@ -62,18 +62,6 @@ class _LoginState extends State<Login> {
                     controller: passwordController,
                     hint: CLogin.passwordHint,
                     isPassword: true),
-                RichText(
-                    text: TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ResetPassword())),
-                        text: CLogin.fPassword,
-                        style: const TextStyle(color: Colors.white))),
-                const SizedBox(
-                  height: 10,
-                ),
                 CustomBuilder.customButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
@@ -86,6 +74,9 @@ class _LoginState extends State<Login> {
                       }
                     },
                     text: CLogin.login),
+                const SizedBox(
+                  height: 5,
+                ),
               ],
             ),
           ),

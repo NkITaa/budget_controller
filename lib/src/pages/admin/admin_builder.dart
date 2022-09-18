@@ -163,6 +163,8 @@ class AdminBuilder {
     final TextEditingController idController = TextEditingController();
     String selectedRole = Const.userRoles[0];
     return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
         title: const Text(
           "Rolle ändern",
           style: TextStyle(color: Colors.black),
@@ -187,7 +189,7 @@ class AdminBuilder {
                           isUid: true,
                         ),
                         SizedBox(
-                            width: 210,
+                            width: 225,
                             child: CustomBuilder.popupDropDown(
                               arten: Const.userRoles,
                               gewaehlteArt: selectedRole,
@@ -223,6 +225,64 @@ class AdminBuilder {
                     }
                   },
                   text: "Hinzufügen",
+                )
+              ],
+            ),
+          )
+        ]);
+  }
+
+  static resetPassword({
+    required UserController userController,
+    required BuildContext context,
+  }) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final TextEditingController emailController = TextEditingController();
+    return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        title: const Text(
+          "Passwort zurücksätzen",
+          style: TextStyle(color: Colors.black),
+        ),
+        content: SizedBox(
+            height: 90,
+            width: 250,
+            child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                    key: formKey,
+                    child: Column(children: [
+                      CustomBuilder.popUpTextField(
+                        controller: emailController,
+                        hint: "User Email",
+                      ),
+                    ])))),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomBuilder.customButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    text: COwner.close),
+                const SizedBox(
+                  width: 10,
+                ),
+                CustomBuilder.customButton(
+                  onPressed: ([bool mounted = true]) async {
+                    if (formKey.currentState!.validate()) {
+                      SnackBar snackBar = await userController.resetPassword(
+                          email: emailController.text, context: context);
+                      emailController.text = "";
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  },
+                  text: "Zurücksetzen",
                 )
               ],
             ),

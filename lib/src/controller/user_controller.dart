@@ -46,7 +46,6 @@ class UserController extends GetxController {
 
   Future<SnackBar> resetPassword(
       {required String email, required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       return CustomBuilder.customSnackBarObject(
