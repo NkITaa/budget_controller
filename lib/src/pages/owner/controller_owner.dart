@@ -49,4 +49,8 @@ class ControllerOwner {
     item = item.replaceAll("€", "");
     return "$item€";
   }
+
+  static String dateTimeFormatter({required DateTime dateTime}) {
+    return "${dateTime.day.toString()}.${dateTime.month.toString()}.${dateTime.year.toString()}";
+  }
 }

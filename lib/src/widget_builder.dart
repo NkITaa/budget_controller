@@ -247,7 +247,10 @@ class CustomBuilder {
       ],
       validator: (value) {
         return summe
-            ? (value!.length < 2 ? "" : null)
+            ? (value!.length < 2 ||
+                    double.parse(value.replaceAll("€", "")) < 0.01
+                ? ""
+                : null)
             : uid
                 ? (value!.length < 28 ? "" : null)
                 : (value!.length < 3 ? "" : null);
@@ -266,7 +269,9 @@ class CustomBuilder {
           ? 9
           : mail
               ? 50
-              : 28,
+              : uid
+                  ? 28
+                  : 20,
       decoration: InputDecoration(
         hintText: hint,
         counterText: uid ? null : "",
@@ -387,8 +392,9 @@ class CustomBuilder {
         actions: [
           customButton(
               text: "Ja",
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Get.back();
               }),
           customButton(
               isDarkMode: true,

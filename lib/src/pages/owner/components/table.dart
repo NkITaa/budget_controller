@@ -1,6 +1,5 @@
 import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../../modells/cost.dart';
 import '../../../widget_builder.dart';
 import '../const_owner.dart';
@@ -8,15 +7,15 @@ import 'owner_builder.dart';
 
 class TableData extends DataTableSource {
   TableData(
-      {required this.currentIndex,
+      {required this.formKey,
+      required this.currentIndex,
       required this.enabled,
       required this.toggle,
-      required this.state,
       required this.context});
+  final GlobalKey<FormState> formKey;
   final int currentIndex;
   final bool enabled;
   final Function toggle;
-  final Function state;
   final BuildContext context;
 
   sortMe<T>(Comparable<T> Function(Cost cost) getField, bool ascending) {
@@ -38,156 +37,125 @@ class TableData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     DateTime? dateTime;
-    String gewaehlteArt = COwner.arten[0];
 
-    void setArt({required String art}) {
-      gewaehlteArt = art;
-    }
+    String responsibility = OwnerBuilder.costs[index].responsibility.toString();
 
-    TextEditingController creation = TextEditingController(
-        text:
-            "${OwnerBuilder.costs[index].creation.day.toString()}.${OwnerBuilder.costs[index].creation.month.toString()}.${OwnerBuilder.costs[index].creation.year.toString()}");
+    String category = OwnerBuilder.costs[index].category.toString();
 
     TextEditingController reason = TextEditingController(
         text: OwnerBuilder.costs[index].reason.toString());
 
-    TextEditingController category = TextEditingController(
-        text: OwnerBuilder.costs[index].category.toString());
-
     TextEditingController value =
-        TextEditingController(text: OwnerBuilder.costs[index].value.toString());
+        TextEditingController(text: "${OwnerBuilder.costs[index].value}€");
 
     TextEditingController description = TextEditingController(
         text: OwnerBuilder.costs[index].description.toString());
 
-    TextEditingController responsibility = TextEditingController(
-        text: OwnerBuilder.costs[index].responsibility.toString());
-
-    InputDecoration decoration = const InputDecoration(
-      enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-      ),
-      disabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-      ),
-      focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-      ),
-      counterText: "",
-    );
     final bool selectedRow = currentIndex == index;
     return DataRow.byIndex(index: index, cells: [
       enabled && selectedRow
           ? DataCell(
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      dateTime?.hour.toString() ?? creation.text,
-                      style: const TextStyle(color: Color(0xff7434E6)),
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        ControllerOwner.dateTimeFormatter(
+                            dateTime:
+                                dateTime ?? OwnerBuilder.costs[index].creation),
+                        style: const TextStyle(color: Color(0xff7434E6)),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                      color: const Color(0xff7434E6),
-                      onPressed: () {
-                        OwnerBuilder.customDatePicker(
-                                context: context, dateTime: dateTime)
-                            .then((date) {
-                          if (date != null) {
-                            dateTime = date;
-                            state();
-                          }
-                        });
-                      },
-                      icon: const Icon(Icons.calendar_month)),
-                ],
-              ),
+                    IconButton(
+                        color: const Color(0xff7434E6),
+                        onPressed: () {
+                          OwnerBuilder.customDatePicker(
+                                  context: context, dateTime: dateTime)
+                              .then((date) {
+                            if (date != null) {
+                              dateTime = date;
+                              setState(() {});
+                            }
+                          });
+                        },
+                        icon: const Icon(Icons.calendar_month))
+                  ],
+                );
+              }),
             )
-          : DataCell(TextFormField(
-              enabled: false,
-              controller: creation,
-              decoration: decoration,
-              maxLength: 10,
-              cursorColor: const Color(0xff7434E6),
-              style: const TextStyle(color: Colors.black),
-            )),
+          : DataCell(
+              Text(
+                ControllerOwner.dateTimeFormatter(
+                    dateTime: OwnerBuilder.costs[index].creation),
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
       enabled && selectedRow
           ? DataCell(CustomBuilder.popupDropDown(
               arten: COwner.arten,
               isTable: true,
-              gewaehlteArt: gewaehlteArt,
-              setArt: setArt))
-          : DataCell(TextFormField(
-              enabled: true,
-              controller: category,
-              decoration: decoration,
-              cursorColor: const Color(0xff7434E6),
-              style: const TextStyle(color: Colors.black),
-            )),
-      DataCell(TextFormField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[0-9 .,€]"))
-        ],
-        onChanged: (item) {
-          TextSelection previousSelection = value.selection;
-          value.text = ControllerOwner.formatInput(item: item);
-          value.selection = previousSelection;
-        },
-        enabled: enabled && selectedRow,
-        controller: value,
-        maxLength: 10,
-        decoration: decoration,
-        cursorColor: const Color(0xff7434E6),
-        style: TextStyle(
-            color: enabled && selectedRow
-                ? const Color(0xff7434E6)
-                : Colors.black),
-      )),
-      DataCell(TextFormField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
-        ],
-        enabled: enabled && selectedRow,
-        controller: description,
-        cursorColor: const Color(0xff7434E6),
-        maxLength: 20,
-        decoration: decoration,
-        style: TextStyle(
-            color: enabled && selectedRow
-                ? const Color(0xff7434E6)
-                : Colors.black),
-      )),
-      DataCell(TextFormField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
-        ],
-        enabled: enabled && selectedRow,
-        maxLength: 20,
-        controller: reason,
-        cursorColor: const Color(0xff7434E6),
-        decoration: decoration,
-        style: TextStyle(
-            color: enabled && selectedRow
-                ? const Color(0xff7434E6)
-                : Colors.black),
-      )),
-      DataCell(TextFormField(
-        enabled: false,
-        controller: responsibility,
-        cursorColor: const Color(0xff7434E6),
-        decoration: decoration,
-        style: const TextStyle(color: Colors.black),
-      )),
+              gewaehlteArt: category,
+              setArt: ({required String art}) {
+                category = art;
+              }))
+          : DataCell(
+              Text(
+                category,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+      DataCell(OwnerBuilder.customTextFormFieldNoDeco(
+          enabled: enabled,
+          additionalRequirement: selectedRow,
+          controller: value,
+          isSumme: true)),
+      DataCell(OwnerBuilder.customTextFormFieldNoDeco(
+          enabled: enabled,
+          additionalRequirement: selectedRow,
+          controller: description)),
+      DataCell(OwnerBuilder.customTextFormFieldNoDeco(
+          enabled: enabled,
+          additionalRequirement: selectedRow,
+          controller: reason)),
       DataCell(
-        IconButton(
-          icon: Icon(
-            Icons.edit,
-            color:
-                enabled && selectedRow ? const Color(0xff7434E6) : Colors.black,
-          ),
-          onPressed: () {
-            toggle(index: index);
-          },
+        Text(
+          responsibility,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ),
+      DataCell(
+        Row(
+          children: [
+            enabled && selectedRow
+                ? IconButton(
+                    icon: const Icon(Icons.save_outlined,
+                        color: Color(0xff7434E6)),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        toggle(index: index);
+                      }
+                    },
+                  )
+                : IconButton(
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      toggle(index: index);
+                    },
+                  ),
+            enabled && selectedRow
+                ? IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      color: enabled && selectedRow ? Colors.red : Colors.black,
+                    ),
+                    onPressed: () {},
+                  )
+                : Container(),
+          ],
         ),
       ),
     ]);

@@ -3,19 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../widget_builder.dart';
 
-class Detaills extends StatefulWidget {
+class Detaills extends StatelessWidget {
   const Detaills({super.key});
-  @override
-  State<Detaills> createState() => _DetaillsState();
-}
-
-class _DetaillsState extends State<Detaills> {
-  bool enabled = false;
-  void toggle() {
-    enabled = !enabled;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +21,13 @@ class _DetaillsState extends State<Detaills> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OwnerBuilder.detaillsColumn(
-                    context: context,
-                    budget: false,
-                    enabled: enabled,
-                    toggle: toggle),
+                  context: context,
+                  budget: false,
+                ),
                 OwnerBuilder.detaillsColumn(
-                    context: context, budget: true, enabled: enabled)
+                  context: context,
+                  budget: true,
+                )
               ],
             ),
           ),

@@ -13,14 +13,14 @@ class OwnerBuilder {
   static List<Cost> costs = [
     Cost(
         creation: DateTime.now(),
-        category: "Haushalt",
+        category: "Garage",
         value: 342,
         reason: "123455678901234567890",
         description: "123455678901234567890",
         responsibility: "123455678901234567890"),
     Cost(
         creation: DateTime.now(),
-        category: "Haushalt",
+        category: "Garage",
         value: 10,
         reason: "Nahrung",
         description: "Wasserkocher",
@@ -107,80 +107,84 @@ class OwnerBuilder {
       required Function sort,
       required BuildContext context}) {
     int rowsPerPage = 10;
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TableData source = TableData(
-        state: state,
+        formKey: formKey,
         currentIndex: currentIndex,
         enabled: enabled,
         toggle: toggle,
         context: context);
-    return PaginatedDataTable(
-      source: source,
-      header: Stack(
-        children: [
-          const Center(
-            child: Text(
-              COwner.details,
-              style: TextStyle(color: Colors.black),
+    return Form(
+      key: formKey,
+      child: PaginatedDataTable(
+        source: source,
+        header: Stack(
+          children: [
+            const Center(
+              child: Text(
+                COwner.details,
+                style: TextStyle(color: Colors.black),
+              ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              StreamBuilder<Object>(
-                  stream: null,
-                  builder: (context, snapshot) {
-                    return IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ScaffoldMessenger(
-                              child: Builder(
-                                builder: (context) => Scaffold(
-                                  backgroundColor: Colors.transparent,
-                                  body: GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () => Navigator.of(context).pop(),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: buildAddCostPopup(
-                                          context: context, state: state),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                StreamBuilder<Object>(
+                    stream: null,
+                    builder: (context, snapshot) {
+                      return IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ScaffoldMessenger(
+                                child: Builder(
+                                  builder: (context) => Scaffold(
+                                    backgroundColor: Colors.transparent,
+                                    body: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: GestureDetector(
+                                        onTap: () {},
+                                        child: buildAddCostPopup(
+                                            context: context, state: state),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  }),
-            ],
-          ),
-        ],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }),
+              ],
+            ),
+          ],
+        ),
+        columns: COwner.columns.map((column) {
+          int index = COwner.columns.indexOf(column);
+          return DataColumn(
+            onSort: (columnIndex, ascending) {
+              ControllerOwner.specificSort(
+                  index: index,
+                  columnIndex: columnIndex,
+                  ascending: ascending,
+                  source: source,
+                  sort: sort);
+            },
+            label: Text(
+              column,
+              style: const TextStyle(color: Colors.black),
+            ),
+          );
+        }).toList(),
+        rowsPerPage: rowsPerPage,
+        showCheckboxColumn: false,
+        sortColumnIndex: sortColumnIndex,
+        sortAscending: sortAscending,
       ),
-      columns: COwner.columns.map((column) {
-        int index = COwner.columns.indexOf(column);
-        return DataColumn(
-          onSort: (columnIndex, ascending) {
-            ControllerOwner.specificSort(
-                index: index,
-                columnIndex: columnIndex,
-                ascending: ascending,
-                source: source,
-                sort: sort);
-          },
-          label: Text(
-            column,
-            style: const TextStyle(color: Colors.black),
-          ),
-        );
-      }).toList(),
-      rowsPerPage: rowsPerPage,
-      showCheckboxColumn: false,
-      sortColumnIndex: sortColumnIndex,
-      sortAscending: sortAscending,
     );
   }
 
@@ -348,159 +352,190 @@ class OwnerBuilder {
         lastDate: DateTime.now());
   }
 
-  static Widget detaillsColumn(
-      {required BuildContext context,
-      required bool budget,
-      required bool enabled,
-      Function? toggle}) {
+  static Widget detaillsColumn({
+    required BuildContext context,
+    required bool budget,
+  }) {
+    bool enabled = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
-    TextEditingController cost = TextEditingController(text: "23432");
-    InputDecoration decoration = const InputDecoration(
-      counterText: "",
-      enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-      ),
-      disabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-      ),
-      focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-      ),
-    );
+    List<TextEditingController> costs = [
+      TextEditingController(text: "23432"),
+      TextEditingController(text: "23432"),
+      TextEditingController(text: "23432")
+    ];
     return Form(
       key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.45,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    budget ? COwner.budget : COwner.costs,
-                    style: const TextStyle(color: Colors.black, fontSize: 25),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  budget
-                      ? Container()
-                      : IconButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              toggle!();
-                            }
-                          },
-                          icon: const Icon(Icons.edit)),
-                  budget
-                      ? Container()
-                      : IconButton(
-                          onPressed: () {
-                            showDatePicker(
-                                    builder: (context, child) {
-                                      return Theme(
-                                        data: Theme.of(context).copyWith(
-                                          colorScheme: const ColorScheme.light(
-                                            primary: Color(0xff7434E6),
-                                            onPrimary: Colors.white,
-                                            onSurface: Colors.white,
-                                          ),
-                                          dialogBackgroundColor: Colors.black,
-                                          textButtonTheme: TextButtonThemeData(
-                                            style: TextButton.styleFrom(
-                                              foregroundColor:
-                                                  const Color(0xff7434E6),
+          child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      budget ? COwner.budget : COwner.costs,
+                      style: const TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    budget
+                        ? Container()
+                        : IconButton(
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                enabled = !enabled;
+                                setState(() {});
+                              }
+                            },
+                            icon: const Icon(Icons.bar_chart_outlined)),
+                    budget
+                        ? Container()
+                        : IconButton(
+                            onPressed: () {
+                              showDatePicker(
+                                      builder: (context, child) {
+                                        return Theme(
+                                          data: Theme.of(context).copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
+                                              primary: Color(0xff7434E6),
+                                              onPrimary: Colors.white,
+                                              onSurface: Colors.white,
+                                            ),
+                                            dialogBackgroundColor: Colors.black,
+                                            textButtonTheme:
+                                                TextButtonThemeData(
+                                              style: TextButton.styleFrom(
+                                                foregroundColor:
+                                                    const Color(0xff7434E6),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        child: child!,
-                                      );
-                                    },
-                                    cancelText: COwner.abort,
-                                    context: context,
-                                    initialDate: dateTime ?? DateTime.now(),
-                                    firstDate: DateTime(2022),
-                                    lastDate: DateTime.now())
-                                .then((date) {
-                              if (date != null) {}
-                            });
-                          },
-                          icon: const Icon(Icons.calendar_month)),
-                ],
-              ),
-              Row(
-                children: const [
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    "18.12.2001",
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-                ],
-              ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: COwner.arten.length,
-                  itemBuilder: (context, index) {
-                    return ExpansionTile(
-                      title: Row(
+                                          child: child!,
+                                        );
+                                      },
+                                      cancelText: COwner.abort,
+                                      context: context,
+                                      initialDate: dateTime ?? DateTime.now(),
+                                      firstDate: DateTime(2022),
+                                      lastDate: DateTime.now())
+                                  .then((date) {
+                                if (date != null) {
+                                  dateTime = date;
+                                  setState(() {});
+                                }
+                              });
+                            },
+                            icon: const Icon(Icons.calendar_month)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      dateTime?.year.toString() ?? "18.12.2001",
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                  ],
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: COwner.arten.length,
+                    itemBuilder: (context, index) {
+                      return ExpansionTile(
+                        title: Row(
+                          children: [
+                            Text("${COwner.arten[index]}: ",
+                                style: const TextStyle(color: Colors.black)),
+                            Flexible(
+                                child: customTextFormFieldNoDeco(
+                                    enabled: enabled,
+                                    additionalRequirement: !budget,
+                                    controller: costs[index],
+                                    isSumme: true))
+                          ],
+                        ),
+                        iconColor: const Color(0xff7434E6),
+                        collapsedIconColor: Colors.black,
+                        controlAffinity: ListTileControlAffinity.leading,
                         children: [
-                          Text("${COwner.arten[index]}: ",
-                              style: const TextStyle(color: Colors.black)),
-                          Flexible(
-                            child: TextFormField(
-                              validator: (value) {
-                                return value!.length < 2
-                                    ? Const.nullFieldError
-                                    : null;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9 .,€]"))
-                              ],
-                              maxLength: 10,
-                              enabled: enabled && !budget,
-                              controller: cost,
-                              onChanged: (item) {
-                                TextSelection previousSelection =
-                                    cost.selection;
-                                cost.text =
-                                    ControllerOwner.formatInput(item: item);
-                                cost.selection = previousSelection;
-                              },
-                              decoration: decoration,
-                              style: TextStyle(
-                                  color: enabled && !budget
-                                      ? const Color(0xff7434E6)
-                                      : Colors.black),
-                            ),
-                          )
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return const Text('Detaills',
+                                    style: TextStyle(color: Colors.black));
+                              })
                         ],
-                      ),
-                      iconColor: const Color(0xff7434E6),
-                      collapsedIconColor: Colors.black,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      children: [
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return const Text('Detaills',
-                                  style: TextStyle(color: Colors.black));
-                            })
-                      ],
-                    );
-                  }),
-            ],
-          ),
+                      );
+                    }),
+              ],
+            );
+          }),
         ),
       ),
+    );
+  }
+
+  static Widget customTextFormFieldNoDeco(
+      {required bool enabled,
+      required bool additionalRequirement,
+      required TextEditingController controller,
+      bool? isSumme}) {
+    bool summe = isSumme ?? false;
+    return TextFormField(
+      inputFormatters: [
+        summe
+            ? FilteringTextInputFormatter.allow(RegExp("[0-9,. €]"))
+            : FilteringTextInputFormatter.allow(
+                RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
+      ],
+      validator: (value) {
+        return summe
+            ? (value!.length < 2 ||
+                    double.parse(value.replaceAll("€", "")) < 0.01
+                ? ""
+                : null)
+            : (value!.length < 3 ? "" : null);
+      },
+      onChanged: (item) {
+        if (summe) {
+          TextSelection previousSelection = controller.selection;
+          controller.text = ControllerOwner.formatInput(item: item);
+          controller.selection = previousSelection;
+        }
+      },
+      enabled: enabled && additionalRequirement,
+      maxLength: 20,
+      controller: controller,
+      cursorColor: const Color(0xff7434E6),
+      decoration: const InputDecoration(
+        errorStyle: TextStyle(fontSize: 0.1),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        counterText: "",
+      ),
+      style: TextStyle(
+          color: enabled && additionalRequirement
+              ? const Color(0xff7434E6)
+              : Colors.black),
     );
   }
 }
