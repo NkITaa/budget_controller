@@ -11,7 +11,7 @@ class ProjectController extends GetxController {
   CollectionReference projectCollection =
       FirebaseFirestore.instance.collection("project");
 
-  Future<void> createProject(
+  Future<SnackBar> createProject(
       {required String name,
       required List<String> ownersId,
       required List<Budget> budgets,
@@ -27,8 +27,12 @@ class ProjectController extends GetxController {
           costs: null,
           budgets: budgets);
       await project.set(temp);
+
+      return CustomBuilder.customSnackBarObject(
+          message: "Projekt angelegt", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
@@ -50,7 +54,7 @@ class ProjectController extends GetxController {
     }
   }
 
-  Future<void> addCost(
+  Future<SnackBar> addCost(
       {required String projectId,
       required Cost cost,
       required BuildContext context}) async {
@@ -59,12 +63,15 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([cost.toJson()])
       });
+      return CustomBuilder.customSnackBarObject(
+          message: "Ausgabe hinzugefügt", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> deleteCost(
+  Future<SnackBar> deleteCost(
       {required String projectId,
       required Cost cost,
       required BuildContext context}) async {
@@ -73,12 +80,15 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([cost.toJson()])
       });
+      return CustomBuilder.customSnackBarObject(
+          message: "Ausgabe gelöscht", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> updateCost(
+  Future<SnackBar> updateCost(
       {required String projectId,
       required Cost costOld,
       required Cost costNew,
@@ -91,12 +101,15 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([costNew.toJson()])
       });
+      return CustomBuilder.customSnackBarObject(
+          message: "Ausgabe bearbeitet", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> updateBudget(
+  Future<SnackBar> updateBudget(
       {required String projectId,
       required Budget budgetOld,
       required Budget budgetNew,
@@ -109,12 +122,15 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'budgets': FieldValue.arrayUnion([budgetNew.toJson()])
       });
+      return CustomBuilder.customSnackBarObject(
+          message: "Budget bearbeitet", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> addOwner(
+  Future<SnackBar> addOwner(
       {required String projectId,
       required CustomUser owner,
       required BuildContext context}) async {
@@ -123,12 +139,15 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([owner.toJson()])
       });
+      return CustomBuilder.customSnackBarObject(
+          message: "Owner hinzugefügt", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> deleteOwner(
+  Future<SnackBar> deleteOwner(
       {required String projectId,
       required CustomUser owner,
       required BuildContext context}) async {
@@ -137,8 +156,11 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([owner.toJson()])
       });
+      return CustomBuilder.customSnackBarObject(
+          message: "Owner entfernt", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 }

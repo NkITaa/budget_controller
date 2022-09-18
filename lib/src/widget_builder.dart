@@ -1,6 +1,7 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/main.dart';
 import 'package:budget_controller/src/pages/login/component_reset_password.dart';
+import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,12 +20,25 @@ class CustomBuilder {
   }
 
   static void customSnackBar({required String message, required bool error}) {
-    final SnackBar snackBar = SnackBar(
+    SnackBar snackBar = SnackBar(
         content: Text(message),
         backgroundColor: error ? Colors.red : Colors.green);
     messengerKey.currentState!
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
+  }
+
+  static void showSnackBarObject({required SnackBar snackBar}) {
+    messengerKey.currentState!
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
+
+  static SnackBar customSnackBarObject(
+      {required String message, required bool error}) {
+    return SnackBar(
+        content: Text(message),
+        backgroundColor: error ? Colors.red : Colors.green);
   }
 
   static Widget loginTextFormField({
@@ -221,13 +235,13 @@ class CustomBuilder {
     return TextFormField(
       inputFormatters: [
         summe
-            ? FilteringTextInputFormatter.allow(RegExp("[0-9 €]"))
+            ? FilteringTextInputFormatter.allow(RegExp("[0-9,. €]"))
             : FilteringTextInputFormatter.allow(
                 RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
       ],
       validator: (value) {
         return summe
-            ? (value!.isEmpty ? "" : null)
+            ? (value!.length < 2 ? "" : null)
             : uid
                 ? (value!.length < 20 ? "" : null)
                 : (value!.length < 3 ? "" : null);
@@ -235,6 +249,13 @@ class CustomBuilder {
       cursorColor: const Color(0xff7434E6),
       style: const TextStyle(color: Colors.black),
       controller: controller,
+      onChanged: (item) {
+        if (summe) {
+          TextSelection previousSelection = controller.selection;
+          controller.text = ControllerOwner.formatInput(item: item);
+          controller.selection = previousSelection;
+        }
+      },
       maxLength: summe
           ? 9
           : mail

@@ -56,8 +56,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                     text: CLogin.reset,
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        await userController.resetPassword(
+                        SnackBar snackBar = await userController.resetPassword(
                             email: emailController.text, context: context);
+                        CustomBuilder.showSnackBarObject(snackBar: snackBar);
                         navigatorKey.currentState!
                             .popUntil((route) => route.isFirst);
                       }

@@ -1,7 +1,7 @@
 import 'package:budget_controller/src/modells/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../const.dart';
 import '../widget_builder.dart';
@@ -22,7 +22,7 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> signUp(
+  Future<SnackBar> signUp(
       {required String email,
       required String password,
       required String role,
@@ -38,25 +38,28 @@ class UserController extends GetxController {
               projectsId: projectsId,
               role: role));
 
-      CustomBuilder.customSnackBar(message: "User angelegt", error: false);
+      return CustomBuilder.customSnackBarObject(
+          message: "User angelegt", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> resetPassword(
+  Future<SnackBar> resetPassword(
       {required String email, required BuildContext context}) async {
     CustomBuilder.customProgressIndicator(context: context);
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      CustomBuilder.customSnackBar(
+      return CustomBuilder.customSnackBarObject(
           message: "Rücksetzungsmail gesendet", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
-  Future<void> changeRole(
+  Future<SnackBar> changeRole(
       {required String uid,
       required String role,
       required BuildContext context}) async {
@@ -65,20 +68,18 @@ class UserController extends GetxController {
     CustomBuilder.customProgressIndicator(context: context);
     try {
       await userCollection.doc(uid).update({'projectsId': role});
-      CustomBuilder.customSnackBar(message: "Rolle geändert", error: false);
+      return CustomBuilder.customSnackBarObject(
+          message: "Rolle geändert", error: false);
     } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
     }
   }
 
   Future<void> createUser({required CustomUser user}) async {
     final CollectionReference userCollection =
         FirebaseFirestore.instance.collection("user");
-    try {
-      await userCollection.doc(user.id).set(user.toJson());
-    } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
-    }
+    await userCollection.doc(user.id).set(user.toJson());
   }
 
   Future<List<CustomUser>> getOwners() async {

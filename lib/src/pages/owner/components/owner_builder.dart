@@ -135,8 +135,22 @@ class OwnerBuilder {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return buildAddCostPopup(
-                                context: context, state: state);
+                            return ScaffoldMessenger(
+                              child: Builder(
+                                builder: (context) => Scaffold(
+                                  backgroundColor: Colors.transparent,
+                                  body: GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () => Navigator.of(context).pop(),
+                                    child: GestureDetector(
+                                      onTap: () {},
+                                      child: buildAddCostPopup(
+                                          context: context, state: state),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                         );
                       },
@@ -175,10 +189,11 @@ class OwnerBuilder {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
     bool? dateExists;
-    TextEditingController grund = TextEditingController();
-    TextEditingController beschreibung = TextEditingController();
-    TextEditingController summe = TextEditingController();
+    TextEditingController reason = TextEditingController();
+    TextEditingController description = TextEditingController();
+    TextEditingController sum = TextEditingController();
     String gewaehlteArt = COwner.arten[0];
+
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         state({required String art}) {
@@ -240,16 +255,16 @@ class OwnerBuilder {
                         ],
                       ),
                       CustomBuilder.popUpTextField(
-                        controller: beschreibung,
+                        controller: description,
                         hint: COwner.costAttributes[0],
                       ),
                       CustomBuilder.popUpTextField(
-                        controller: grund,
+                        controller: reason,
                         hint: COwner.costAttributes[1],
                       ),
                       CustomBuilder.popUpTextField(
                         isSumme: true,
-                        controller: summe,
+                        controller: sum,
                         hint: COwner.costAttributes[2],
                       ),
                     ],
@@ -283,11 +298,17 @@ class OwnerBuilder {
                           }
                           if (formKey.currentState!.validate() &&
                               dateTime != null) {
-                            print(dateTime!.month.toString() +
-                                grund.text +
-                                beschreibung.text +
-                                summe.text +
-                                gewaehlteArt);
+                            reason.text = "";
+                            description.text = "";
+                            sum.text = "";
+                            gewaehlteArt = COwner.arten[0];
+                            dateTime = null;
+                            dateExists = null;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                CustomBuilder.customSnackBarObject(
+                                    message: "Benutzer Hinzugefügt",
+                                    error: false));
+                            setState(() {});
                           }
                         },
                         text: COwner.add)

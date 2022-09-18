@@ -131,13 +131,13 @@ class AdminBuilder {
               CustomBuilder.customButton(
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    await userController.signUp(
+                    SnackBar snackBar = await userController.signUp(
                         email: emailController.text,
                         password: passwordController.text,
                         role: selectedRole,
                         projectsId: selectedProjects,
                         context: context);
-
+                    CustomBuilder.showSnackBarObject(snackBar: snackBar);
                     navigatorKey.currentState!
                         .popUntil((route) => route.isFirst);
                   }
@@ -202,12 +202,13 @@ class AdminBuilder {
                   width: 10,
                 ),
                 CustomBuilder.customButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      userController.changeRole(
+                      SnackBar snackBar = await userController.changeRole(
                           uid: idController.text,
                           role: selectedRole,
                           context: context);
+                      CustomBuilder.showSnackBarObject(snackBar: snackBar);
                       navigatorKey.currentState!
                           .popUntil((route) => route.isFirst);
                     }
