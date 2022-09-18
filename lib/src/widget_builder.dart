@@ -226,9 +226,11 @@ class CustomBuilder {
                 RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
       ],
       validator: (value) {
-        return uid
-            ? (value!.length < 20 ? Const.minUidError : null)
-            : (value!.length < 3 ? Const.minThreeCharsError : null);
+        return summe
+            ? (value!.isEmpty ? "" : null)
+            : uid
+                ? (value!.length < 20 ? "" : null)
+                : (value!.length < 3 ? "" : null);
       },
       cursorColor: const Color(0xff7434E6),
       style: const TextStyle(color: Colors.black),
@@ -241,6 +243,7 @@ class CustomBuilder {
       decoration: InputDecoration(
         hintText: hint,
         counterText: uid ? null : "",
+        errorStyle: TextStyle(fontSize: 0.1),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
         ),

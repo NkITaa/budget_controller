@@ -41,7 +41,7 @@ class AdminBuilder {
           }
 
           return SizedBox(
-              height: 196,
+              height: 180,
               width: 500,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),

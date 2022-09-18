@@ -11,9 +11,5 @@ class Const {
 
   static const String nullFieldError = "Das Feld darf nicht leer sein";
 
-  static const String minThreeCharsError = "Mindestens 3 Charaktäre eingeben";
-
-  static const String minUidError = "Mindestens 20 Charaktäre";
-
   static const String signOut = "Ausloggen";
 }

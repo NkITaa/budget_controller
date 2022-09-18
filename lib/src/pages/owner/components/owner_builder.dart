@@ -115,6 +115,37 @@ class OwnerBuilder {
         context: context);
     return PaginatedDataTable(
       source: source,
+      header: Stack(
+        children: [
+          const Center(
+            child: Text(
+              COwner.details,
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              StreamBuilder<Object>(
+                  stream: null,
+                  builder: (context, snapshot) {
+                    return IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return buildAddCostPopup(
+                                context: context, state: state);
+                          },
+                        );
+                      },
+                    );
+                  }),
+            ],
+          ),
+        ],
+      ),
       columns: COwner.columns.map((column) {
         int index = COwner.columns.indexOf(column);
         return DataColumn(
@@ -132,27 +163,6 @@ class OwnerBuilder {
           ),
         );
       }).toList(),
-      header: Stack(
-        children: [
-          const Center(
-            child: Text(
-              COwner.details,
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                  buildAddCostPopup(context: context, state: state);
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
       rowsPerPage: rowsPerPage,
       showCheckboxColumn: false,
       sortColumnIndex: sortColumnIndex,
@@ -164,114 +174,129 @@ class OwnerBuilder {
       {required BuildContext context, required Function state}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
+    bool? dateExists;
     TextEditingController grund = TextEditingController();
     TextEditingController beschreibung = TextEditingController();
     TextEditingController summe = TextEditingController();
     String gewaehlteArt = COwner.arten[0];
-    bool? dateExists;
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        state({required String art}) {
+          gewaehlteArt = art;
+          setState(() {});
+        }
 
-    void setArt({required String art}) {
-      gewaehlteArt = art;
-    }
-
-    return Get.defaultDialog(
-        title: "Kosten Hinzufügen",
-        titleStyle: const TextStyle(color: Colors.black),
-        content: SizedBox(
-          height: 265,
-          width: 300,
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
+        return AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            title: const Text(
+              "Kosten Hinzufügen",
+              style: TextStyle(color: Colors.black),
+            ),
+            content: SizedBox(
+              height: 200,
+              width: 300,
+              child: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      const SizedBox(
-                        width: 10,
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                customDatePicker(
+                                  context: context,
+                                  dateTime: dateTime,
+                                ).then((date) {
+                                  if (date != null) {
+                                    dateTime = date;
+                                    dateExists = true;
+                                    setState(() {});
+                                  }
+                                });
+                              },
+                              icon: Icon(
+                                Icons.calendar_month,
+                                color: (dateExists ?? true)
+                                    ? dateTime != null
+                                        ? const Color(0xff7434E6)
+                                        : Colors.black
+                                    : Colors.red,
+                              )),
+                          const SizedBox(
+                            width: 40,
+                          ),
+                          SizedBox(
+                            width: 200,
+                            child: CustomBuilder.popupDropDown(
+                                arten: COwner.arten,
+                                gewaehlteArt: gewaehlteArt,
+                                setArt: state),
+                          )
+                        ],
                       ),
-                      IconButton(
-                          onPressed: () {
-                            customDatePicker(
-                              context: context,
-                              dateTime: dateTime,
-                            ).then((date) {
-                              if (date != null) {
-                                dateTime = date;
-                                state();
-                              }
-                            });
-                          },
-                          icon: Icon(
-                            Icons.calendar_month,
-                            color: (dateExists ?? true)
-                                ? dateTime != null
-                                    ? const Color(0xff7434E6)
-                                    : Colors.black
-                                : Colors.red,
-                          )),
-                      const SizedBox(
-                        width: 40,
+                      CustomBuilder.popUpTextField(
+                        controller: beschreibung,
+                        hint: COwner.costAttributes[0],
                       ),
-                      SizedBox(
-                          width: 200,
-                          child: CustomBuilder.popupDropDown(
-                              arten: COwner.arten,
-                              gewaehlteArt: gewaehlteArt,
-                              setArt: setArt)),
+                      CustomBuilder.popUpTextField(
+                        controller: grund,
+                        hint: COwner.costAttributes[1],
+                      ),
+                      CustomBuilder.popUpTextField(
+                        isSumme: true,
+                        controller: summe,
+                        hint: COwner.costAttributes[2],
+                      ),
                     ],
                   ),
-                  CustomBuilder.popUpTextField(
-                    controller: beschreibung,
-                    hint: COwner.costAttributes[0],
-                  ),
-                  CustomBuilder.popUpTextField(
-                    controller: grund,
-                    hint: COwner.costAttributes[1],
-                  ),
-                  CustomBuilder.popUpTextField(
-                    controller: summe,
-                    hint: COwner.costAttributes[2],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CustomBuilder.customButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    text: COwner.close),
-                const SizedBox(
-                  width: 10,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomBuilder.customButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        text: COwner.close),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    CustomBuilder.customButton(
+                        onPressed: () {
+                          if (dateTime == null) {
+                            dateExists = false;
+                            setState(() {});
+                          }
+                          if (dateTime != null) {
+                            dateExists = true;
+                            setState(() {});
+                          }
+                          if (formKey.currentState!.validate() &&
+                              dateTime != null) {
+                            print(dateTime!.month.toString() +
+                                grund.text +
+                                beschreibung.text +
+                                summe.text +
+                                gewaehlteArt);
+                          }
+                        },
+                        text: COwner.add)
+                  ],
                 ),
-                CustomBuilder.customButton(
-                    onPressed: () {
-                      if (dateTime == null) {
-                        dateExists = false;
-                        state();
-                      }
-                      if (dateTime != null) {
-                        dateExists = true;
-                        state();
-                      }
-                      if (formKey.currentState!.validate() &&
-                          dateTime != null) {
-                        Get.back();
-                      }
-                    },
-                    text: COwner.add)
-              ],
-            ),
-          )
-        ]);
+              )
+            ]);
+      },
+    );
   }
 
   static Future<DateTime?> customDatePicker(
