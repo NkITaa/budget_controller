@@ -5,7 +5,6 @@ import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import '../../../main.dart';
 import '../../const.dart';
 import '../../widget_builder.dart';
 import '../owner/const_owner.dart';
@@ -133,7 +132,7 @@ class AdminBuilder {
                 width: 10,
               ),
               CustomBuilder.customButton(
-                onPressed: () async {
+                onPressed: ([bool mounted = true]) async {
                   if (formKey.currentState!.validate()) {
                     SnackBar snackBar = await userController.signUp(
                         email: emailController.text,
@@ -145,6 +144,7 @@ class AdminBuilder {
                     passwordController.text = "";
                     selectedRole = Const.userRoles[0];
                     selectedProjects = null;
+                    if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 },
@@ -163,7 +163,7 @@ class AdminBuilder {
     final TextEditingController idController = TextEditingController();
     String selectedRole = Const.userRoles[0];
     return AlertDialog(
-        title: Text(
+        title: const Text(
           "Rolle ändern",
           style: TextStyle(color: Colors.black),
         ),
@@ -210,7 +210,7 @@ class AdminBuilder {
                   width: 10,
                 ),
                 CustomBuilder.customButton(
-                  onPressed: () async {
+                  onPressed: ([bool mounted = true]) async {
                     if (formKey.currentState!.validate()) {
                       SnackBar snackBar = await userController.changeRole(
                           uid: idController.text,
@@ -218,6 +218,7 @@ class AdminBuilder {
                           context: context);
                       idController.text = "";
                       selectedRole = Const.userRoles[0];
+                      if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },

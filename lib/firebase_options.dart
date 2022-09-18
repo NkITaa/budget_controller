@@ -65,7 +65,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '19202076505',
     projectId: 'budgetcontroller-6094c',
     storageBucket: 'budgetcontroller-6094c.appspot.com',
-    iosClientId: '19202076505-0buuib6aal3r1nv9beqfevak9qnht4ep.apps.googleusercontent.com',
+    iosClientId:
+        '19202076505-0buuib6aal3r1nv9beqfevak9qnht4ep.apps.googleusercontent.com',
     iosBundleId: 'com.example.budgetController',
   );
 }

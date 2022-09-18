@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../main.dart';
 import '../const.dart';
 import '../widget_builder.dart';
 
@@ -37,7 +36,6 @@ class UserController extends GetxController {
               id: FirebaseAuth.instance.currentUser!.uid,
               projectsId: projectsId,
               role: role));
-
       return CustomBuilder.customSnackBarObject(
           message: "User angelegt", error: false);
     } on FirebaseException catch (e) {

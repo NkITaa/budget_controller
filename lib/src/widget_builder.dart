@@ -5,6 +5,7 @@ import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:multiselect/multiselect.dart';
 
 import 'const.dart';
@@ -96,11 +97,14 @@ class CustomBuilder {
   }
 
   static Widget customButton(
-      {required String text, required void Function() onPressed}) {
+      {required String text,
+      required void Function() onPressed,
+      bool? isDarkMode}) {
+    bool darkMode = isDarkMode ?? false;
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: darkMode ? const Color(0xff85CCFF) : Colors.white,
         side: const BorderSide(color: Colors.transparent),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
@@ -110,7 +114,9 @@ class CustomBuilder {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(text,
-            style: const TextStyle(color: Color(0xff7434E6), fontSize: 18)),
+            style: TextStyle(
+                color: darkMode ? Colors.white : const Color(0xff7434E6),
+                fontSize: 18)),
       ),
     );
   }
@@ -210,7 +216,7 @@ class CustomBuilder {
                 child: customButton(
                     text: Const.signOut,
                     onPressed: () {
-                      FirebaseAuth.instance.signOut();
+                      signOutWarning();
                     }),
               ),
               const SizedBox(
@@ -264,7 +270,7 @@ class CustomBuilder {
       decoration: InputDecoration(
         hintText: hint,
         counterText: uid ? null : "",
-        errorStyle: TextStyle(fontSize: 0.1),
+        errorStyle: const TextStyle(fontSize: 0.1),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
         ),
@@ -373,5 +379,33 @@ class CustomBuilder {
       endIconColor: const Color.fromARGB(255, 0, 255, 8),
       clockwise: false,
     );
+  }
+
+  static signOutWarning() {
+    Get.defaultDialog(
+        backgroundColor: const Color(0xff7434E6),
+        actions: [
+          customButton(
+              text: "Ja",
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              }),
+          customButton(
+              isDarkMode: true,
+              text: "Nein",
+              onPressed: () {
+                Get.back();
+              })
+        ],
+        content: Column(children: [
+          customLogo(size: 50),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text("Möchtest du dich wirklich abmelden?")
+        ]),
+        title: "",
+        titlePadding: EdgeInsets.zero,
+        titleStyle: const TextStyle(fontSize: 0));
   }
 }
