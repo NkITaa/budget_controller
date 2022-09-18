@@ -41,18 +41,57 @@ class _AdminState extends State<Admin> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              AdminBuilder.addUserPopup(
+                              showDialog(
                                 context: context,
-                                userController: userController,
+                                builder: (BuildContext context) {
+                                  return ScaffoldMessenger(
+                                    child: Builder(
+                                      builder: (context) => Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: GestureDetector(
+                                              onTap: () {},
+                                              child: AdminBuilder.addUserPopup(
+                                                context: context,
+                                                userController: userController,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
                             icon: const Icon(Icons.person_add_outlined,
                                 color: Colors.grey)),
                         IconButton(
                             onPressed: () {
-                              AdminBuilder.changeRolePopup(
+                              showDialog(
                                 context: context,
-                                userController: userController,
+                                builder: (BuildContext context) {
+                                  return ScaffoldMessenger(
+                                    child: Builder(
+                                      builder: (context) => Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: GestureDetector(
+                                              onTap: () {},
+                                              child:
+                                                  AdminBuilder.changeRolePopup(
+                                                context: context,
+                                                userController: userController,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
                             icon: const Icon(

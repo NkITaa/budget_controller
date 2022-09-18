@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../main.dart';
 import '../const.dart';
 import '../widget_builder.dart';
 
@@ -28,7 +29,6 @@ class UserController extends GetxController {
       required String role,
       required List<String>? projectsId,
       required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -65,7 +65,6 @@ class UserController extends GetxController {
       required BuildContext context}) async {
     final CollectionReference userCollection =
         FirebaseFirestore.instance.collection("user");
-    CustomBuilder.customProgressIndicator(context: context);
     try {
       await userCollection.doc(uid).update({'projectsId': role});
       return CustomBuilder.customSnackBarObject(

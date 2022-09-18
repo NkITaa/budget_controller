@@ -25,9 +25,13 @@ class AdminBuilder {
     late TextEditingController passwordController =
         TextEditingController(text: tempPassword);
 
-    return Get.defaultDialog(
-        title: "Benutzer Hinzufügen",
-        titleStyle: const TextStyle(color: Colors.black),
+    return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        title: const Text(
+          "Benutzer Hinzufügen",
+          style: TextStyle(color: Colors.black),
+        ),
         content: StatefulBuilder(builder: (context, setState) {
           AnimateIconController controller = AnimateIconController();
           stateRole({required String art}) {
@@ -137,9 +141,11 @@ class AdminBuilder {
                         role: selectedRole,
                         projectsId: selectedProjects,
                         context: context);
-                    CustomBuilder.showSnackBarObject(snackBar: snackBar);
-                    navigatorKey.currentState!
-                        .popUntil((route) => route.isFirst);
+                    emailController.text = "";
+                    passwordController.text = "";
+                    selectedRole = Const.userRoles[0];
+                    selectedProjects = null;
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 },
                 text: "Hinzufügen",
@@ -156,9 +162,11 @@ class AdminBuilder {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController idController = TextEditingController();
     String selectedRole = Const.userRoles[0];
-    return Get.defaultDialog(
-        title: "Rolle ändern",
-        titleStyle: const TextStyle(color: Colors.black),
+    return AlertDialog(
+        title: Text(
+          "Rolle ändern",
+          style: TextStyle(color: Colors.black),
+        ),
         content: StatefulBuilder(builder: (context, setState) {
           stateRole({required String art}) {
             selectedRole = art;
@@ -208,9 +216,9 @@ class AdminBuilder {
                           uid: idController.text,
                           role: selectedRole,
                           context: context);
-                      CustomBuilder.showSnackBarObject(snackBar: snackBar);
-                      navigatorKey.currentState!
-                          .popUntil((route) => route.isFirst);
+                      idController.text = "";
+                      selectedRole = Const.userRoles[0];
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   text: "Hinzufügen",

@@ -243,7 +243,7 @@ class CustomBuilder {
         return summe
             ? (value!.length < 2 ? "" : null)
             : uid
-                ? (value!.length < 20 ? "" : null)
+                ? (value!.length < 28 ? "" : null)
                 : (value!.length < 3 ? "" : null);
       },
       cursorColor: const Color(0xff7434E6),
@@ -260,7 +260,7 @@ class CustomBuilder {
           ? 9
           : mail
               ? 50
-              : 20,
+              : 28,
       decoration: InputDecoration(
         hintText: hint,
         counterText: uid ? null : "",

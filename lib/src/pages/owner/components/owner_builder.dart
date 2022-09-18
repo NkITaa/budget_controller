@@ -205,7 +205,7 @@ class OwnerBuilder {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: const Text(
-              "Kosten Hinzufügen",
+              "Ausgabe Hinzufügen",
               style: TextStyle(color: Colors.black),
             ),
             content: SizedBox(
@@ -306,7 +306,7 @@ class OwnerBuilder {
                             dateExists = null;
                             ScaffoldMessenger.of(context).showSnackBar(
                                 CustomBuilder.customSnackBarObject(
-                                    message: "Benutzer Hinzugefügt",
+                                    message: "Ausgabe Hinzugefügt",
                                     error: false));
                             setState(() {});
                           }
