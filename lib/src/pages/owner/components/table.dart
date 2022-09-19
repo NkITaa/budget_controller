@@ -38,8 +38,6 @@ class TableData extends DataTableSource {
   DataRow getRow(int index) {
     DateTime? dateTime;
 
-    String responsibility = OwnerBuilder.costs[index].responsibility.toString();
-
     String category = OwnerBuilder.costs[index].category.toString();
 
     TextEditingController reason = TextEditingController(
@@ -118,12 +116,6 @@ class TableData extends DataTableSource {
           enabled: enabled,
           additionalRequirement: selectedRow,
           controller: reason)),
-      DataCell(
-        Text(
-          responsibility,
-          style: const TextStyle(color: Colors.black),
-        ),
-      ),
       DataCell(
         Row(
           children: [

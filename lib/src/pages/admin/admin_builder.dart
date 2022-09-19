@@ -18,7 +18,7 @@ class AdminBuilder {
     final Random generator = Random.secure();
     late String tempPassword = generator.nextDouble().toString();
     String selectedRole = Const.userRoles[0];
-    List<String>? selectedProjects;
+    String selectedProject = Const.userRoles[0];
 
     final TextEditingController emailController = TextEditingController();
     late TextEditingController passwordController =
@@ -38,8 +38,8 @@ class AdminBuilder {
             setState(() {});
           }
 
-          stateProjects({required List<String> arten}) {
-            selectedProjects = arten;
+          stateProject({required String art}) {
+            selectedProject = art;
             setState(() {});
           }
 
@@ -105,10 +105,10 @@ class AdminBuilder {
                               selectedRole == "Owner"
                                   ? SizedBox(
                                       width: 150,
-                                      child: CustomBuilder.popupDropDownList(
-                                          gewaehlteArten: selectedProjects,
-                                          arten: ["a", "b", "c", "d"],
-                                          setArten: stateProjects))
+                                      child: CustomBuilder.popupDropDown(
+                                          gewaehlteArt: selectedProject,
+                                          arten: Const.userRoles,
+                                          setArt: stateProject))
                                   : Container(),
                             ],
                           ),
@@ -138,12 +138,12 @@ class AdminBuilder {
                         email: emailController.text,
                         password: passwordController.text,
                         role: selectedRole,
-                        projectsId: selectedProjects,
+                        projectsId: selectedProject,
                         context: context);
                     emailController.text = "";
                     passwordController.text = "";
                     selectedRole = Const.userRoles[0];
-                    selectedProjects = null;
+                    selectedProject = Const.userRoles[0];
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }

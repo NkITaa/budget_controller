@@ -26,7 +26,7 @@ class UserController extends GetxController {
       {required String email,
       required String password,
       required String role,
-      required List<String>? projectsId,
+      required String projectsId,
       required BuildContext context}) async {
     try {
       await FirebaseAuth.instance

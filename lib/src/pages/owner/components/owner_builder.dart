@@ -114,76 +114,80 @@ class OwnerBuilder {
         enabled: enabled,
         toggle: toggle,
         context: context);
-    return Form(
-      key: formKey,
-      child: PaginatedDataTable(
-        source: source,
-        header: Stack(
-          children: [
-            const Center(
-              child: Text(
-                COwner.details,
-                style: TextStyle(color: Colors.black),
+    return SizedBox(
+      width: 1300,
+      child: Form(
+        key: formKey,
+        child: PaginatedDataTable(
+          source: source,
+          header: Stack(
+            children: [
+              const Center(
+                child: Text(
+                  COwner.details,
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                StreamBuilder<Object>(
-                    stream: null,
-                    builder: (context, snapshot) {
-                      return IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ScaffoldMessenger(
-                                child: Builder(
-                                  builder: (context) => Scaffold(
-                                    backgroundColor: Colors.transparent,
-                                    body: GestureDetector(
-                                      behavior: HitTestBehavior.opaque,
-                                      onTap: () => Navigator.of(context).pop(),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: buildAddCostPopup(
-                                            context: context, state: state),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  StreamBuilder<Object>(
+                      stream: null,
+                      builder: (context, snapshot) {
+                        return IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                          onTap: () {},
+                                          child: buildAddCostPopup(
+                                              context: context, state: state),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    }),
-              ],
-            ),
-          ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }),
+                ],
+              ),
+            ],
+          ),
+          columns: COwner.columns.map((column) {
+            int index = COwner.columns.indexOf(column);
+            return DataColumn(
+              onSort: (columnIndex, ascending) {
+                ControllerOwner.specificSort(
+                    index: index,
+                    columnIndex: columnIndex,
+                    ascending: ascending,
+                    source: source,
+                    sort: sort);
+              },
+              label: Text(
+                column,
+                style: const TextStyle(color: Colors.black),
+              ),
+            );
+          }).toList(),
+          rowsPerPage: rowsPerPage,
+          showCheckboxColumn: false,
+          sortColumnIndex: sortColumnIndex,
+          sortAscending: sortAscending,
         ),
-        columns: COwner.columns.map((column) {
-          int index = COwner.columns.indexOf(column);
-          return DataColumn(
-            onSort: (columnIndex, ascending) {
-              ControllerOwner.specificSort(
-                  index: index,
-                  columnIndex: columnIndex,
-                  ascending: ascending,
-                  source: source,
-                  sort: sort);
-            },
-            label: Text(
-              column,
-              style: const TextStyle(color: Colors.black),
-            ),
-          );
-        }).toList(),
-        rowsPerPage: rowsPerPage,
-        showCheckboxColumn: false,
-        sortColumnIndex: sortColumnIndex,
-        sortAscending: sortAscending,
       ),
     );
   }

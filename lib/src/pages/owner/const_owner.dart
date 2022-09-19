@@ -29,7 +29,6 @@ class COwner {
     "Summe",
     "Beschreibung",
     "Grund",
-    "Verantwortlich",
     ""
   ];
 }
