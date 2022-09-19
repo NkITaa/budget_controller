@@ -1,4 +1,3 @@
-import 'package:budget_controller/src/const.dart';
 import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
