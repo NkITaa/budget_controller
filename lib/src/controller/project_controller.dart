@@ -13,7 +13,7 @@ class ProjectController extends GetxController {
 
   Future<SnackBar> createProject(
       {required String name,
-      required List<String> ownersId,
+      required List<String> ownerId,
       required List<Budget> budgets,
       required BuildContext context}) async {
     CustomBuilder.customProgressIndicator(context: context);
@@ -23,7 +23,7 @@ class ProjectController extends GetxController {
       Project temp = Project(
           id: projectId,
           name: name,
-          ownersId: ownersId,
+          ownerId: ownerId,
           costs: null,
           budgets: budgets);
       await project.set(temp);

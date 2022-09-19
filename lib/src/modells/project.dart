@@ -5,14 +5,14 @@ import 'cost.dart';
 class Project {
   String id;
   String name;
-  List<String> ownersId;
+  List<String> ownerId;
   List<Cost>? costs;
   List<Budget> budgets;
 
   Project({
     required this.id,
     required this.name,
-    required this.ownersId,
+    required this.ownerId,
     required this.costs,
     required this.budgets,
   });
@@ -21,7 +21,7 @@ class Project {
     return {
       "id": id,
       "name": name,
-      "ownersId": ownersId,
+      "ownerId": ownerId,
       "costs":
           costs != null ? costs!.map((cost) => cost.toJson()).toList() : null,
       "budgets": budgets.map((budget) => budget.toJson()).toList(),
@@ -29,7 +29,7 @@ class Project {
   }
 
   static Project fromJson(DocumentSnapshot<Object?> project) {
-    List<dynamic> ownersId = project["ownersId"];
+    List<dynamic> ownersId = project["ownerId"];
     List<dynamic> costsUnserialized = project["costs"];
     List<dynamic> budgetsUnserialized = project["budgets"];
 
@@ -43,7 +43,7 @@ class Project {
     return Project(
         id: project["id"],
         name: project["name"],
-        ownersId: ownersId.cast<String>(),
+        ownerId: ownersId.cast<String>(),
         costs: costs,
         budgets: budgets);
   }
