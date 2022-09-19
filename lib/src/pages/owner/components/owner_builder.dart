@@ -2,6 +2,7 @@ import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../controller/format_controller.dart';
 import '../../../widget_builder.dart';
 import 'table.dart';
 import '../const_owner.dart';
@@ -226,7 +227,7 @@ class OwnerBuilder {
                           ),
                           IconButton(
                               onPressed: () {
-                                customDatePicker(
+                                CustomBuilder.customDatePicker(
                                   context: context,
                                   dateTime: dateTime,
                                 ).then((date) {
@@ -321,34 +322,6 @@ class OwnerBuilder {
             ]);
       },
     );
-  }
-
-  static Future<DateTime?> customDatePicker(
-      {required BuildContext context, required DateTime? dateTime}) {
-    return showDatePicker(
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: const ColorScheme.light(
-                primary: Color(0xff7434E6),
-                onPrimary: Colors.white,
-                onSurface: Colors.white,
-              ),
-              dialogBackgroundColor: Colors.black,
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xff7434E6),
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        },
-        cancelText: COwner.abort,
-        context: context,
-        initialDate: dateTime ?? DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime.now());
   }
 
   static Widget detaillsColumn({
@@ -510,7 +483,7 @@ class OwnerBuilder {
       onChanged: (item) {
         if (summe) {
           TextSelection previousSelection = controller.selection;
-          controller.text = ControllerOwner.formatInput(item: item);
+          controller.text = FormatController.formatInput(item: item);
           controller.selection = previousSelection;
         }
       },

@@ -1,5 +1,5 @@
-import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:flutter/material.dart';
+import '../../../controller/format_controller.dart';
 import '../../../modells/cost.dart';
 import '../../../widget_builder.dart';
 import '../const_owner.dart';
@@ -61,7 +61,7 @@ class TableData extends DataTableSource {
                   children: [
                     Flexible(
                       child: Text(
-                        ControllerOwner.dateTimeFormatter(
+                        FormatController.dateTimeFormatter(
                             dateTime:
                                 dateTime ?? OwnerBuilder.costs[index].creation),
                         style: const TextStyle(color: Color(0xff7434E6)),
@@ -70,7 +70,7 @@ class TableData extends DataTableSource {
                     IconButton(
                         color: const Color(0xff7434E6),
                         onPressed: () {
-                          OwnerBuilder.customDatePicker(
+                          CustomBuilder.customDatePicker(
                                   context: context, dateTime: dateTime)
                               .then((date) {
                             if (date != null) {
@@ -86,7 +86,7 @@ class TableData extends DataTableSource {
             )
           : DataCell(
               Text(
-                ControllerOwner.dateTimeFormatter(
+                FormatController.dateTimeFormatter(
                     dateTime: OwnerBuilder.costs[index].creation),
                 style: const TextStyle(color: Colors.black),
               ),

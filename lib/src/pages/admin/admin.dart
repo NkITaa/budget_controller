@@ -27,111 +27,110 @@ class _AdminState extends State<Admin> {
               borderRadius: BorderRadius.all(Radius.circular(20))),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
-                  children: [
-                    const Center(
-                        child: Text(
-                      "Nachrichten",
-                      style: TextStyle(fontSize: 28, color: Colors.black),
-                    )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ScaffoldMessenger(
-                                    child: Builder(
-                                      builder: (context) => Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: GestureDetector(
-                                              onTap: () {},
-                                              child: AdminBuilder.addUserPopup(
-                                                context: context,
-                                                userController: userController,
-                                              )),
-                                        ),
+              const SizedBox(
+                height: 20,
+              ),
+              Stack(
+                children: [
+                  const Center(
+                      child: Text(
+                    "Nachrichten",
+                    style: TextStyle(fontSize: 28, color: Colors.black),
+                  )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: AdminBuilder.addUserPopup(
+                                              context: context,
+                                              userController: userController,
+                                            )),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.person_add_outlined,
-                                color: Colors.grey)),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ScaffoldMessenger(
-                                    child: Builder(
-                                      builder: (context) => Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: GestureDetector(
-                                              onTap: () {},
-                                              child:
-                                                  AdminBuilder.changeRolePopup(
-                                                context: context,
-                                                userController: userController,
-                                              )),
-                                        ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.person_add_outlined,
+                              color: Colors.grey)),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: AdminBuilder.changeRolePopup(
+                                              context: context,
+                                              userController: userController,
+                                            )),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.change_circle_outlined,
-                              color: Colors.grey,
-                            )),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ScaffoldMessenger(
-                                    child: Builder(
-                                      builder: (context) => Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: GestureDetector(
-                                              onTap: () {},
-                                              child: AdminBuilder.resetPassword(
-                                                context: context,
-                                                userController: userController,
-                                              )),
-                                        ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.change_circle_outlined,
+                            color: Colors.grey,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: AdminBuilder.resetPassword(
+                                              context: context,
+                                              userController: userController,
+                                            )),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.key_outlined,
-                              color: Colors.grey,
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.key_outlined,
+                            color: Colors.grey,
+                          )),
+                    ],
+                  ),
+                ],
               ),
               ListView.builder(
                 shrinkWrap: true,

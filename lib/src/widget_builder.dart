@@ -1,7 +1,7 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/main.dart';
 import 'package:budget_controller/src/pages/login/component_reset_password.dart';
-import 'package:budget_controller/src/pages/owner/controller_owner.dart';
+import 'package:budget_controller/src/pages/owner/const_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:multiselect/multiselect.dart';
 
 import 'const.dart';
+import 'controller/format_controller.dart';
 
 class CustomBuilder {
   static void customProgressIndicator({required BuildContext context}) {
@@ -261,7 +262,7 @@ class CustomBuilder {
       onChanged: (item) {
         if (summe) {
           TextSelection previousSelection = controller.selection;
-          controller.text = ControllerOwner.formatInput(item: item);
+          controller.text = FormatController.formatInput(item: item);
           controller.selection = previousSelection;
         }
       },
@@ -413,5 +414,33 @@ class CustomBuilder {
         title: "",
         titlePadding: EdgeInsets.zero,
         titleStyle: const TextStyle(fontSize: 0));
+  }
+
+  static Future<DateTime?> customDatePicker(
+      {required BuildContext context, required DateTime? dateTime}) {
+    return showDatePicker(
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.light(
+                primary: Color(0xff7434E6),
+                onPrimary: Colors.white,
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.black,
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xff7434E6),
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+        cancelText: COwner.abort,
+        context: context,
+        initialDate: dateTime ?? DateTime.now(),
+        firstDate: DateTime(2022),
+        lastDate: DateTime.now());
   }
 }
