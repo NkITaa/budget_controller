@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   animate_icons: ^2.0.0
-  multiselect: ^0.0.7
+  dropdown_search: ^5.0.2
   get: ^4.6.5
   firebase_core: ^1.22.0
   firebase_auth: ^3.8.0

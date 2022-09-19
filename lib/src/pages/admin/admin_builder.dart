@@ -138,7 +138,7 @@ class AdminBuilder {
                         email: emailController.text,
                         password: passwordController.text,
                         role: selectedRole,
-                        projectid: selectedProject,
+                        projectId: selectedProject,
                         context: context);
                     emailController.text = "";
                     passwordController.text = "";

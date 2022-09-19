@@ -26,7 +26,7 @@ class UserController extends GetxController {
       {required String email,
       required String password,
       required String role,
-      required String projectid,
+      required String projectId,
       required BuildContext context}) async {
     try {
       await FirebaseAuth.instance
@@ -34,7 +34,7 @@ class UserController extends GetxController {
       await createUser(
           user: CustomUser(
               id: FirebaseAuth.instance.currentUser!.uid,
-              projectid: projectid,
+              projectId: projectId,
               role: role));
       return CustomBuilder.customSnackBarObject(
           message: "User angelegt", error: false);

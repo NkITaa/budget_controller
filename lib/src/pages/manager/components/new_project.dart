@@ -1,4 +1,3 @@
-import 'package:budget_controller/src/const.dart';
 import 'package:budget_controller/src/widget_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +14,22 @@ class NewProject extends StatefulWidget {
 class _NewProjectState extends State<NewProject> {
   TextEditingController projectName = TextEditingController();
   TextEditingController responsible = TextEditingController();
+  TextEditingController costIt = TextEditingController();
+  TextEditingController costLaw = TextEditingController();
+  TextEditingController costSales = TextEditingController();
+  TextEditingController costManagement = TextEditingController();
+  TextEditingController costHardware = TextEditingController();
+  TextEditingController costSoftware = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DateTime? dateTime;
   bool dateExists = true;
-  String selectedRole = Const.userRoles[0];
+  String? currentRole;
+  List<String> roles = ["Mecika", "Wien", "Qualität"];
 
-  stateRole({required String art}) {
-    selectedRole = art;
-    setState(() {});
+  setRole({required String selectedRole}) {
+    setState(() {
+      currentRole = selectedRole;
+    });
   }
 
   @override
@@ -30,128 +37,149 @@ class _NewProjectState extends State<NewProject> {
     return Form(
       key: formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
             height: 50,
           ),
-          const Text(
-            "Metainfos",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 28,
+          SizedBox(
+            width: 648,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                const Text(
+                  "Metainfos",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 28,
+                  ),
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                        width: 200,
+                        child: CustomBuilder.popUpTextField(
+                            controller: projectName, hint: "Projektname")),
+                    const SizedBox(
+                      width: 35,
+                    ),
+                    SizedBox(
+                        width: 200,
+                        child: CustomBuilder.customSearchDropDown(
+                            items: roles, setItem: setRole)),
+                    const SizedBox(
+                      width: 35,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          CustomBuilder.customDatePicker(
+                                  context: context, dateTime: dateTime)
+                              .then((date) {
+                            dateTime = date;
+                            dateExists = true;
+                            setState(() {});
+                          });
+                        },
+                        icon: Icon(
+                          Icons.calendar_month,
+                          color: dateExists ? Colors.black : Colors.red,
+                        )),
+                    Text(
+                      dateTime != null
+                          ? FormatController.dateTimeFormatter(
+                              dateTime: dateTime!)
+                          : "",
+                      style: TextStyle(
+                          color: dateTime != null ? Colors.black : Colors.grey),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                  width: 200,
-                  child: CustomBuilder.popUpTextField(
-                      controller: projectName, hint: "Projektname")),
-              const SizedBox(
-                width: 35,
-              ),
-              SizedBox(
-                  width: 200,
-                  child: CustomBuilder.popupDropDown(
-                      arten: Const.userRoles,
-                      gewaehlteArt: selectedRole,
-                      setArt: stateRole)),
-              const SizedBox(
-                width: 35,
-              ),
-              IconButton(
-                  onPressed: () {
-                    CustomBuilder.customDatePicker(
-                            context: context, dateTime: dateTime)
-                        .then((date) {
-                      dateTime = date;
-                      dateExists = true;
-                      setState(() {});
-                    });
-                  },
-                  icon: Icon(
-                    Icons.calendar_month,
-                    color: dateExists ? Colors.black : Colors.red,
-                  )),
-              Text(
-                dateTime != null
-                    ? FormatController.dateTimeFormatter(dateTime: dateTime!)
-                    : "",
-                style: TextStyle(
-                    color: dateTime != null ? Colors.black : Colors.grey),
-              ),
-            ],
           ),
           const SizedBox(
             height: 50,
           ),
-          const Text(
-            "Kosten-Projektion",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 28,
+          SizedBox(
+            width: 648,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                const Text(
+                  "Personalkosten",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 28,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    ManagerBuilder.costFieldBuilder(
+                        controller: costIt,
+                        hint: "IT-Kosten",
+                        overlineText: "IT"),
+                    ManagerBuilder.costFieldBuilder(
+                        controller: costSales,
+                        hint: "Vertriebs-Kosten",
+                        overlineText: "Vertrieb"),
+                    ManagerBuilder.costFieldBuilder(
+                        controller: costLaw,
+                        hint: "Rechts-Kosten",
+                        overlineText: "Recht"),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    ManagerBuilder.costFieldBuilder(
+                        controller: costManagement,
+                        hint: "Management-Kosten",
+                        overlineText: "Management"),
+                  ],
+                ),
+              ],
             ),
           ),
           const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Personal"),
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Bla"),
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-            ],
-          ),
-          const SizedBox(
             height: 30,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-            ],
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-              ManagerBuilder.costFieldBuilder(
-                  controller: projectName,
-                  hint: "Projektname",
-                  overlineText: "Booo"),
-            ],
+          SizedBox(
+            width: 648,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                const Text(
+                  "Sachkosten",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 28,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    ManagerBuilder.costFieldBuilder(
+                        controller: costHardware,
+                        hint: "Hardware-Kosten",
+                        overlineText: "Hardware"),
+                    ManagerBuilder.costFieldBuilder(
+                        controller: costSoftware,
+                        hint: "Software-Kosten",
+                        overlineText: "Software"),
+                  ],
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 20,

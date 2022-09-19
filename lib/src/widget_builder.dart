@@ -2,6 +2,7 @@ import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/main.dart';
 import 'package:budget_controller/src/pages/login/component_reset_password.dart';
 import 'package:budget_controller/src/pages/owner/const_owner.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -402,5 +403,69 @@ class CustomBuilder {
         initialDate: dateTime ?? DateTime.now(),
         firstDate: DateTime(2022),
         lastDate: DateTime.now());
+  }
+
+  static Widget customSearchDropDown(
+      {required List<String> items, required Function setItem}) {
+    return DropdownSearch<String>(
+      dropdownBuilder: (context, selectedItem) {
+        return Text(
+          selectedItem ?? "Owner auswählen",
+          style: TextStyle(
+              color: selectedItem == null ? Colors.grey : Colors.black),
+        );
+      },
+      popupProps: PopupProps.menu(
+        itemBuilder: (context, item, isSelected) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              item,
+              style: const TextStyle(color: Colors.black, fontSize: 18),
+            ),
+          );
+        },
+        searchFieldProps: const TextFieldProps(
+            cursorColor: Color(0xff7434E6),
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              hintText: "Suchen",
+              focusColor: Colors.grey,
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff7434E6)),
+              ),
+            )),
+        showSelectedItems: true,
+        showSearchBox: true,
+      ),
+      items: items,
+      dropdownButtonProps: const DropdownButtonProps(
+        color: Colors.black,
+      ),
+      dropdownDecoratorProps: const DropDownDecoratorProps(
+          dropdownSearchDecoration: InputDecoration(
+        errorStyle: TextStyle(fontSize: 0.1),
+        focusColor: Colors.grey,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xff7434E6)),
+        ),
+      )),
+      onChanged: (currentItem) {
+        setItem(selectedRole: currentItem);
+      },
+      validator: (String? item) {
+        if (item == null) {
+          return "";
+        } else {
+          return null;
+        }
+      },
+    );
   }
 }
