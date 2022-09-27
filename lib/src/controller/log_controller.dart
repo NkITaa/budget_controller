@@ -1,8 +1,5 @@
 import 'package:budget_controller/src/modells/log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
-import '../widget_builder.dart';
 
 class LogController {
   static Future<void> writeLog({

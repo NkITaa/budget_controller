@@ -140,24 +140,25 @@ class _AdminState extends State<Admin> {
                     snapshot.printError();
                     return Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 100,
                         ),
                         Text(
                           snapshot.error.toString(),
-                          style: TextStyle(fontSize: 30, color: Colors.black),
+                          style: const TextStyle(
+                              fontSize: 30, color: Colors.black),
                         ),
                       ],
                     );
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
 
                   final data = snapshot.requireData;
                   return Text(
                     data!.toString(),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   );
                 },
               ),

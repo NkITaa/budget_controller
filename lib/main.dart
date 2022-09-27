@@ -1,5 +1,4 @@
 import 'package:budget_controller/firebase_options.dart';
-import 'package:budget_controller/src/controller/log_controller.dart';
 import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:budget_controller/src/pages/home.dart';
