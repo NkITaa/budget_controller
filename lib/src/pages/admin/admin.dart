@@ -15,6 +15,8 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   UserController userController = Get.find();
 
+  bool value = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -156,19 +158,56 @@ class _AdminState extends State<Admin> {
                   }
 
                   final data = snapshot.requireData;
-                  return Text(
-                    data!.toString(),
-                    style: const TextStyle(color: Colors.black),
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: data!.length,
+                    itemBuilder: (context, index) {
+                      return ExpansionTile(
+                        title: Row(
+                          children: [
+                            Checkbox(
+                                value: value,
+                                onChanged: (curValue) {
+                                  value = curValue!;
+                                  setState(() {});
+                                }),
+                            Text(
+                              data[index].notification,
+                              style: const TextStyle(color: Colors.black),
+                            )
+                          ],
+                        ),
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Ticket Nummer: ${data[index].id}",
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                "Von UserID: ${data[index].userId}",
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                "Vom: ${data[index].date.toString()}",
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                "Projekt: ${data[index].projectId}",
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                data[index].projectId ?? "",
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    },
                   );
                 },
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: ((context, index) {
-                  return const ListTile();
-                }),
-              )
             ],
           ),
         ),

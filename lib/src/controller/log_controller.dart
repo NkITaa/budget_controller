@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LogController {
   static Future<void> writeLog({
     required String notification,
+    required String detailledNotification,
     String? projectId,
     required String userId,
   }) async {
@@ -13,6 +14,7 @@ class LogController {
     String logId = newLog.id;
 
     Log temp = Log(
+        detailledNotification: detailledNotification,
         userId: userId,
         notification: notification,
         date: DateTime.now(),

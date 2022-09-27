@@ -38,6 +38,7 @@ class UserController extends GetxController {
               projectId: projectId,
               role: role));
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "$role erstellt mit",
           projectId: projectId,
           userId: FirebaseAuth.instance.currentUser!.uid);
@@ -54,6 +55,7 @@ class UserController extends GetxController {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Resetmail gesendet an $email",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -73,6 +75,7 @@ class UserController extends GetxController {
     try {
       await userCollection.doc(uid).update({'projectsId': role});
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Rolle geändert ",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(

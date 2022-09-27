@@ -31,6 +31,7 @@ class ProjectController extends GetxController {
       await newProject.set(temp);
 
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Projekt kreiert",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -69,6 +70,7 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayUnion([cost.toJson()])
       });
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Kosten hinzugefügt",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -89,6 +91,7 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayRemove([cost.toJson()])
       });
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Kosten gelöscht",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -113,6 +116,7 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayUnion([costNew.toJson()])
       });
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Kosten bearbeitet",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -137,6 +141,7 @@ class ProjectController extends GetxController {
         'budgets': FieldValue.arrayUnion([budgetNew.toJson()])
       });
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Budget upgedated",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -157,6 +162,7 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayUnion([owner.toJson()])
       });
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Owner hinzugefügt",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
@@ -177,6 +183,7 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayRemove([owner.toJson()])
       });
       await LogController.writeLog(
+          detailledNotification: "",
           notification: "Owner entfernt",
           userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
