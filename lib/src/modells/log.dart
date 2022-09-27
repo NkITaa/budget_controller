@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Log {
   String notification;
   String? projectId;
@@ -22,12 +24,12 @@ class Log {
     };
   }
 
-  static Log fromJson(dynamic log) {
+  static Log fromJson(QueryDocumentSnapshot<Map<String, dynamic>> log) {
     return Log(
         notification: log["notification"],
         projectId: log["projectId"],
         id: log["id"],
         userId: log["userId"],
-        date: log["date"]);
+        date: DateTime.parse(log["date"].toDate().toString()));
   }
 }

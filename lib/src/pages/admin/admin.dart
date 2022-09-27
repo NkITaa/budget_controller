@@ -1,3 +1,4 @@
+import 'package:budget_controller/src/controller/log_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -131,6 +132,34 @@ class _AdminState extends State<Admin> {
                     ],
                   ),
                 ],
+              ),
+              FutureBuilder(
+                future: LogController.loadLogs(),
+                builder: (BuildContext context, snapshot) {
+                  if (snapshot.hasError) {
+                    snapshot.printError();
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Text(
+                          snapshot.error.toString(),
+                          style: TextStyle(fontSize: 30, color: Colors.black),
+                        ),
+                      ],
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+
+                  final data = snapshot.requireData;
+                  return Text(
+                    data!.toString(),
+                    style: TextStyle(color: Colors.black),
+                  );
+                },
               ),
               ListView.builder(
                 shrinkWrap: true,

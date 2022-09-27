@@ -24,19 +24,17 @@ class LogController {
     await newLog.set(temp.toJson());
   }
 
-  static List<Log>? loadLogs(
-      {required QuerySnapshot<Object?> data, required BuildContext context}) {
+  static Future<List<Log>?> loadLogs() async {
     List<Log> logs = [];
-
-    try {
-      for (int i = 0; i < data.docs.length; i++) {
-        var log = data.docs[i].data();
-        logs.add(Log.fromJson(log));
+    await FirebaseFirestore.instance
+        .collection('logs')
+        .get()
+        .then((logsSnapshot) {
+      var logDocs = logsSnapshot.docs;
+      for (int i = 0; i < logDocs.length; i++) {
+        logs.add(Log.fromJson(logDocs[i]));
       }
-      return logs;
-    } on FirebaseException catch (e) {
-      CustomBuilder.customSnackBar(message: e.toString(), error: true);
-      return null;
-    }
+    });
+    return logs;
   }
 }
