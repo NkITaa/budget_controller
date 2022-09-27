@@ -1,14 +1,13 @@
 import 'package:budget_controller/src/modells/log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../widget_builder.dart';
 
-class LogController extends GetxController {
-  Future<bool> writeLog({
+class LogController {
+  static Future<void> writeLog({
     required String notification,
-    required String projectId,
+    String? projectId,
     required String userId,
   }) async {
     CollectionReference logCollection =
@@ -16,21 +15,16 @@ class LogController extends GetxController {
     DocumentReference newLog = logCollection.doc();
     String logId = newLog.id;
 
-    try {
-      Log temp = Log(
-          userId: userId,
-          notification: notification,
-          date: DateTime.now(),
-          projectId: projectId,
-          id: logId);
-      await newLog.set(temp);
-      return true;
-    } on FirebaseException catch (e) {
-      return false;
-    }
+    Log temp = Log(
+        userId: userId,
+        notification: notification,
+        date: DateTime.now(),
+        projectId: projectId,
+        id: logId);
+    await newLog.set(temp.toJson());
   }
 
-  List<Log>? loadLogs(
+  static List<Log>? loadLogs(
       {required QuerySnapshot<Object?> data, required BuildContext context}) {
     List<Log> logs = [];
 

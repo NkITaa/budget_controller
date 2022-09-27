@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Log {
   String notification;
-  String projectId;
+  String? projectId;
   String userId;
   String id;
   DateTime date;

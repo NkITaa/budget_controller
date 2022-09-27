@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../const.dart';
 import '../widget_builder.dart';
+import 'log_controller.dart';
 
 class UserController extends GetxController {
   Future<CustomUser?> signIn(
@@ -36,6 +37,10 @@ class UserController extends GetxController {
               id: FirebaseAuth.instance.currentUser!.uid,
               projectId: projectId,
               role: role));
+      await LogController.writeLog(
+          notification: "$role erstellt mit",
+          projectId: projectId,
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "User angelegt", error: false);
     } on FirebaseException catch (e) {
@@ -48,6 +53,9 @@ class UserController extends GetxController {
       {required String email, required BuildContext context}) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await LogController.writeLog(
+          notification: "Resetmail gesendet an $email",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Rücksetzungsmail gesendet", error: false);
     } on FirebaseException catch (e) {
@@ -64,6 +72,9 @@ class UserController extends GetxController {
         FirebaseFirestore.instance.collection("user");
     try {
       await userCollection.doc(uid).update({'projectsId': role});
+      await LogController.writeLog(
+          notification: "Rolle geändert ",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Rolle geändert", error: false);
     } on FirebaseException catch (e) {

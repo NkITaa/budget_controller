@@ -1,4 +1,6 @@
 import 'package:budget_controller/firebase_options.dart';
+import 'package:budget_controller/src/controller/log_controller.dart';
+import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:budget_controller/src/pages/home.dart';
 import 'package:budget_controller/src/pages/login/login.dart';
@@ -15,6 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Get.put(UserController());
+  Get.put(ProjectController());
   runApp(const MyApp());
 }
 

@@ -1,11 +1,13 @@
 import 'package:budget_controller/src/modells/cost.dart';
 import 'package:budget_controller/src/modells/project.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../modells/budget.dart';
 import '../modells/user.dart';
 import '../widget_builder.dart';
+import 'log_controller.dart';
 
 class ProjectController extends GetxController {
   CollectionReference projectCollection =
@@ -28,6 +30,9 @@ class ProjectController extends GetxController {
           budgets: budgets);
       await newProject.set(temp);
 
+      await LogController.writeLog(
+          notification: "Projekt kreiert",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Projekt angelegt", error: false);
     } on FirebaseException catch (e) {
@@ -63,6 +68,9 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([cost.toJson()])
       });
+      await LogController.writeLog(
+          notification: "Kosten hinzugefügt",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Ausgabe hinzugefügt", error: false);
     } on FirebaseException catch (e) {
@@ -80,6 +88,9 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([cost.toJson()])
       });
+      await LogController.writeLog(
+          notification: "Kosten gelöscht",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Ausgabe gelöscht", error: false);
     } on FirebaseException catch (e) {
@@ -101,6 +112,9 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([costNew.toJson()])
       });
+      await LogController.writeLog(
+          notification: "Kosten bearbeitet",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Ausgabe bearbeitet", error: false);
     } on FirebaseException catch (e) {
@@ -122,6 +136,9 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'budgets': FieldValue.arrayUnion([budgetNew.toJson()])
       });
+      await LogController.writeLog(
+          notification: "Budget upgedated",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Budget bearbeitet", error: false);
     } on FirebaseException catch (e) {
@@ -139,6 +156,9 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([owner.toJson()])
       });
+      await LogController.writeLog(
+          notification: "Owner hinzugefügt",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Owner hinzugefügt", error: false);
     } on FirebaseException catch (e) {
@@ -156,6 +176,9 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([owner.toJson()])
       });
+      await LogController.writeLog(
+          notification: "Owner entfernt",
+          userId: FirebaseAuth.instance.currentUser!.uid);
       return CustomBuilder.customSnackBarObject(
           message: "Owner entfernt", error: false);
     } on FirebaseException catch (e) {
