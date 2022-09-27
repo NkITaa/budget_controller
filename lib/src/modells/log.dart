@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Log {
   String notification;
   String projectId;
+  String userId;
   String id;
   DateTime date;
 
@@ -10,17 +11,25 @@ class Log {
       {required this.notification,
       required this.date,
       required this.projectId,
+      required this.userId,
       required this.id});
 
   Map<String, dynamic> toJson() {
-    return {"notification": id, "projectId": projectId, "id": id, "date": date};
+    return {
+      "notification": notification,
+      "projectId": projectId,
+      "id": id,
+      "date": date,
+      "userId": userId
+    };
   }
 
-  static Log fromJson(DocumentSnapshot<Object?> log) {
+  static Log fromJson(dynamic log) {
     return Log(
         notification: log["notification"],
-        date: log["projectId"],
-        projectId: log["id"],
-        id: log["date"]);
+        projectId: log["projectId"],
+        id: log["id"],
+        userId: log["userId"],
+        date: log["date"]);
   }
 }

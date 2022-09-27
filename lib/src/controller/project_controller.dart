@@ -17,8 +17,8 @@ class ProjectController extends GetxController {
       required List<Budget> budgets,
       required BuildContext context}) async {
     CustomBuilder.customProgressIndicator(context: context);
-    DocumentReference project = projectCollection.doc();
-    String projectId = project.id;
+    DocumentReference newProject = projectCollection.doc();
+    String projectId = newProject.id;
     try {
       Project temp = Project(
           id: projectId,
@@ -26,7 +26,7 @@ class ProjectController extends GetxController {
           ownerId: ownerId,
           costs: null,
           budgets: budgets);
-      await project.set(temp);
+      await newProject.set(temp);
 
       return CustomBuilder.customSnackBarObject(
           message: "Projekt angelegt", error: false);
