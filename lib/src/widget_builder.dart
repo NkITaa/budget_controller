@@ -412,7 +412,8 @@ class CustomBuilder {
         return Text(
           selectedItem ?? "Owner auswählen",
           style: TextStyle(
-              color: selectedItem == null ? Colors.grey : Colors.black),
+            color: selectedItem == null ? Colors.grey : Colors.black,
+          ),
         );
       },
       popupProps: PopupProps.menu(
@@ -421,7 +422,7 @@ class CustomBuilder {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               item,
-              style: const TextStyle(color: Colors.black, fontSize: 18),
+              style: const TextStyle(color: Colors.black, fontSize: 10),
             ),
           );
         },

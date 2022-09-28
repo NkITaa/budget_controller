@@ -7,7 +7,7 @@ class Project {
   String name;
   String ownerId;
   List<Cost>? costs;
-  List<Budget> budgets;
+  List<Budget>? budgets;
 
   Project({
     required this.id,
@@ -24,18 +24,18 @@ class Project {
       "ownerId": ownerId,
       "costs":
           costs != null ? costs!.map((cost) => cost.toJson()).toList() : null,
-      "budgets": budgets.map((budget) => budget.toJson()).toList(),
+      "budgets": budgets?.map((budget) => budget.toJson()).toList(),
     };
   }
 
   static Project fromJson(DocumentSnapshot<Object?> project) {
     List<dynamic> costsUnserialized = project["costs"];
-    List<dynamic> budgetsUnserialized = project["budgets"];
+    List<dynamic>? budgetsUnserialized = project["budgets"];
 
     List<Cost>? costs = costsUnserialized.isNotEmpty
         ? costsUnserialized.map((cost) => Cost.fromJson(cost)).toList()
         : null;
-    List<Budget> budgets = budgetsUnserialized.map((budget) {
+    List<Budget>? budgets = budgetsUnserialized?.map((budget) {
       return Budget.fromJson(budget);
     }).toList();
 
