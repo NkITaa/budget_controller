@@ -36,7 +36,7 @@ class _AdminState extends State<Admin> {
               ),
               Center(
                   child: Text(
-                logHistory ? "Log-Historie" : "Nachrichten",
+                logHistory ? "Log-Historie" : "Logs",
                 style: const TextStyle(fontSize: 28, color: Colors.black),
               )),
               Flexible(
@@ -52,9 +52,11 @@ class _AdminState extends State<Admin> {
                               logHistory = false;
                               setState(() {});
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.mail_outline,
-                              color: Colors.grey,
+                              color: logHistory
+                                  ? Colors.grey
+                                  : const Color(0xff7434E6),
                             )),
                         IconButton(
                             onPressed: () {
@@ -142,7 +144,7 @@ class _AdminState extends State<Admin> {
                               );
                             },
                             icon: const Icon(
-                              Icons.key_outlined,
+                              Icons.key,
                               color: Colors.grey,
                             )),
                         IconButton(
@@ -150,9 +152,11 @@ class _AdminState extends State<Admin> {
                               logHistory = true;
                               setState(() {});
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.book_outlined,
-                              color: Colors.grey,
+                              color: logHistory
+                                  ? const Color(0xff7434E6)
+                                  : Colors.grey,
                             )),
                       ],
                     ),
@@ -214,7 +218,7 @@ class _AdminState extends State<Admin> {
                                                   }
                                                 }),
                                             Text(
-                                              log.notification,
+                                              log.title,
                                               style: const TextStyle(
                                                   color: Colors.black),
                                             )
@@ -231,7 +235,7 @@ class _AdminState extends State<Admin> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "Detaills: ${log.title}",
+                                                    "Nachricht: ${log.notification}",
                                                     style: const TextStyle(
                                                         color: Colors.black),
                                                   ),
@@ -276,7 +280,7 @@ class _AdminState extends State<Admin> {
                                                     }
                                                   }),
                                               Text(
-                                                log.notification,
+                                                log.title,
                                                 style: const TextStyle(
                                                     color: Colors.black),
                                               )
@@ -285,31 +289,36 @@ class _AdminState extends State<Admin> {
                                           children: [
                                             Align(
                                               alignment: Alignment.topLeft,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    "Detaills: ${log.title}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    "Ticket Nummer: ${log.id}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    "Vom: ${log.date.toString()}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ],
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 28.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Nachricht: ${log.notification}",
+                                                      style: const TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Ticket Nummer: ${log.id}",
+                                                      style: const TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Vom: ${log.date.toString()}",
+                                                      style: const TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             )
                                           ],
