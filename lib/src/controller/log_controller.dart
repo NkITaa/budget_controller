@@ -36,4 +36,11 @@ class LogController {
     });
     return logs;
   }
+
+  static Future<void> setRead({required String uid}) async {
+    await FirebaseFirestore.instance
+        .collection('logs')
+        .doc(uid)
+        .update({"read": true});
+  }
 }

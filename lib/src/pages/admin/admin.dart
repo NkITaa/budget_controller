@@ -203,9 +203,15 @@ class _AdminState extends State<Admin> {
                                                     const Color(0xff7434E6),
                                                 activeColor: Colors.transparent,
                                                 value: tileState[index],
-                                                onChanged: (curValue) {
-                                                  tileState[index] = true;
-                                                  setState(() {});
+                                                onChanged: (curValue) async {
+                                                  if (curValue = true) {
+                                                    tileState[index] = curValue;
+                                                    await LogController.setRead(
+                                                        uid: log.id);
+                                                    setState(() {});
+                                                  } else {
+                                                    null;
+                                                  }
                                                 }),
                                             Text(
                                               log.notification,
@@ -253,9 +259,16 @@ class _AdminState extends State<Admin> {
                                             children: [
                                               Checkbox(
                                                   value: tileState[index],
-                                                  onChanged: (curValue) {
-                                                    tileState[index] = true;
-                                                    setState(() {});
+                                                  onChanged: (curValue) async {
+                                                    if (curValue = true) {
+                                                      tileState[index] =
+                                                          curValue;
+                                                      await LogController
+                                                          .setRead(uid: log.id);
+                                                      setState(() {});
+                                                    } else {
+                                                      null;
+                                                    }
                                                   }),
                                               Text(
                                                 log.notification,
