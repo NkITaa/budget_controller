@@ -221,34 +221,39 @@ class _AdminState extends State<Admin> {
                                           ],
                                         ),
                                         children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Ticket Nummer: ${log.id}",
-                                                style: const TextStyle(
-                                                    color: Colors.black),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 28.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Detaills: ${log.title}",
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "Ticket Nummer: ${log.id}",
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "Vom: ${log.date.toString()}",
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                ],
                                               ),
-                                              Text(
-                                                "Von UserID: ${log.userId}",
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              Text(
-                                                "Vom: ${log.date.toString()}",
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              Text(
-                                                "Projekt: ${log.projectId}",
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              Text(
-                                                log.projectId ?? "",
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            ],
+                                            ),
                                           )
                                         ],
                                       );
@@ -278,34 +283,34 @@ class _AdminState extends State<Admin> {
                                             ],
                                           ),
                                           children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Ticket Nummer: ${log.id}",
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  "Von UserID: ${log.userId}",
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  "Vom: ${log.date.toString()}",
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  "Projekt: ${log.projectId}",
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  log.projectId ?? "",
-                                                  style: const TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ],
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    "Detaills: ${log.title}",
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "Ticket Nummer: ${log.id}",
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "Vom: ${log.date.toString()}",
+                                                    style: const TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                ],
+                                              ),
                                             )
                                           ],
                                         );

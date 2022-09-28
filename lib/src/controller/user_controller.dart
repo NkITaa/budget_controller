@@ -27,7 +27,7 @@ class UserController extends GetxController {
       {required String email,
       required String password,
       required String role,
-      required String projectId,
+      required String? projectId,
       required BuildContext context}) async {
     try {
       await FirebaseAuth.instance
@@ -38,10 +38,9 @@ class UserController extends GetxController {
               projectId: projectId,
               role: role));
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "$role erstellt mit",
-          projectId: projectId,
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Rolle erstellt",
+        notification: "Der User $email wurde mit der Rolle $role erstellt",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "User angelegt", error: false);
     } on FirebaseException catch (e) {
@@ -55,9 +54,10 @@ class UserController extends GetxController {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Resetmail gesendet an $email",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Resetmail gesendet",
+        notification:
+            "Es wurde eine Resetmail an $email von ${FirebaseAuth.instance.currentUser!.uid} gesendet",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Rücksetzungsmail gesendet", error: false);
     } on FirebaseException catch (e) {
@@ -75,9 +75,10 @@ class UserController extends GetxController {
     try {
       await userCollection.doc(uid).update({'projectsId': role});
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Rolle geändert ",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Rolle geändert",
+        notification:
+            "Es wurde die Rolle von $uid zu $role von ${FirebaseAuth.instance.currentUser!.uid} geändert",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Rolle geändert", error: false);
     } on FirebaseException catch (e) {

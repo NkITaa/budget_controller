@@ -31,9 +31,10 @@ class ProjectController extends GetxController {
       await newProject.set(temp);
 
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Projekt kreiert",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Projekt erstellt",
+        notification:
+            "Ein neues Projekt wurde von ${FirebaseAuth.instance.currentUser!.uid} mit dem Namen $name erstellt. Die ProjektId lautet: $projectId. Die ID des Owners lautet $ownerId",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Projekt angelegt", error: false);
     } on FirebaseException catch (e) {
@@ -70,9 +71,10 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayUnion([cost.toJson()])
       });
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Kosten hinzugefügt",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Kosten hinzugefügt",
+        notification:
+            "Die Kosten für ${cost.reason} wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId hinzugefügt",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Ausgabe hinzugefügt", error: false);
     } on FirebaseException catch (e) {
@@ -91,9 +93,10 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayRemove([cost.toJson()])
       });
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Kosten gelöscht",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Kosten gelöscht",
+        notification:
+            "Die Kosten für ${cost.reason} wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId gelöscht",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Ausgabe gelöscht", error: false);
     } on FirebaseException catch (e) {
@@ -116,9 +119,10 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayUnion([costNew.toJson()])
       });
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Kosten bearbeitet",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Kosten bearbeitet",
+        notification:
+            "Die Kosten für ${costOld.reason} wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId geändert",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Ausgabe bearbeitet", error: false);
     } on FirebaseException catch (e) {
@@ -141,9 +145,10 @@ class ProjectController extends GetxController {
         'budgets': FieldValue.arrayUnion([budgetNew.toJson()])
       });
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Budget upgedated",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Budget geändert",
+        notification:
+            "Das Budget wurde von ${FirebaseAuth.instance.currentUser!.uid} im Projekt $projectId geändert",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Budget bearbeitet", error: false);
     } on FirebaseException catch (e) {
@@ -162,9 +167,10 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayUnion([owner.toJson()])
       });
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Owner hinzugefügt",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+        title: "Owner hinzugefügt",
+        notification:
+            "Der Owner ${owner.id} wurde von ${FirebaseAuth.instance.currentUser!.uid} zum Projekt $projectId hinzugefügt",
+      );
       return CustomBuilder.customSnackBarObject(
           message: "Owner hinzugefügt", error: false);
     } on FirebaseException catch (e) {
@@ -183,9 +189,9 @@ class ProjectController extends GetxController {
         'costs': FieldValue.arrayRemove([owner.toJson()])
       });
       await LogController.writeLog(
-          detailledNotification: "",
-          notification: "Owner entfernt",
-          userId: FirebaseAuth.instance.currentUser!.uid);
+          title: "Owner entfernt",
+          notification:
+              "Der Owner ${owner.id} wurde von ${FirebaseAuth.instance.currentUser!.uid} vom Projekt $projectId entfernt");
       return CustomBuilder.customSnackBarObject(
           message: "Owner entfernt", error: false);
     } on FirebaseException catch (e) {
