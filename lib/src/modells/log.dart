@@ -7,14 +7,16 @@ class Log {
   String userId;
   String id;
   DateTime date;
+  bool read;
 
   Log(
       {required this.notification,
       required this.detailledNotification,
       required this.date,
-      required this.projectId,
+      this.projectId,
       required this.userId,
-      required this.id});
+      required this.id,
+      this.read = false});
 
   Map<String, dynamic> toJson() {
     return {
@@ -23,7 +25,8 @@ class Log {
       "projectId": projectId,
       "id": id,
       "date": date,
-      "userId": userId
+      "userId": userId,
+      "read": false
     };
   }
 
@@ -34,6 +37,7 @@ class Log {
         projectId: log["projectId"],
         id: log["id"],
         userId: log["userId"],
-        date: DateTime.parse(log["date"].toDate().toString()));
+        date: DateTime.parse(log["date"].toDate().toString()),
+        read: log["read"]);
   }
 }

@@ -2,6 +2,7 @@ import 'package:budget_controller/src/controller/log_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../modells/log.dart';
 import '../../modells/user.dart';
 import 'admin_builder.dart';
 
@@ -14,8 +15,8 @@ class Admin extends StatefulWidget {
 
 class _AdminState extends State<Admin> {
   UserController userController = Get.find();
-
-  bool value = false;
+  List<bool?> tileState = [];
+  bool logHistory = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,180 +34,282 @@ class _AdminState extends State<Admin> {
               const SizedBox(
                 height: 20,
               ),
-              Stack(
-                children: [
-                  const Center(
-                      child: Text(
-                    "Nachrichten",
-                    style: TextStyle(fontSize: 28, color: Colors.black),
-                  )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                            onTap: () {},
-                                            child: AdminBuilder.addUserPopup(
-                                              context: context,
-                                              userController: userController,
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.person_add_outlined,
-                              color: Colors.grey)),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                            onTap: () {},
-                                            child: AdminBuilder.changeRolePopup(
-                                              context: context,
-                                              userController: userController,
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.change_circle_outlined,
-                            color: Colors.grey,
-                          )),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                            onTap: () {},
-                                            child: AdminBuilder.resetPassword(
-                                              context: context,
-                                              userController: userController,
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.key_outlined,
-                            color: Colors.grey,
-                          )),
-                    ],
-                  ),
-                ],
-              ),
-              FutureBuilder(
-                future: LogController.loadLogs(),
-                builder: (BuildContext context, snapshot) {
-                  if (snapshot.hasError) {
-                    snapshot.printError();
-                    return Column(
+              Center(
+                  child: Text(
+                logHistory ? "Log-Historie" : "Nachrichten",
+                style: const TextStyle(fontSize: 28, color: Colors.black),
+              )),
+              Flexible(
+                child: Row(
+                  children: [
+                    Column(
                       children: [
                         const SizedBox(
-                          height: 100,
+                          height: 25,
                         ),
-                        Text(
-                          snapshot.error.toString(),
-                          style: const TextStyle(
-                              fontSize: 30, color: Colors.black),
-                        ),
+                        IconButton(
+                            onPressed: () {
+                              logHistory = false;
+                              setState(() {});
+                            },
+                            icon: const Icon(
+                              Icons.mail_outline,
+                              color: Colors.grey,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ScaffoldMessenger(
+                                    child: Builder(
+                                      builder: (context) => Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: GestureDetector(
+                                              onTap: () {},
+                                              child: AdminBuilder.addUserPopup(
+                                                context: context,
+                                                userController: userController,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.person_add_outlined,
+                                color: Colors.grey)),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ScaffoldMessenger(
+                                    child: Builder(
+                                      builder: (context) => Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: GestureDetector(
+                                              onTap: () {},
+                                              child:
+                                                  AdminBuilder.changeRolePopup(
+                                                context: context,
+                                                userController: userController,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.change_circle_outlined,
+                              color: Colors.grey,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ScaffoldMessenger(
+                                    child: Builder(
+                                      builder: (context) => Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: GestureDetector(
+                                              onTap: () {},
+                                              child: AdminBuilder.resetPassword(
+                                                context: context,
+                                                userController: userController,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.key_outlined,
+                              color: Colors.grey,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              logHistory = true;
+                              setState(() {});
+                            },
+                            icon: const Icon(
+                              Icons.book_outlined,
+                              color: Colors.grey,
+                            )),
                       ],
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  final data = snapshot.requireData;
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: data!.length,
-                    itemBuilder: (context, index) {
-                      return ExpansionTile(
-                        title: Row(
+                    ),
+                    Flexible(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height - 130,
+                        child: Column(
                           children: [
-                            Checkbox(
-                                value: value,
-                                onChanged: (curValue) {
-                                  value = curValue!;
-                                  setState(() {});
-                                }),
-                            Text(
-                              data[index].notification,
-                              style: const TextStyle(color: Colors.black),
-                            )
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            FutureBuilder(
+                              future: LogController.loadLogs(),
+                              builder: (BuildContext context, snapshot) {
+                                if (snapshot.hasError) {
+                                  snapshot.printError();
+                                  return Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 100,
+                                      ),
+                                      Text(
+                                        snapshot.error.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 30, color: Colors.black),
+                                      ),
+                                    ],
+                                  );
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                final logs = snapshot.requireData;
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: logs!.length,
+                                  itemBuilder: (context, index) {
+                                    Log log = logs[index];
+                                    tileState.add(log.read);
+                                    if (logHistory) {
+                                      return ExpansionTile(
+                                        title: Row(
+                                          children: [
+                                            Checkbox(
+                                                checkColor:
+                                                    const Color(0xff7434E6),
+                                                activeColor: Colors.transparent,
+                                                value: tileState[index],
+                                                onChanged: (curValue) {
+                                                  tileState[index] = true;
+                                                  setState(() {});
+                                                }),
+                                            Text(
+                                              log.notification,
+                                              style: const TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        ),
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "Ticket Nummer: ${log.id}",
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              Text(
+                                                "Von UserID: ${log.userId}",
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              Text(
+                                                "Vom: ${log.date.toString()}",
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              Text(
+                                                "Projekt: ${log.projectId}",
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              Text(
+                                                log.projectId ?? "",
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    } else {
+                                      if (!tileState[index]!) {
+                                        return ExpansionTile(
+                                          title: Row(
+                                            children: [
+                                              Checkbox(
+                                                  value: tileState[index],
+                                                  onChanged: (curValue) {
+                                                    tileState[index] = true;
+                                                    setState(() {});
+                                                  }),
+                                              Text(
+                                                log.notification,
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Ticket Nummer: ${log.id}",
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                                Text(
+                                                  "Von UserID: ${log.userId}",
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                                Text(
+                                                  "Vom: ${log.date.toString()}",
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                                Text(
+                                                  "Projekt: ${log.projectId}",
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                                Text(
+                                                  log.projectId ?? "",
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    }
+                                  },
+                                );
+                              },
+                            ),
                           ],
                         ),
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "Ticket Nummer: ${data[index].id}",
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                "Von UserID: ${data[index].userId}",
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                "Vom: ${data[index].date.toString()}",
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                "Projekt: ${data[index].projectId}",
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                data[index].projectId ?? "",
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                            ],
-                          )
-                        ],
-                      );
-                    },
-                  );
-                },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
