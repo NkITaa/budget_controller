@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/format_controller.dart';
+import '../../../controller/project_controller.dart';
 import '../../../modells/user.dart';
-import '../manager_builder.dart';
 
 class NewProject extends StatefulWidget {
   const NewProject({super.key});
@@ -16,23 +16,12 @@ class NewProject extends StatefulWidget {
 
 class _NewProjectState extends State<NewProject> {
   TextEditingController projectName = TextEditingController();
-  TextEditingController responsible = TextEditingController();
-  TextEditingController costIt = TextEditingController();
-  TextEditingController costLaw = TextEditingController();
-  TextEditingController costSales = TextEditingController();
-  TextEditingController costManagement = TextEditingController();
-  TextEditingController costHardware = TextEditingController();
-  TextEditingController costSoftware = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  ProjectController projectController = Get.find();
 
   UserController userController = Get.find();
-  DateTime? dateTime;
+  DateTime? deadline;
   bool dateExists = true;
-  String? currentOwner;
-
-  setOwner({required String selectedRole}) {
-    currentOwner = selectedRole;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,17 +81,17 @@ class _NewProjectState extends State<NewProject> {
                           SizedBox(
                               width: 200,
                               child: CustomBuilder.customSearchDropDown(
-                                  items: owners.map((e) => e.id).toList(),
-                                  setItem: setOwner)),
+                                items: owners.map((e) => e.id).toList(),
+                              )),
                           const SizedBox(
                             width: 35,
                           ),
                           IconButton(
                               onPressed: () {
                                 CustomBuilder.customDatePicker(
-                                        context: context, dateTime: dateTime)
+                                        context: context, dateTime: deadline)
                                     .then((date) {
-                                  dateTime = date;
+                                  deadline = date;
                                   dateExists = true;
                                   setState(() {});
                                 });
@@ -112,12 +101,12 @@ class _NewProjectState extends State<NewProject> {
                                 color: dateExists ? Colors.black : Colors.red,
                               )),
                           Text(
-                            dateTime != null
+                            deadline != null
                                 ? FormatController.dateTimeFormatter(
-                                    dateTime: dateTime!)
+                                    dateTime: deadline!)
                                 : "",
                             style: TextStyle(
-                                color: dateTime != null
+                                color: deadline != null
                                     ? Colors.black
                                     : Colors.grey),
                           ),
@@ -129,101 +118,28 @@ class _NewProjectState extends State<NewProject> {
                 const SizedBox(
                   height: 50,
                 ),
-                SizedBox(
-                  width: 648,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      const Text(
-                        "Personalkosten",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 28,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          ManagerBuilder.costFieldBuilder(
-                              controller: costIt,
-                              hint: "IT-Kosten",
-                              overlineText: "IT"),
-                          ManagerBuilder.costFieldBuilder(
-                              controller: costSales,
-                              hint: "Vertriebs-Kosten",
-                              overlineText: "Vertrieb"),
-                          ManagerBuilder.costFieldBuilder(
-                              controller: costLaw,
-                              hint: "Rechts-Kosten",
-                              overlineText: "Recht"),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        children: [
-                          ManagerBuilder.costFieldBuilder(
-                              controller: costManagement,
-                              hint: "Management-Kosten",
-                              overlineText: "Management"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 648,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      const Text(
-                        "Sachkosten",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 28,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          ManagerBuilder.costFieldBuilder(
-                              controller: costHardware,
-                              hint: "Hardware-Kosten",
-                              overlineText: "Hardware"),
-                          ManagerBuilder.costFieldBuilder(
-                              controller: costSoftware,
-                              hint: "Software-Kosten",
-                              overlineText: "Software"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
                 CustomBuilder.customButton(
                     text: "Anlegen",
-                    onPressed: () {
-                      if (dateTime == null) {
+                    onPressed: () async {
+                      if (deadline == null) {
                         dateExists = false;
                         setState(() {});
                       }
-                      if (dateTime != null) {
-                        dateExists = true;
+                      if (formKey.currentState!.validate() &&
+                          dateExists == true) {
+                        SnackBar snackBar =
+                            await projectController.createProject(
+                          deadline: deadline!,
+                          projectName: projectName.text.trim(),
+                          ownerId: projectController.owner!,
+                        );
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        projectName.text = "";
+                        projectController.owner = null;
+                        deadline = null;
                         setState(() {});
                       }
-                      if (formKey.currentState!.validate()) {}
                     },
                     isLightMode: true)
               ],

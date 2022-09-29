@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:animate_icons/animate_icons.dart';
+import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,11 +15,11 @@ class AdminBuilder {
     required UserController userController,
     required BuildContext context,
   }) {
+    ProjectController projectController = Get.find();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Random generator = Random.secure();
     late String tempPassword = generator.nextDouble().toString();
     String selectedRole = Const.userRoles[0];
-    String selectedProject = Const.userRoles[0];
 
     final TextEditingController emailController = TextEditingController();
     late TextEditingController passwordController =
@@ -39,7 +40,7 @@ class AdminBuilder {
           }
 
           stateProject({required String art}) {
-            selectedProject = art;
+            projectController.projectId = art;
             setState(() {});
           }
 
@@ -103,12 +104,20 @@ class AdminBuilder {
                                 width: 30,
                               ),
                               selectedRole == "Owner"
-                                  ? SizedBox(
-                                      width: 150,
-                                      child: CustomBuilder.popupDropDown(
-                                          gewaehlteArt: selectedProject,
-                                          arten: Const.userRoles,
-                                          setArt: stateProject))
+                                  ? FutureBuilder(
+                                      future: projectController.loadProjects(),
+                                      builder:
+                                          (BuildContext context, snapshot) {
+                                        return SizedBox(
+                                            width: 150,
+                                            child: CustomBuilder.popupDropDown(
+                                                gewaehlteArt:
+                                                    projectController.projectId,
+                                                arten: snapshot.data
+                                                    ?.map((e) => e.id)
+                                                    .toList(),
+                                                setArt: stateProject));
+                                      })
                                   : Container(),
                             ],
                           ),
@@ -138,12 +147,12 @@ class AdminBuilder {
                         email: emailController.text,
                         password: passwordController.text,
                         role: selectedRole,
-                        projectId: selectedProject,
+                        projectId: projectController.projectId,
                         context: context);
                     emailController.text = "";
                     passwordController.text = "";
                     selectedRole = Const.userRoles[0];
-                    selectedProject = Const.userRoles[0];
+                    projectController.projectId = null;
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }

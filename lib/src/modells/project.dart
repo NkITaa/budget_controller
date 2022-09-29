@@ -6,10 +6,12 @@ class Project {
   String id;
   String name;
   String ownerId;
+  DateTime deadline;
   List<Cost>? costs;
   List<Budget>? budgets;
 
   Project({
+    required this.deadline,
     required this.id,
     required this.name,
     required this.ownerId,
@@ -19,6 +21,7 @@ class Project {
 
   Map<String, dynamic> toJson() {
     return {
+      "deadline": deadline,
       "id": id,
       "name": name,
       "ownerId": ownerId,
@@ -40,6 +43,7 @@ class Project {
     }).toList();
 
     return Project(
+        deadline: DateTime.parse(project["deadline"].toDate().toString()),
         id: project["id"],
         name: project["name"],
         ownerId: project["ownerId"],

@@ -12,28 +12,30 @@ import 'log_controller.dart';
 class ProjectController extends GetxController {
   CollectionReference projectCollection =
       FirebaseFirestore.instance.collection("project");
+  String? owner;
+  String? projectId;
 
-  Future<SnackBar> createProject(
-      {required String name,
-      required String ownerId,
-      required List<Budget> budgets,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
+  Future<SnackBar> createProject({
+    required String projectName,
+    required String ownerId,
+    required DateTime deadline,
+  }) async {
     DocumentReference newProject = projectCollection.doc();
     String projectId = newProject.id;
     try {
-      Project temp = Project(
+      Project project = Project(
+          deadline: deadline,
           id: projectId,
-          name: name,
+          name: projectName,
           ownerId: ownerId,
           costs: null,
-          budgets: budgets);
-      await newProject.set(temp);
+          budgets: null);
+      await newProject.set(project.toJson());
 
       await LogController.writeLog(
         title: "Projekt erstellt",
         notification:
-            "Ein neues Projekt wurde von ${FirebaseAuth.instance.currentUser!.uid} mit dem Namen $name erstellt. Die ProjektId lautet: $projectId. Die ID des Owners lautet $ownerId",
+            "Ein neues Projekt wurde von ${FirebaseAuth.instance.currentUser!.uid} mit dem Namen $projectName erstellt. Die ProjektId lautet: $projectId. Die ID des Owners lautet $ownerId",
       );
       return CustomBuilder.customSnackBarObject(
           message: "Projekt angelegt", error: false);
@@ -43,18 +45,25 @@ class ProjectController extends GetxController {
     }
   }
 
-  Future<List<Project>?> loadProjects(
-      {required List<String> projectIds, required BuildContext context}) async {
-    List<Project> projects = [];
-    CustomBuilder.customProgressIndicator(context: context);
+  Future<List<Project>?> loadProjects() async {
+    var projects = await FirebaseFirestore.instance
+        .collection('project')
+        .get()
+        .then((value) {
+      return value.docs;
+    });
+    List<Project> ownerlessProjects = [];
     try {
-      for (int i = 0; i < projectIds.length; i++) {
-        await projectCollection.doc(projectIds[i]).get().then((project) {
-          Project temp = Project.fromJson(project);
-          projects.add(temp);
-        });
+      if (projects.isNotEmpty) {
+        for (int i = 0; i < projects.length; i++) {
+          var ownerlessProject = projects[i];
+          if (ownerlessProject["ownerId"] == null) {
+            Project temp = Project.fromJson(ownerlessProject);
+            ownerlessProjects.add(temp);
+          }
+        }
       }
-      return projects;
+      return ownerlessProjects;
     } on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
       return null;
@@ -164,7 +173,7 @@ class ProjectController extends GetxController {
     CustomBuilder.customProgressIndicator(context: context);
     try {
       await projectCollection.doc(projectId).update({
-        'costs': FieldValue.arrayUnion([owner.toJson()])
+        'owner': FieldValue.arrayUnion([owner.toJson()])
       });
       await LogController.writeLog(
         title: "Owner hinzugefügt",

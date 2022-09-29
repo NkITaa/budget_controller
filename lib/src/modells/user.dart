@@ -14,7 +14,7 @@ class CustomUser {
   static CustomUser fromJson(DocumentSnapshot<Object?> user) {
     return CustomUser(
       id: user["id"],
-      projectId: user["projectId"] ?? "",
+      projectId: user["projectId"],
       role: user["role"],
     );
   }

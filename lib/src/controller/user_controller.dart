@@ -102,7 +102,8 @@ class UserController extends GetxController {
 
     if (users.isNotEmpty) {
       for (int i = 0; i < users.length; i++) {
-        if (users[i]["role"] == Const.userRoles[1]) {
+        var owner = users[i];
+        if (owner["role"] == Const.userRoles[1] && owner["projectId"] == null) {
           CustomUser temp = CustomUser.fromJson(users[i]);
           owners.add(temp);
         }

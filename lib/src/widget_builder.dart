@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'const.dart';
 import 'controller/format_controller.dart';
+import 'controller/project_controller.dart';
 
 class CustomBuilder {
   static void customProgressIndicator({required BuildContext context}) {
@@ -290,8 +291,8 @@ class CustomBuilder {
   }
 
   static Widget popupDropDown({
-    required String gewaehlteArt,
-    required List<String> arten,
+    required String? gewaehlteArt,
+    required List<String>? arten,
     required Function setArt,
     bool? isTable,
   }) {
@@ -316,7 +317,7 @@ class CustomBuilder {
         ),
         value: gewaehlteArt,
         items: arten
-            .map((art) => DropdownMenuItem(
+            ?.map((art) => DropdownMenuItem(
                   value: art,
                   child: Text(
                     art,
@@ -405,14 +406,14 @@ class CustomBuilder {
         lastDate: DateTime.now());
   }
 
-  static Widget customSearchDropDown(
-      {required List<String> items, required Function setItem}) {
+  static Widget customSearchDropDown({required List<String> items}) {
+    ProjectController projectController = Get.find();
     return DropdownSearch<String>(
       dropdownBuilder: (context, selectedItem) {
         return Text(
-          selectedItem ?? "Owner auswählen",
+          projectController.owner ?? "Owner auswählen",
           style: TextStyle(
-            color: selectedItem == null ? Colors.grey : Colors.black,
+            color: projectController.owner == null ? Colors.grey : Colors.black,
           ),
         );
       },
@@ -458,10 +459,10 @@ class CustomBuilder {
         ),
       )),
       onChanged: (currentItem) {
-        setItem(selectedRole: currentItem);
+        projectController.owner = currentItem;
       },
       validator: (String? item) {
-        if (item == null) {
+        if (projectController.owner == null) {
           return "";
         } else {
           return null;
