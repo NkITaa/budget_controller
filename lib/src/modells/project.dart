@@ -32,12 +32,12 @@ class Project {
   }
 
   static Project fromJson(DocumentSnapshot<Object?> project) {
-    List<dynamic> costsUnserialized = project["costs"];
+    List<dynamic>? costsUnserialized = project["costs"];
     List<dynamic>? budgetsUnserialized = project["budgets"];
 
-    List<Cost>? costs = costsUnserialized.isNotEmpty
-        ? costsUnserialized.map((cost) => Cost.fromJson(cost)).toList()
-        : null;
+    List<Cost>? costs = costsUnserialized?.map((cost) {
+      return Cost.fromJson(cost);
+    }).toList();
     List<Budget>? budgets = budgetsUnserialized?.map((budget) {
       return Budget.fromJson(budget);
     }).toList();

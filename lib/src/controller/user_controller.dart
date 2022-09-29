@@ -113,7 +113,7 @@ class UserController extends GetxController {
     return owners;
   }
 
-  Future<CustomUser> getUser() async {
+  Future<CustomUser> getUser() {
     final String uid = FirebaseAuth.instance.currentUser!.uid;
     final CollectionReference userCollection =
         FirebaseFirestore.instance.collection("user");

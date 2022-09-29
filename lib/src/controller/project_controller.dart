@@ -70,6 +70,13 @@ class ProjectController extends GetxController {
     }
   }
 
+  Future<Project> getProject({required String projectId}) async {
+    var projectCollection = FirebaseFirestore.instance.collection('project');
+    return projectCollection.doc(projectId).get().then((project) {
+      return Project.fromJson(project);
+    });
+  }
+
   Future<SnackBar> addCost(
       {required String projectId,
       required Cost cost,
