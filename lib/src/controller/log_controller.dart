@@ -16,7 +16,7 @@ class LogController {
     Log temp = Log(
         projectId: projectId,
         userId: FirebaseAuth.instance.currentUser!.uid,
-        toManager: toManager ?? false,
+        toManager: toManager,
         title: title,
         notification: notification,
         date: DateTime.now(),
@@ -33,6 +33,22 @@ class LogController {
       var logDocs = logsSnapshot.docs;
       for (int i = 0; i < logDocs.length; i++) {
         logs.add(Log.fromJson(logDocs[i]));
+      }
+    });
+    return logs;
+  }
+
+  static Future<List<Log>?> loadLogsManager() async {
+    List<Log> logs = [];
+    await FirebaseFirestore.instance
+        .collection('logs')
+        .get()
+        .then((logsSnapshot) {
+      var logDocs = logsSnapshot.docs;
+      for (int i = 0; i < logDocs.length; i++) {
+        if (logDocs[i]["toManager"] == true) {
+          logs.add(Log.fromJson(logDocs[i]));
+        }
       }
     });
     return logs;

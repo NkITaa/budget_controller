@@ -4,6 +4,7 @@ import 'package:budget_controller/src/pages/manager/components/project.dart';
 import 'package:flutter/material.dart';
 
 import '../../modells/user.dart';
+import 'components/benachrichtigungen.dart';
 
 class Manager extends StatefulWidget {
   const Manager({super.key, required this.user});
@@ -14,8 +15,18 @@ class Manager extends StatefulWidget {
 
 class _ManagerState extends State<Manager> {
   int selectedIndex = 0;
-  List<Widget> pages = [const KPIs(), const Project(), const NewProject()];
-  List<String> title = ["KPIs", "Projekt XYZ", "Projekt anlegen"];
+  List<Widget> pages = [
+    const KPIs(),
+    const Project(),
+    const NewProject(),
+    const Benachrichtigungen()
+  ];
+  List<String> title = [
+    "KPIs",
+    "Projekt XYZ",
+    "Projekt anlegen",
+    "Benachrichtigung"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +58,42 @@ class _ManagerState extends State<Manager> {
                           selectedIndex = 0;
                           setState(() {});
                         },
-                        icon: const Icon(Icons.bar_chart_outlined,
-                            color: Colors.grey)),
+                        icon: Icon(Icons.bar_chart_outlined,
+                            color: selectedIndex == 0
+                                ? const Color(0xff7434E6)
+                                : Colors.grey)),
                     IconButton(
                         onPressed: () {
                           selectedIndex = 1;
                           setState(() {});
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.file_copy,
-                          color: Colors.grey,
+                          color: selectedIndex == 1
+                              ? const Color(0xff7434E6)
+                              : Colors.grey,
                         )),
                     IconButton(
                         onPressed: () {
                           selectedIndex = 2;
                           setState(() {});
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.add,
-                          color: Colors.grey,
+                          color: selectedIndex == 2
+                              ? const Color(0xff7434E6)
+                              : Colors.grey,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          selectedIndex = 3;
+                          setState(() {});
+                        },
+                        icon: Icon(
+                          Icons.mail_outline,
+                          color: selectedIndex == 3
+                              ? const Color(0xff7434E6)
+                              : Colors.grey,
                         )),
                   ],
                 ),

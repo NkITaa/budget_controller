@@ -8,7 +8,7 @@ class Log {
   String? projectId;
   DateTime date;
   bool read;
-  bool toManager;
+  bool? toManager;
 
   Log(
       {required this.notification,
@@ -18,7 +18,7 @@ class Log {
       required this.userId,
       required this.projectId,
       this.read = false,
-      required this.toManager});
+      this.toManager});
 
   Map<String, dynamic> toJson() {
     return {

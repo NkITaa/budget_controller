@@ -235,7 +235,8 @@ class CustomBuilder {
 
   static Widget popUpTextField(
       {required TextEditingController controller,
-      required String hint,
+      bool? enabled,
+      String? hint,
       bool? isMail,
       bool? isUid,
       bool? isSumme}) {
@@ -269,6 +270,7 @@ class CustomBuilder {
           controller.selection = previousSelection;
         }
       },
+      enabled: enabled,
       maxLength: summe
           ? 9
           : mail

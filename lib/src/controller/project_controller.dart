@@ -79,6 +79,42 @@ class ProjectController extends GetxController {
     });
   }
 
+  Future<SnackBar> deleteBudget({required String projectId}) async {
+    try {
+      await projectCollection
+          .doc(projectId)
+          .update({'budgets': FieldValue.delete()});
+      await LogController.writeLog(
+        projectId: projectId,
+        title: "Budget abgelehnt",
+        notification:
+            "Der Budgetvorschlag für das Projekt $projectId wurden von ${FirebaseAuth.instance.currentUser!.uid} abgelehnt",
+      );
+      return CustomBuilder.customSnackBarObject(
+          message: "Budgetvorschlag abgelehnt", error: false);
+    } on FirebaseException catch (e) {
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
+    }
+  }
+
+  Future<SnackBar> acceptBudget({required String projectId}) async {
+    try {
+      await projectCollection.doc(projectId).update({'toManager': false});
+      await LogController.writeLog(
+        projectId: projectId,
+        title: "Budget angenommen",
+        notification:
+            "Der Budgetvorschlag für das Projekt $projectId wurden von ${FirebaseAuth.instance.currentUser!.uid} angenommen",
+      );
+      return CustomBuilder.customSnackBarObject(
+          message: "Budgetvorschlag angenommen", error: false);
+    } on FirebaseException catch (e) {
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
+    }
+  }
+
   Future<SnackBar> addCost(
       {required String projectId,
       required Cost cost,

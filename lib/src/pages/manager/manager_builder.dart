@@ -5,7 +5,8 @@ import '../../widget_builder.dart';
 class ManagerBuilder {
   static Widget costFieldBuilder(
       {required TextEditingController controller,
-      required String hint,
+      String? hint,
+      bool? enabled,
       required String overlineText}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -21,7 +22,10 @@ class ManagerBuilder {
           SizedBox(
               width: 200,
               child: CustomBuilder.popUpTextField(
-                  controller: controller, hint: hint, isSumme: true)),
+                  controller: controller,
+                  enabled: enabled,
+                  hint: hint,
+                  isSumme: true)),
         ],
       ),
     );
