@@ -8,6 +8,8 @@ import '../widget_builder.dart';
 import 'log_controller.dart';
 
 class UserController extends GetxController {
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection("user");
   Future<CustomUser?> signIn(
       {required String email,
       required String password,
@@ -70,8 +72,6 @@ class UserController extends GetxController {
       {required String uid,
       required String role,
       required BuildContext context}) async {
-    final CollectionReference userCollection =
-        FirebaseFirestore.instance.collection("user");
     try {
       await userCollection.doc(uid).update({'projectsId': role});
       await LogController.writeLog(
@@ -88,15 +88,12 @@ class UserController extends GetxController {
   }
 
   Future<void> createUser({required CustomUser user}) async {
-    final CollectionReference userCollection =
-        FirebaseFirestore.instance.collection("user");
     await userCollection.doc(user.id).set(user.toJson());
   }
 
   Future<List<CustomUser>> getOwners() async {
     List<CustomUser> owners = [];
-    var users =
-        await FirebaseFirestore.instance.collection('user').get().then((value) {
+    var users = await userCollection.get().then((value) {
       return value.docs;
     });
 
@@ -113,10 +110,13 @@ class UserController extends GetxController {
     return owners;
   }
 
+  Future<void> setProject(
+      {required String uid, required String projectId}) async {
+    await userCollection.doc(uid).update({"projectId": projectId});
+  }
+
   Future<CustomUser> getUser() {
     final String uid = FirebaseAuth.instance.currentUser!.uid;
-    final CollectionReference userCollection =
-        FirebaseFirestore.instance.collection("user");
 
     return userCollection.doc(uid).get().then((user) {
       return CustomUser.fromJson(user);

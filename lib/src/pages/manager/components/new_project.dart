@@ -129,6 +129,7 @@ class _NewProjectState extends State<NewProject> {
                           dateExists == true) {
                         SnackBar snackBar =
                             await projectController.createProject(
+                          userController: userController,
                           deadline: deadline!,
                           projectName: projectName.text.trim(),
                           ownerId: projectController.owner!,

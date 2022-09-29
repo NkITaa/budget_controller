@@ -19,7 +19,14 @@ class COwner {
 
   static const String add = "Hinzufügen";
 
-  static List<String> arten = ["Garage", "Mensa", "Personal"];
+  static List<String> arten = [
+    "IT",
+    "Vertrieb",
+    "Recht",
+    "Management",
+    "Hardware",
+    "Software"
+  ];
 
   static List<String> costAttributes = ["Beschreibung", "Grund", "Summe"];
 

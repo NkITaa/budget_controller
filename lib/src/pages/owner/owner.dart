@@ -1,3 +1,4 @@
+import 'package:budget_controller/src/modells/budget.dart';
 import 'package:budget_controller/src/modells/cost.dart';
 import 'package:budget_controller/src/modells/project.dart';
 import 'package:budget_controller/src/pages/owner/components/table.dart';
@@ -8,6 +9,7 @@ import '../../modells/user.dart';
 import '../../widget_builder.dart';
 import '../manager/manager_builder.dart';
 import 'components/owner_builder.dart';
+import 'const_owner.dart';
 
 class Owner extends StatefulWidget {
   const Owner({super.key, required this.user});
@@ -18,13 +20,16 @@ class Owner extends StatefulWidget {
 }
 
 class _OwnerState extends State<Owner> {
-  TextEditingController costIt = TextEditingController();
-  TextEditingController costLaw = TextEditingController();
-  TextEditingController costSales = TextEditingController();
-  TextEditingController costManagement = TextEditingController();
-  TextEditingController costHardware = TextEditingController();
-  TextEditingController costSoftware = TextEditingController();
+  List<TextEditingController> controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
   ProjectController projectController = Get.put(ProjectController());
+
   bool enabled = false;
   int currentIndex = 0;
   Project? project;
@@ -99,126 +104,169 @@ class _OwnerState extends State<Owner> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.data?.budgets == null) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              width: 648,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      snapshot.data!.name,
-                                      style: const TextStyle(
+                        final GlobalKey<FormState> formKey =
+                            GlobalKey<FormState>();
+                        return Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 648,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        snapshot.data!.name,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 28,
+                                        ),
+                                      ),
+                                    ),
+                                    const Center(
+                                      child: Text(
+                                        "Budget Einreichen",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Text(
+                                      "Personalkosten",
+                                      style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 28,
                                       ),
                                     ),
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      "Budget Einreichen",
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        ManagerBuilder.costFieldBuilder(
+                                            controller: controllers[0],
+                                            hint: "IT-Kosten",
+                                            overlineText: COwner.arten[0]),
+                                        ManagerBuilder.costFieldBuilder(
+                                            controller: controllers[1],
+                                            hint: "Vertriebs-Kosten",
+                                            overlineText: COwner.arten[1]),
+                                        ManagerBuilder.costFieldBuilder(
+                                            controller: controllers[2],
+                                            hint: "Rechts-Kosten",
+                                            overlineText: COwner.arten[2]),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Row(
+                                      children: [
+                                        ManagerBuilder.costFieldBuilder(
+                                            controller: controllers[3],
+                                            hint: "Management-Kosten",
+                                            overlineText: COwner.arten[3]),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              SizedBox(
+                                width: 648,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    const Text(
+                                      "Sachkosten",
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 20,
+                                        fontSize: 28,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Text(
-                                    "Personalkosten",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 28,
+                                    const SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      ManagerBuilder.costFieldBuilder(
-                                          controller: costIt,
-                                          hint: "IT-Kosten",
-                                          overlineText: "IT"),
-                                      ManagerBuilder.costFieldBuilder(
-                                          controller: costSales,
-                                          hint: "Vertriebs-Kosten",
-                                          overlineText: "Vertrieb"),
-                                      ManagerBuilder.costFieldBuilder(
-                                          controller: costLaw,
-                                          hint: "Rechts-Kosten",
-                                          overlineText: "Recht"),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  Row(
-                                    children: [
-                                      ManagerBuilder.costFieldBuilder(
-                                          controller: costManagement,
-                                          hint: "Management-Kosten",
-                                          overlineText: "Management"),
-                                    ],
-                                  ),
-                                ],
+                                    Row(
+                                      children: [
+                                        ManagerBuilder.costFieldBuilder(
+                                            controller: controllers[4],
+                                            hint: "Hardware-Kosten",
+                                            overlineText: COwner.arten[4]),
+                                        ManagerBuilder.costFieldBuilder(
+                                            controller: controllers[5],
+                                            hint: "Software-Kosten",
+                                            overlineText: COwner.arten[5]),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              CustomBuilder.customButton(
+                                  text: "Einreichen",
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      SnackBar snackBar =
+                                          await projectController.addBudgets(
+                                        projectId: snapshot.data!.id,
+                                        budgets: COwner.arten
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          return Budget(
+                                              type: entry.value,
+                                              value: double.parse(
+                                                  controllers[entry.key]
+                                                      .text
+                                                      .trim()
+                                                      .replaceFirst("€", "")));
+                                        }).toList(),
+                                      );
+                                      setState(() {});
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    }
+                                  },
+                                  isLightMode: true),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      if (snapshot.data?.pending == true) {
+                        return Column(
+                          children: const [
                             SizedBox(
-                              width: 648,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  const Text(
-                                    "Sachkosten",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 28,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      ManagerBuilder.costFieldBuilder(
-                                          controller: costHardware,
-                                          hint: "Hardware-Kosten",
-                                          overlineText: "Hardware"),
-                                      ManagerBuilder.costFieldBuilder(
-                                          controller: costSoftware,
-                                          hint: "Software-Kosten",
-                                          overlineText: "Software"),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              height: 100,
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            CustomBuilder.customButton(
-                                text: "Einreichen",
-                                onPressed: () async {},
-                                isLightMode: true),
-                            const SizedBox(
-                              height: 15,
+                            Text(
+                              "Dein Budgetentwurf wird geprüft",
+                              style:
+                                  TextStyle(fontSize: 30, color: Colors.black),
                             ),
                           ],
                         );
-                      }
-                      {
+                      } else {
                         return Column(
                           children: [
                             const SizedBox(

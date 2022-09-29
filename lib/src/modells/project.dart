@@ -6,11 +6,13 @@ class Project {
   String id;
   String name;
   String ownerId;
+  bool pending;
   DateTime deadline;
   List<Cost>? costs;
   List<Budget>? budgets;
 
   Project({
+    this.pending = true,
     required this.deadline,
     required this.id,
     required this.name,
@@ -21,6 +23,7 @@ class Project {
 
   Map<String, dynamic> toJson() {
     return {
+      "pending": pending,
       "deadline": deadline,
       "id": id,
       "name": name,
@@ -43,6 +46,7 @@ class Project {
     }).toList();
 
     return Project(
+        pending: project["pending"],
         deadline: DateTime.parse(project["deadline"].toDate().toString()),
         id: project["id"],
         name: project["name"],
