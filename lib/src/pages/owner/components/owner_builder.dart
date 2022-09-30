@@ -1,4 +1,5 @@
 import 'package:budget_controller/src/controller/project_controller.dart';
+import 'package:budget_controller/src/modells/budget.dart';
 import 'package:budget_controller/src/pages/owner/controller_owner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import 'detaills.dart';
 class OwnerBuilder {
   static Widget buildComparison(
       {required double isPrice,
+      required List<Cost>? costs,
+      required List<Budget>? budgets,
       required double shouldPrice,
       required BuildContext context}) {
     bool critical = false;
@@ -74,8 +77,13 @@ class OwnerBuilder {
           icon: const Icon(Icons.info_outline),
           color: const Color(0xff7434E6),
           iconSize: 30,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Detaills())),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Detaills(
+                        costs: costs,
+                        budgets: budgets,
+                      ))),
         ),
       ],
     );
@@ -374,17 +382,43 @@ class OwnerBuilder {
   }
 
   static Widget detaillsColumn({
+    required List<Cost>? costs,
+    required List<Budget>? budgets,
     required BuildContext context,
     required bool budget,
   }) {
     bool enabled = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
-    List<TextEditingController> costs = [
-      TextEditingController(text: "23432"),
-      TextEditingController(text: "23432"),
-      TextEditingController(text: "23432")
-    ];
+    List<TextEditingController> textController = budget
+        ? [
+            TextEditingController(text: "${budgets?[0].value ?? 0}€"),
+            TextEditingController(text: "${budgets?[1].value ?? 0}€"),
+            TextEditingController(text: "${budgets?[2].value ?? 0}€"),
+            TextEditingController(text: "${budgets?[3].value ?? 0}€"),
+            TextEditingController(text: "${budgets?[4].value ?? 0}€"),
+            TextEditingController(text: "${budgets?[5].value ?? 0}€")
+          ]
+        : [
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[0], date: dateTime ?? dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[1], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[2], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[3], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[4], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[5], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€")
+          ];
     return Form(
       key: formKey,
       child: Padding(
@@ -482,7 +516,7 @@ class OwnerBuilder {
                                 child: customTextFormFieldNoDeco(
                                     enabled: enabled,
                                     additionalRequirement: !budget,
-                                    controller: costs[index],
+                                    controller: textController[index],
                                     isSumme: true))
                           ],
                         ),

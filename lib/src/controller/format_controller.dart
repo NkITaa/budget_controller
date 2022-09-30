@@ -1,3 +1,5 @@
+import '../modells/cost.dart';
+
 class FormatController {
   static String formatInput({required String item}) {
     item = item.replaceAll(",", ".");
@@ -21,5 +23,16 @@ class FormatController {
 
   static String dateTimeFormatter({required DateTime dateTime}) {
     return "${dateTime.day.toString()}.${dateTime.month.toString()}.${dateTime.year.toString()}";
+  }
+
+  static List<Cost?>? relevantCosts(
+      {required List<Cost>? costs,
+      required String category,
+      required DateTime date}) {
+    return costs?.map((cost) {
+      if (cost.category == category && cost.creation.isBefore(date)) {
+        return cost;
+      }
+    }).toList();
   }
 }
