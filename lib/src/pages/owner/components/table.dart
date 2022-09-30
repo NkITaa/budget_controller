@@ -69,7 +69,9 @@ class TableData extends DataTableSource {
                         color: const Color(0xff7434E6),
                         onPressed: () {
                           CustomBuilder.customDatePicker(
-                                  context: context, dateTime: dateTime)
+                                  future: false,
+                                  context: context,
+                                  dateTime: dateTime)
                               .then((date) {
                             if (date != null) {
                               dateTime = date;

@@ -392,7 +392,9 @@ class CustomBuilder {
   }
 
   static Future<DateTime?> customDatePicker(
-      {required BuildContext context, required DateTime? dateTime}) {
+      {required BuildContext context,
+      required DateTime? dateTime,
+      required bool future}) {
     return showDatePicker(
         builder: (context, child) {
           return Theme(
@@ -415,8 +417,8 @@ class CustomBuilder {
         cancelText: COwner.abort,
         context: context,
         initialDate: dateTime ?? DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime.now());
+        firstDate: future ? DateTime.now() : DateTime(2022),
+        lastDate: future ? DateTime(2030) : DateTime.now());
   }
 
   static Widget customSearchDropDown({required List<String> items}) {

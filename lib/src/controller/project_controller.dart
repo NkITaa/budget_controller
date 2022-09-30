@@ -107,6 +107,7 @@ class ProjectController extends GetxController {
       await projectCollection.doc(projectId).update({'toManager': false});
       await logCollection.doc(logId).update({'toManager': false});
       await LogController.writeLog(
+        toManager: false,
         projectId: projectId,
         title: "Budget angenommen",
         notification:

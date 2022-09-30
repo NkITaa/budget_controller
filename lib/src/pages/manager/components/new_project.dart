@@ -89,7 +89,9 @@ class _NewProjectState extends State<NewProject> {
                           IconButton(
                               onPressed: () {
                                 CustomBuilder.customDatePicker(
-                                        context: context, dateTime: deadline)
+                                        future: true,
+                                        context: context,
+                                        dateTime: deadline)
                                     .then((date) {
                                   deadline = date;
                                   dateExists = true;
