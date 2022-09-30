@@ -28,7 +28,7 @@ class Cost {
 
   static Cost fromJson(dynamic cost) {
     return Cost(
-      creation: cost["creation"],
+      creation: DateTime.parse(cost["creation"].toDate().toString()),
       category: cost["category"],
       value: cost["value"],
       reason: cost["reason"],

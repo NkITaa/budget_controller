@@ -1,3 +1,5 @@
+import 'package:budget_controller/src/controller/project_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../controller/format_controller.dart';
 import '../../../modells/cost.dart';
@@ -8,18 +10,24 @@ import 'owner_builder.dart';
 class TableData extends DataTableSource {
   TableData(
       {required this.formKey,
+      required this.costs,
       required this.currentIndex,
       required this.enabled,
       required this.toggle,
+      required this.projectId,
+      required this.projectController,
       required this.context});
   final GlobalKey<FormState> formKey;
   final int currentIndex;
+  final String projectId;
   final bool enabled;
   final Function toggle;
   final BuildContext context;
+  final ProjectController projectController;
+  final List<Cost>? costs;
 
   sortMe<T>(Comparable<T> Function(Cost cost) getField, bool ascending) {
-    return OwnerBuilder.costs.sort((a, b) {
+    return costs?.sort((a, b) {
       final Comparable<T> aValue = getField(a);
       final Comparable<T> bValue = getField(b);
       return ascending
@@ -31,23 +39,23 @@ class TableData extends DataTableSource {
   @override
   bool get isRowCountApproximate => false;
   @override
-  int get rowCount => OwnerBuilder.costs.length;
+  int get rowCount => costs?.length ?? 0;
   @override
   int get selectedRowCount => 0;
   @override
   DataRow getRow(int index) {
     DateTime? dateTime;
 
-    String category = OwnerBuilder.costs[index].category.toString();
+    String? category = costs?[index].category.toString();
 
-    TextEditingController reason = TextEditingController(
-        text: OwnerBuilder.costs[index].reason.toString());
+    TextEditingController reason =
+        TextEditingController(text: costs?[index].reason.toString());
 
     TextEditingController value =
-        TextEditingController(text: "${OwnerBuilder.costs[index].value}€");
+        TextEditingController(text: "${costs?[index].value}€");
 
-    TextEditingController description = TextEditingController(
-        text: OwnerBuilder.costs[index].description.toString());
+    TextEditingController description =
+        TextEditingController(text: costs?[index].description.toString());
 
     final bool selectedRow = currentIndex == index;
     return DataRow.byIndex(index: index, cells: [
@@ -60,8 +68,7 @@ class TableData extends DataTableSource {
                     Flexible(
                       child: Text(
                         FormatController.dateTimeFormatter(
-                            dateTime:
-                                dateTime ?? OwnerBuilder.costs[index].creation),
+                            dateTime: dateTime ?? costs![index].creation),
                         style: const TextStyle(color: Color(0xff7434E6)),
                       ),
                     ),
@@ -87,7 +94,7 @@ class TableData extends DataTableSource {
           : DataCell(
               Text(
                 FormatController.dateTimeFormatter(
-                    dateTime: OwnerBuilder.costs[index].creation),
+                    dateTime: costs![index].creation),
                 style: const TextStyle(color: Colors.black),
               ),
             ),
@@ -101,7 +108,7 @@ class TableData extends DataTableSource {
               }))
           : DataCell(
               Text(
-                category,
+                category!,
                 style: const TextStyle(color: Colors.black),
               ),
             ),
@@ -125,8 +132,21 @@ class TableData extends DataTableSource {
                 ? IconButton(
                     icon: const Icon(Icons.save_outlined,
                         color: Color(0xff7434E6)),
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
+                        await projectController.updateCost(
+                          projectId: projectId,
+                          costOld: costs![index],
+                          costNew: Cost(
+                              creation: dateTime ?? costs![index].creation,
+                              category: category!,
+                              value: double.parse(
+                                  value.text.trim().replaceFirst("€", "")),
+                              reason: reason.text.trim(),
+                              description: description.text.trim(),
+                              responsibility:
+                                  FirebaseAuth.instance.currentUser!.uid),
+                        );
                         toggle(index: index);
                       }
                     },
@@ -146,8 +166,14 @@ class TableData extends DataTableSource {
                       Icons.delete,
                       color: enabled && selectedRow ? Colors.red : Colors.black,
                     ),
-                    onPressed: () {},
-                  )
+                    onPressed: () {
+                      OwnerBuilder.deleteWarning(
+                          projectController: projectController,
+                          cost: costs![index],
+                          projectId: projectId,
+                          toggle: toggle,
+                          index: index);
+                    })
                 : Container(),
           ],
         ),

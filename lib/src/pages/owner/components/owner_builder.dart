@@ -1,4 +1,6 @@
+import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:budget_controller/src/pages/owner/controller_owner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,23 +12,6 @@ import '../../../modells/cost.dart';
 import 'detaills.dart';
 
 class OwnerBuilder {
-  static List<Cost> costs = [
-    Cost(
-        creation: DateTime.now(),
-        category: "Garage",
-        value: 342,
-        reason: "123455678901234567890",
-        description: "123455678901234567890",
-        responsibility: "123455678901234567890"),
-    Cost(
-        creation: DateTime.now(),
-        category: "Garage",
-        value: 10,
-        reason: "Nahrung",
-        description: "Wasserkocher",
-        responsibility: "Reichert")
-  ];
-
   static Widget buildComparison(
       {required double isPrice,
       required double shouldPrice,
@@ -97,18 +82,23 @@ class OwnerBuilder {
   }
 
   static Widget buildTable(
-      {required List<String> cells,
-      required bool enabled,
+      {required bool enabled,
+      required List<Cost>? costs,
       required bool sortAscending,
       required int sortColumnIndex,
       required int currentIndex,
+      required String projectId,
       required Function toggle,
       required Function state,
       required Function sort,
-      required BuildContext context}) {
+      required BuildContext context,
+      required ProjectController projectController}) {
     int rowsPerPage = 10;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TableData source = TableData(
+        projectId: projectId,
+        projectController: projectController,
+        costs: costs,
         formKey: formKey,
         currentIndex: currentIndex,
         enabled: enabled,
@@ -151,7 +141,10 @@ class OwnerBuilder {
                                         child: GestureDetector(
                                           onTap: () {},
                                           child: buildAddCostPopup(
-                                              context: context, state: state),
+                                              projectId: projectId,
+                                              projectController:
+                                                  projectController,
+                                              state2: state),
                                         ),
                                       ),
                                     ),
@@ -192,20 +185,58 @@ class OwnerBuilder {
     );
   }
 
+  static deleteWarning(
+      {required ProjectController projectController,
+      required Cost cost,
+      required String projectId,
+      required Function toggle,
+      required int index}) {
+    Get.defaultDialog(
+        backgroundColor: const Color(0xff7434E6),
+        actions: [
+          CustomBuilder.customButton(
+              text: "Ja",
+              onPressed: () async {
+                await projectController.deleteCost(
+                    projectId: projectId, cost: cost);
+                toggle(index: index);
+                Get.back();
+              }),
+          CustomBuilder.customButton(
+              isDarkMode: true,
+              text: "Nein",
+              onPressed: () {
+                Get.back();
+              })
+        ],
+        content: Column(children: [
+          CustomBuilder.customLogo(size: 50),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text("Möchtest du die Ausgabe wirklich löschen?")
+        ]),
+        title: "",
+        titlePadding: EdgeInsets.zero,
+        titleStyle: const TextStyle(fontSize: 0));
+  }
+
   static buildAddCostPopup(
-      {required BuildContext context, required Function state}) {
+      {required String projectId,
+      required Function state2,
+      required ProjectController projectController}) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
     bool? dateExists;
     TextEditingController reason = TextEditingController();
     TextEditingController description = TextEditingController();
-    TextEditingController sum = TextEditingController();
-    String gewaehlteArt = COwner.arten[0];
+    TextEditingController value = TextEditingController();
+    String category = COwner.arten[0];
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         state({required String art}) {
-          gewaehlteArt = art;
+          category = art;
           setState(() {});
         }
 
@@ -258,7 +289,7 @@ class OwnerBuilder {
                             width: 200,
                             child: CustomBuilder.popupDropDown(
                                 arten: COwner.arten,
-                                gewaehlteArt: gewaehlteArt,
+                                gewaehlteArt: category,
                                 setArt: state),
                           )
                         ],
@@ -273,7 +304,7 @@ class OwnerBuilder {
                       ),
                       CustomBuilder.popUpTextField(
                         isSumme: true,
-                        controller: sum,
+                        controller: value,
                         hint: COwner.costAttributes[2],
                       ),
                     ],
@@ -290,13 +321,14 @@ class OwnerBuilder {
                     CustomBuilder.customButton(
                         onPressed: () {
                           Get.back();
+                          state2();
                         },
                         text: COwner.close),
                     const SizedBox(
                       width: 10,
                     ),
                     CustomBuilder.customButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (dateTime == null) {
                             dateExists = false;
                             setState(() {});
@@ -307,10 +339,22 @@ class OwnerBuilder {
                           }
                           if (formKey.currentState!.validate() &&
                               dateTime != null) {
+                            await projectController.addCost(
+                              projectId: projectId,
+                              cost: Cost(
+                                  creation: dateTime!,
+                                  category: category,
+                                  value: double.parse(
+                                      value.text.trim().replaceFirst("€", "")),
+                                  reason: reason.text.trim(),
+                                  description: description.text.trim(),
+                                  responsibility:
+                                      FirebaseAuth.instance.currentUser!.uid),
+                            );
                             reason.text = "";
                             description.text = "";
-                            sum.text = "";
-                            gewaehlteArt = COwner.arten[0];
+                            value.text = "";
+                            category = COwner.arten[0];
                             dateTime = null;
                             dateExists = null;
                             ScaffoldMessenger.of(context).showSnackBar(

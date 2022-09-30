@@ -267,27 +267,41 @@ class _OwnerState extends State<Owner> {
                           ],
                         );
                       } else {
+                        List<double> totalCosts = snapshot.data?.costs
+                                ?.map((cost) => cost.value)
+                                .toList() ??
+                            [0];
+                        List<double> totalBudgets = snapshot.data?.budgets
+                                ?.map((budget) => budget.value)
+                                .toList() ??
+                            [0];
+
                         return Column(
                           children: [
                             const SizedBox(
                               height: 20,
                             ),
-                            const Text(
-                              "Beispiel Projekt",
-                              style:
-                                  TextStyle(fontSize: 25, color: Colors.black),
+                            Text(
+                              snapshot.data!.name,
+                              style: const TextStyle(
+                                  fontSize: 25, color: Colors.black),
                             ),
                             OwnerBuilder.buildComparison(
-                                isPrice: 16, shouldPrice: 20, context: context),
+                                isPrice: totalCosts.fold(0, (a, b) => a + b),
+                                shouldPrice:
+                                    totalBudgets.fold(0, (a, b) => a + b),
+                                context: context),
                             const SizedBox(
                               height: 50,
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: OwnerBuilder.buildTable(
+                                  projectId: snapshot.data!.id,
+                                  projectController: projectController,
+                                  costs: snapshot.data?.costs,
                                   state: state,
                                   context: context,
-                                  cells: ["cells"],
                                   enabled: enabled,
                                   currentIndex: currentIndex,
                                   toggle: toggle,

@@ -121,11 +121,10 @@ class ProjectController extends GetxController {
     }
   }
 
-  Future<SnackBar> addCost(
-      {required String projectId,
-      required Cost cost,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
+  Future<SnackBar> addCost({
+    required String projectId,
+    required Cost cost,
+  }) async {
     try {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([cost.toJson()])
@@ -166,11 +165,10 @@ class ProjectController extends GetxController {
     }
   }
 
-  Future<SnackBar> deleteCost(
-      {required String projectId,
-      required Cost cost,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
+  Future<SnackBar> deleteCost({
+    required String projectId,
+    required Cost cost,
+  }) async {
     try {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([cost.toJson()])
@@ -189,12 +187,11 @@ class ProjectController extends GetxController {
     }
   }
 
-  Future<SnackBar> updateCost(
-      {required String projectId,
-      required Cost costOld,
-      required Cost costNew,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
+  Future<SnackBar> updateCost({
+    required String projectId,
+    required Cost costOld,
+    required Cost costNew,
+  }) async {
     try {
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([costOld.toJson()])
