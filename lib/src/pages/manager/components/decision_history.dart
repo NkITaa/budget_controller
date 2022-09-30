@@ -23,8 +23,6 @@ class _DecisionHistoryState extends State<DecisionHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomBuilder.customAppBar(context: context),
-        drawer:
-            CustomBuilder.customDrawer(userGroup: "Manager", context: context),
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height - 70,

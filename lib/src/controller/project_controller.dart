@@ -104,7 +104,7 @@ class ProjectController extends GetxController {
   Future<SnackBar> acceptBudget(
       {required String projectId, required String logId}) async {
     try {
-      await projectCollection.doc(projectId).update({'toManager': false});
+      await projectCollection.doc(projectId).update({'pending': false});
       await logCollection.doc(logId).update({'toManager': false});
       await LogController.writeLog(
         toManager: false,
