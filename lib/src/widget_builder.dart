@@ -1,6 +1,7 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/main.dart';
 import 'package:budget_controller/src/pages/login/component_reset_password.dart';
+import 'package:budget_controller/src/pages/manager/components/decision_history.dart';
 import 'package:budget_controller/src/pages/owner/const_owner.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -209,7 +210,17 @@ class CustomBuilder {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ResetPassword())))
+                            builder: (context) => const ResetPassword()))),
+                userGroup == "Manager"
+                    ? ListTile(
+                        leading: const Icon(Icons.book_outlined),
+                        iconColor: Colors.white,
+                        title: const Text("Entscheidungshistorie"),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DecisionHistory())))
+                    : Container()
               ],
             );
           }),

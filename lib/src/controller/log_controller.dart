@@ -38,7 +38,7 @@ class LogController {
     return logs;
   }
 
-  static Future<List<Log>?> loadLogsManager() async {
+  static Future<List<Log>?> loadLogsManager({required bool toDecide}) async {
     List<Log> logs = [];
     await FirebaseFirestore.instance
         .collection('logs')
@@ -46,7 +46,7 @@ class LogController {
         .then((logsSnapshot) {
       var logDocs = logsSnapshot.docs;
       for (int i = 0; i < logDocs.length; i++) {
-        if (logDocs[i]["toManager"] == true) {
+        if (logDocs[i]["toManager"] == toDecide) {
           logs.add(Log.fromJson(logDocs[i]));
         }
       }

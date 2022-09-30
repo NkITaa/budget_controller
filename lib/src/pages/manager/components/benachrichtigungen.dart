@@ -28,7 +28,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
           height: 20,
         ),
         FutureBuilder(
-          future: LogController.loadLogsManager(),
+          future: LogController.loadLogsManager(toDecide: true),
           builder: (BuildContext context, snapshot) {
             if (snapshot.hasError) {
               return Column(
@@ -62,191 +62,236 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                       style: const TextStyle(color: Colors.black),
                     ),
                     children: [
-                      FutureBuilder<Project>(
-                          future: projectController.getProject(
-                              projectId: log.projectId!),
-                          builder: (
-                            BuildContext context,
-                            AsyncSnapshot<Project> snapshot,
-                          ) {
-                            if (snapshot.hasError) {
-                              return Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 100,
-                                  ),
-                                  Text(
-                                    snapshot.error.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 30, color: Colors.black),
-                                  ),
-                                ],
-                              );
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            }
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  width: 648,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.baseline,
-                                    textBaseline: TextBaseline.alphabetic,
+                      log.toManager == true
+                          ? FutureBuilder<Project>(
+                              future: projectController.getProject(
+                                  projectId: log.projectId!),
+                              builder: (
+                                BuildContext context,
+                                AsyncSnapshot<Project> snapshot,
+                              ) {
+                                if (snapshot.hasError) {
+                                  return Column(
                                     children: [
-                                      Center(
-                                        child: Text(
-                                          snapshot.data!.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 28,
-                                          ),
-                                        ),
-                                      ),
-                                      const Center(
-                                        child: Text(
-                                          "Budget genehmigen",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 100,
                                       ),
-                                      const Text(
-                                        "Personalkosten",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 28,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          ManagerBuilder.costFieldBuilder(
-                                              enabled: false,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      "${snapshot.data?.budgets?[0].value}€"),
-                                              overlineText: COwner.arten[0]),
-                                          ManagerBuilder.costFieldBuilder(
-                                              enabled: false,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      "${snapshot.data?.budgets?[1].value}€"),
-                                              overlineText: COwner.arten[1]),
-                                          ManagerBuilder.costFieldBuilder(
-                                              enabled: false,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      "${snapshot.data?.budgets?[2].value}€"),
-                                              overlineText: COwner.arten[2]),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      Row(
-                                        children: [
-                                          ManagerBuilder.costFieldBuilder(
-                                              enabled: false,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      "${snapshot.data?.budgets?[3].value}€"),
-                                              overlineText: COwner.arten[3]),
-                                        ],
+                                      Text(
+                                        snapshot.error.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 30, color: Colors.black),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                SizedBox(
-                                  width: 648,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.baseline,
-                                    textBaseline: TextBaseline.alphabetic,
-                                    children: [
-                                      const Text(
-                                        "Sachkosten",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 28,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          ManagerBuilder.costFieldBuilder(
-                                              enabled: false,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      "${snapshot.data?.budgets?[4].value}€"),
-                                              overlineText: COwner.arten[4]),
-                                          ManagerBuilder.costFieldBuilder(
-                                              enabled: false,
-                                              controller: TextEditingController(
-                                                  text:
-                                                      "${snapshot.data?.budgets?[5].value}€"),
-                                              overlineText: COwner.arten[5]),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  );
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                return Column(
                                   children: [
-                                    CustomBuilder.customButton(
-                                      text: "Annehmen",
-                                      isDarkMode: true,
-                                      onPressed: () async {
-                                        SnackBar snackBar =
-                                            await projectController
-                                                .acceptBudget(
-                                                    projectId: log.projectId!);
-                                        if (!mounted) return;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
-                                      },
+                                    SizedBox(
+                                      width: 648,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.baseline,
+                                        textBaseline: TextBaseline.alphabetic,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              snapshot.data!.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 28,
+                                              ),
+                                            ),
+                                          ),
+                                          const Center(
+                                            child: Text(
+                                              "Budget genehmigen",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Text(
+                                            "Personalkosten",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 28,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              ManagerBuilder.costFieldBuilder(
+                                                  enabled: false,
+                                                  controller: TextEditingController(
+                                                      text:
+                                                          "${snapshot.data?.budgets?[0].value}€"),
+                                                  overlineText:
+                                                      COwner.arten[0]),
+                                              ManagerBuilder.costFieldBuilder(
+                                                  enabled: false,
+                                                  controller: TextEditingController(
+                                                      text:
+                                                          "${snapshot.data?.budgets?[1].value}€"),
+                                                  overlineText:
+                                                      COwner.arten[1]),
+                                              ManagerBuilder.costFieldBuilder(
+                                                  enabled: false,
+                                                  controller: TextEditingController(
+                                                      text:
+                                                          "${snapshot.data?.budgets?[2].value}€"),
+                                                  overlineText:
+                                                      COwner.arten[2]),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 30,
+                                          ),
+                                          Row(
+                                            children: [
+                                              ManagerBuilder.costFieldBuilder(
+                                                  enabled: false,
+                                                  controller: TextEditingController(
+                                                      text:
+                                                          "${snapshot.data?.budgets?[3].value}€"),
+                                                  overlineText:
+                                                      COwner.arten[3]),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const SizedBox(
-                                      width: 25,
+                                      height: 30,
                                     ),
-                                    CustomBuilder.customButton(
-                                        text: "Ablehnen",
-                                        onPressed: () async {
-                                          SnackBar snackBar =
-                                              await projectController
-                                                  .deleteBudget(
-                                                      projectId:
-                                                          log.projectId!);
-                                          if (!mounted) return;
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
-                                        },
-                                        isLightMode: true),
+                                    SizedBox(
+                                      width: 648,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.baseline,
+                                        textBaseline: TextBaseline.alphabetic,
+                                        children: [
+                                          const Text(
+                                            "Sachkosten",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 28,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              ManagerBuilder.costFieldBuilder(
+                                                  enabled: false,
+                                                  controller: TextEditingController(
+                                                      text:
+                                                          "${snapshot.data?.budgets?[4].value}€"),
+                                                  overlineText:
+                                                      COwner.arten[4]),
+                                              ManagerBuilder.costFieldBuilder(
+                                                  enabled: false,
+                                                  controller: TextEditingController(
+                                                      text:
+                                                          "${snapshot.data?.budgets?[5].value}€"),
+                                                  overlineText:
+                                                      COwner.arten[5]),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        CustomBuilder.customButton(
+                                          text: "Annehmen",
+                                          isDarkMode: true,
+                                          onPressed: () async {
+                                            SnackBar snackBar =
+                                                await projectController
+                                                    .acceptBudget(
+                                                        projectId:
+                                                            log.projectId!,
+                                                        logId: log.id);
+                                            if (!mounted) return;
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                            setState(() {});
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 25,
+                                        ),
+                                        CustomBuilder.customButton(
+                                            text: "Ablehnen",
+                                            onPressed: () async {
+                                              SnackBar snackBar =
+                                                  await projectController
+                                                      .deleteBudget(
+                                                          logId: log.id,
+                                                          projectId:
+                                                              log.projectId!);
+                                              if (!mounted) return;
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              setState(() {});
+                                            },
+                                            isLightMode: true),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 40,
+                                    )
+                                  ],
+                                );
+                              })
+                          : Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 28.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Nachricht: ${log.notification}",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Ticket Nummer: ${log.id}",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Vom: ${log.date.toString()}",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 40,
-                                )
-                              ],
-                            );
-                          }),
+                              ),
+                            ),
                     ],
                   );
                 } else {

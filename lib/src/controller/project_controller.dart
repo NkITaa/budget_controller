@@ -13,6 +13,8 @@ import 'log_controller.dart';
 class ProjectController extends GetxController {
   CollectionReference projectCollection =
       FirebaseFirestore.instance.collection("project");
+  CollectionReference logCollection =
+      FirebaseFirestore.instance.collection("logs");
   String? owner;
   String? projectId;
 
@@ -79,12 +81,13 @@ class ProjectController extends GetxController {
     });
   }
 
-  Future<SnackBar> deleteBudget({required String projectId}) async {
+  Future<SnackBar> deleteBudget(
+      {required String projectId, required String logId}) async {
     try {
-      await projectCollection
-          .doc(projectId)
-          .update({'budgets': FieldValue.delete()});
+      await projectCollection.doc(projectId).update({'budgets': null});
+      await logCollection.doc(logId).update({'toManager': false});
       await LogController.writeLog(
+        toManager: false,
         projectId: projectId,
         title: "Budget abgelehnt",
         notification:
@@ -98,9 +101,11 @@ class ProjectController extends GetxController {
     }
   }
 
-  Future<SnackBar> acceptBudget({required String projectId}) async {
+  Future<SnackBar> acceptBudget(
+      {required String projectId, required String logId}) async {
     try {
       await projectCollection.doc(projectId).update({'toManager': false});
+      await logCollection.doc(logId).update({'toManager': false});
       await LogController.writeLog(
         projectId: projectId,
         title: "Budget angenommen",
