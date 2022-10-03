@@ -29,10 +29,22 @@ class FormatController {
       {required List<Cost>? costs,
       required String category,
       required DateTime date}) {
-    return costs?.map((cost) {
+    var temp = costs?.map((cost) {
       if (cost.category == category && cost.creation.isBefore(date)) {
         return cost;
       }
     }).toList();
+    temp?.removeWhere((cost) => cost == null);
+    return temp;
+  }
+
+  static double totalCosts({required List<Cost?> costs}) {
+    List<double?> temp = costs.map((cost) {
+      if (cost != null) {
+        cost.value;
+      }
+    }).toList();
+
+    return temp.fold(0, (a, b) => a + (b ?? 0));
   }
 }

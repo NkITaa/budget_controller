@@ -287,6 +287,10 @@ class _OwnerState extends State<Owner> {
                                   fontSize: 25, color: Colors.black),
                             ),
                             OwnerBuilder.buildComparison(
+                                totalBudgets: totalBudgets,
+                                totalCosts: totalCosts,
+                                redirect: true,
+                                until: snapshot.data!.deadline,
                                 budgets: snapshot.data!.budgets,
                                 costs: snapshot.data!.costs,
                                 isPrice: totalCosts.fold(0, (a, b) => a + b),

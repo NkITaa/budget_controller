@@ -22,177 +22,179 @@ class _AdminState extends State<Admin> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      child: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 70,
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                  child: Text(
-                logHistory ? "Log-Historie" : "Logs",
-                style: const TextStyle(fontSize: 28, color: Colors.black),
-              )),
-              Flexible(
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              logHistory = false;
-                              setState(() {});
-                            },
-                            icon: Icon(
-                              Icons.mail_outline,
-                              color: logHistory
-                                  ? Colors.grey
-                                  : const Color(0xff7434E6),
-                            )),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ScaffoldMessenger(
-                                    child: Builder(
-                                      builder: (context) => Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: GestureDetector(
-                                              onTap: () {},
-                                              child: AdminBuilder.addUserPopup(
-                                                context: context,
-                                                userController: userController,
-                                              )),
-                                        ),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height - 70,
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+                child: Text(
+              logHistory ? "Log-Historie" : "Logs",
+              style: const TextStyle(fontSize: 28, color: Colors.black),
+            )),
+            Flexible(
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            logHistory = false;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.mail_outline,
+                            color: logHistory
+                                ? Colors.grey
+                                : const Color(0xff7434E6),
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: AdminBuilder.addUserPopup(
+                                              context: context,
+                                              userController: userController,
+                                            )),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.person_add_outlined,
-                                color: Colors.grey)),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ScaffoldMessenger(
-                                    child: Builder(
-                                      builder: (context) => Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: GestureDetector(
-                                              onTap: () {},
-                                              child:
-                                                  AdminBuilder.changeRolePopup(
-                                                context: context,
-                                                userController: userController,
-                                              )),
-                                        ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.person_add_outlined,
+                              color: Colors.grey)),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: AdminBuilder.changeRolePopup(
+                                              context: context,
+                                              userController: userController,
+                                            )),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.change_circle_outlined,
-                              color: Colors.grey,
-                            )),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ScaffoldMessenger(
-                                    child: Builder(
-                                      builder: (context) => Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: GestureDetector(
-                                              onTap: () {},
-                                              child: AdminBuilder.resetPassword(
-                                                context: context,
-                                                userController: userController,
-                                              )),
-                                        ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.change_circle_outlined,
+                            color: Colors.grey,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ScaffoldMessenger(
+                                  child: Builder(
+                                    builder: (context) => Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: AdminBuilder.resetPassword(
+                                              context: context,
+                                              userController: userController,
+                                            )),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.key,
-                              color: Colors.grey,
-                            )),
-                        IconButton(
-                            onPressed: () {
-                              logHistory = true;
-                              setState(() {});
-                            },
-                            icon: Icon(
-                              Icons.book_outlined,
-                              color: logHistory
-                                  ? const Color(0xff7434E6)
-                                  : Colors.grey,
-                            )),
-                      ],
-                    ),
-                    Flexible(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height - 130,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FutureBuilder(
-                              future: LogController.loadLogs(),
-                              builder: (BuildContext context, snapshot) {
-                                if (snapshot.hasError) {
-                                  snapshot.printError();
-                                  return Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 100,
-                                      ),
-                                      Text(
-                                        snapshot.error.toString(),
-                                        style: const TextStyle(
-                                            fontSize: 30, color: Colors.black),
-                                      ),
-                                    ],
-                                  );
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                }
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.key,
+                            color: Colors.grey,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            logHistory = true;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.book_outlined,
+                            color: logHistory
+                                ? const Color(0xff7434E6)
+                                : Colors.grey,
+                          )),
+                    ],
+                  ),
+                  Flexible(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height - 130,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FutureBuilder(
+                            future: LogController.loadLogs(),
+                            builder: (BuildContext context, snapshot) {
+                              if (snapshot.hasError) {
+                                snapshot.printError();
+                                return Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 100,
+                                    ),
+                                    Text(
+                                      snapshot.error.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 30, color: Colors.black),
+                                    ),
+                                  ],
+                                );
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
 
-                                final logs = snapshot.requireData;
-                                return ListView.builder(
+                              final logs = snapshot.requireData;
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height - 170,
+                                child: ListView.builder(
+                                  primary: false,
                                   shrinkWrap: true,
                                   itemCount: logs!.length,
                                   itemBuilder: (context, index) {
@@ -328,18 +330,18 @@ class _AdminState extends State<Admin> {
                                       }
                                     }
                                   },
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

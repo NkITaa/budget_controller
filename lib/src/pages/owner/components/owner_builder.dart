@@ -15,10 +15,14 @@ import 'detaills.dart';
 class OwnerBuilder {
   static Widget buildComparison(
       {required double isPrice,
-      required List<Cost>? costs,
-      required List<Budget>? budgets,
+      List<Cost>? costs,
+      DateTime? until,
+      List<Budget>? budgets,
       required double shouldPrice,
-      required BuildContext context}) {
+      required bool redirect,
+      BuildContext? context,
+      List<double>? totalBudgets,
+      List<double>? totalCosts}) {
     bool critical = false;
     isPrice / shouldPrice > COwner.criticalPercentile
         ? critical = true
@@ -73,18 +77,23 @@ class OwnerBuilder {
             )
           ],
         ),
-        IconButton(
-          icon: const Icon(Icons.info_outline),
-          color: const Color(0xff7434E6),
-          iconSize: 30,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Detaills(
-                        costs: costs,
-                        budgets: budgets,
-                      ))),
-        ),
+        redirect
+            ? IconButton(
+                icon: const Icon(Icons.info_outline),
+                color: const Color(0xff7434E6),
+                iconSize: 30,
+                onPressed: () => Navigator.push(
+                    context!,
+                    MaterialPageRoute(
+                        builder: (context) => Detaills(
+                              totalBudgets: totalBudgets!,
+                              totalCosts: totalCosts!,
+                              until: until!,
+                              costs: costs,
+                              budgets: budgets,
+                            ))),
+              )
+            : Container(),
       ],
     );
   }
@@ -382,11 +391,15 @@ class OwnerBuilder {
   }
 
   static Widget detaillsColumn({
+    required Function updateExpanded,
     required List<Cost>? costs,
     required List<Budget>? budgets,
     required BuildContext context,
     required bool budget,
+    DateTime? until,
+    required List<bool> expanded,
   }) {
+    ProjectController projectController = Get.find();
     bool enabled = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
@@ -446,13 +459,28 @@ class OwnerBuilder {
                         : IconButton(
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
+                                if (enabled) {
+                                  List<double> projections = textController.map(
+                                    (e) {
+                                      return double.parse(
+                                          e.text.trim().replaceAll("€", ""));
+                                    },
+                                  ).toList();
+                                  projectController.isPrice = projections.fold(
+                                      0, (a, b) => (a ?? 0) + b);
+                                }
                                 enabled = !enabled;
                                 setState(() {});
                               }
                             },
                             icon: const Icon(Icons.bar_chart_outlined)),
                     budget
-                        ? Container()
+                        ? IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.calendar_month,
+                              color: Colors.transparent,
+                            ))
                         : IconButton(
                             onPressed: () {
                               showDatePicker(
@@ -498,22 +526,36 @@ class OwnerBuilder {
                       width: 15,
                     ),
                     Text(
-                      dateTime?.year.toString() ?? "18.12.2001",
+                      FormatController.dateTimeFormatter(
+                          dateTime:
+                              budget ? until! : dateTime ?? DateTime.now()),
                       style: const TextStyle(color: Colors.black, fontSize: 18),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: COwner.arten.length,
                     itemBuilder: (context, index) {
+                      List<Cost?>? costType = FormatController.relevantCosts(
+                          costs: costs,
+                          category: COwner.arten[index],
+                          date: dateTime ?? DateTime.now());
                       return ExpansionTile(
+                        initiallyExpanded: expanded[index],
+                        onExpansionChanged: (value) {
+                          updateExpanded(state: value, index: index);
+                        },
                         title: Row(
                           children: [
                             Text("${COwner.arten[index]}: ",
                                 style: const TextStyle(color: Colors.black)),
                             Flexible(
                                 child: customTextFormFieldNoDeco(
+                                    isNullAllowed: true,
                                     enabled: enabled,
                                     additionalRequirement: !budget,
                                     controller: textController[index],
@@ -526,10 +568,14 @@ class OwnerBuilder {
                         children: [
                           ListView.builder(
                               shrinkWrap: true,
-                              itemCount: 5,
+                              itemCount: costType?.length ?? 0,
                               itemBuilder: (context, index) {
-                                return const Text('Detaills',
-                                    style: TextStyle(color: Colors.black));
+                                return Text(
+                                    "${costType![index]!.description}${costType[index]!.value}€",
+                                    style: TextStyle(
+                                        color: budget
+                                            ? Colors.transparent
+                                            : Colors.black));
                               })
                         ],
                       );
@@ -546,8 +592,10 @@ class OwnerBuilder {
       {required bool enabled,
       required bool additionalRequirement,
       required TextEditingController controller,
-      bool? isSumme}) {
+      bool? isSumme,
+      bool? isNullAllowed}) {
     bool summe = isSumme ?? false;
+    bool nullAllowed = isNullAllowed ?? false;
     return TextFormField(
       inputFormatters: [
         summe
@@ -557,10 +605,11 @@ class OwnerBuilder {
       ],
       validator: (value) {
         return summe
-            ? (value!.length < 2 ||
-                    double.parse(value.replaceAll("€", "")) < 0.01
-                ? ""
-                : null)
+            ? (value!.length < 2 || nullAllowed
+                ? null
+                : double.parse(value.replaceAll("€", "")) < 0.01
+                    ? ""
+                    : null)
             : (value!.length < 3 ? "" : null);
       },
       onChanged: (item) {
