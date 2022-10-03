@@ -3,9 +3,11 @@ import 'package:budget_controller/src/pages/owner/components/owner_builder.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/format_controller.dart';
 import '../../../modells/budget.dart';
 import '../../../modells/cost.dart';
 import '../../../widget_builder.dart';
+import '../const_owner.dart';
 
 class Detaills extends StatefulWidget {
   const Detaills(
@@ -29,9 +31,45 @@ class Detaills extends StatefulWidget {
 class _DetaillsState extends State<Detaills> {
   List<bool> expanded = [false, false, false, false, false, false];
   ProjectController projectController = Get.find();
+  bool enabled = false;
+
+  late List<TextEditingController> costsController = [
+    TextEditingController(
+        text:
+            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[0], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+    TextEditingController(
+        text:
+            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[1], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+    TextEditingController(
+        text:
+            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[2], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+    TextEditingController(
+        text:
+            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[3], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+    TextEditingController(
+        text:
+            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[4], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+    TextEditingController(
+        text:
+            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€")
+  ];
+
+  late List<TextEditingController> budgetsController = [
+    TextEditingController(text: "${widget.budgets?[0].value ?? 0}€"),
+    TextEditingController(text: "${widget.budgets?[1].value ?? 0}€"),
+    TextEditingController(text: "${widget.budgets?[2].value ?? 0}€"),
+    TextEditingController(text: "${widget.budgets?[3].value ?? 0}€"),
+    TextEditingController(text: "${widget.budgets?[4].value ?? 0}€"),
+    TextEditingController(text: "${widget.budgets?[5].value ?? 0}€")
+  ];
 
   updateExpanded({required bool state, required int index}) {
     expanded[index] = state;
+    setState(() {});
+  }
+
+  setEnabled({required bool enabled}) {
+    this.enabled = enabled;
     setState(() {});
   }
 
@@ -54,18 +92,20 @@ class _DetaillsState extends State<Detaills> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OwnerBuilder.detaillsColumn(
+                      enabled: enabled,
+                      setEnabled: setEnabled,
                       expanded: expanded,
                       updateExpanded: updateExpanded,
-                      budgets: widget.budgets,
+                      textController: costsController,
                       costs: widget.costs,
                       context: context,
                       budget: false,
                     ),
                     OwnerBuilder.detaillsColumn(
                       until: widget.until,
+                      textController: budgetsController,
                       expanded: expanded,
                       updateExpanded: updateExpanded,
-                      budgets: widget.budgets,
                       costs: widget.costs,
                       context: context,
                       budget: true,

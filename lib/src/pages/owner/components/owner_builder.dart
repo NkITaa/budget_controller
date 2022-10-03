@@ -392,46 +392,18 @@ class OwnerBuilder {
 
   static Widget detaillsColumn({
     required Function updateExpanded,
+    Function? setEnabled,
+    required List<TextEditingController> textController,
     required List<Cost>? costs,
-    required List<Budget>? budgets,
     required BuildContext context,
+    bool? enabled,
     required bool budget,
     DateTime? until,
     required List<bool> expanded,
   }) {
     ProjectController projectController = Get.find();
-    bool enabled = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
-    List<TextEditingController> textController = budget
-        ? [
-            TextEditingController(text: "${budgets?[0].value ?? 0}€"),
-            TextEditingController(text: "${budgets?[1].value ?? 0}€"),
-            TextEditingController(text: "${budgets?[2].value ?? 0}€"),
-            TextEditingController(text: "${budgets?[3].value ?? 0}€"),
-            TextEditingController(text: "${budgets?[4].value ?? 0}€"),
-            TextEditingController(text: "${budgets?[5].value ?? 0}€")
-          ]
-        : [
-            TextEditingController(
-                text:
-                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[0], date: dateTime ?? dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
-            TextEditingController(
-                text:
-                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[1], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
-            TextEditingController(
-                text:
-                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[2], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
-            TextEditingController(
-                text:
-                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[3], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
-            TextEditingController(
-                text:
-                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[4], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
-            TextEditingController(
-                text:
-                    "${FormatController.relevantCosts(costs: costs, category: COwner.arten[5], date: dateTime ?? DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€")
-          ];
     return Form(
       key: formKey,
       child: Padding(
@@ -459,7 +431,7 @@ class OwnerBuilder {
                         : IconButton(
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                if (enabled) {
+                                if (enabled!) {
                                   List<double> projections = textController.map(
                                     (e) {
                                       return double.parse(
@@ -469,8 +441,7 @@ class OwnerBuilder {
                                   projectController.isPrice = projections.fold(
                                       0, (a, b) => (a ?? 0) + b);
                                 }
-                                enabled = !enabled;
-                                setState(() {});
+                                setEnabled!(enabled: !enabled);
                               }
                             },
                             icon: const Icon(Icons.bar_chart_outlined)),
@@ -556,7 +527,7 @@ class OwnerBuilder {
                             Flexible(
                                 child: customTextFormFieldNoDeco(
                                     isNullAllowed: true,
-                                    enabled: enabled,
+                                    enabled: enabled ?? false,
                                     additionalRequirement: !budget,
                                     controller: textController[index],
                                     isSumme: true))
