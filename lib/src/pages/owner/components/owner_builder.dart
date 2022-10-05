@@ -345,7 +345,7 @@ class OwnerBuilder {
                       width: 10,
                     ),
                     CustomBuilder.customButton(
-                        onPressed: () async {
+                        onPressed: ([bool mounted = true]) async {
                           if (dateTime == null) {
                             dateExists = false;
                             setState(() {});
@@ -374,6 +374,7 @@ class OwnerBuilder {
                             category = COwner.arten[0];
                             dateTime = null;
                             dateExists = null;
+                            if (!mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                                 CustomBuilder.customSnackBarObject(
                                     message: "Ausgabe Hinzugefügt",
@@ -393,6 +394,7 @@ class OwnerBuilder {
   static Widget detaillsColumn({
     required Function updateExpanded,
     Function? setEnabled,
+    Function? setIsPrice,
     required List<TextEditingController> textController,
     required List<Cost>? costs,
     required BuildContext context,
@@ -401,7 +403,6 @@ class OwnerBuilder {
     DateTime? until,
     required List<bool> expanded,
   }) {
-    ProjectController projectController = Get.find();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     DateTime? dateTime;
     return Form(
@@ -438,8 +439,9 @@ class OwnerBuilder {
                                           e.text.trim().replaceAll("€", ""));
                                     },
                                   ).toList();
-                                  projectController.isPrice = projections.fold(
-                                      0, (a, b) => (a ?? 0) + b);
+                                  setIsPrice!(
+                                      isPrice: projections.fold<double>(
+                                          0, (a, b) => (a) + b));
                                 }
                                 setEnabled!(enabled: !enabled);
                               }

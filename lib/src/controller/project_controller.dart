@@ -16,8 +16,6 @@ class ProjectController extends GetxController {
   CollectionReference logCollection =
       FirebaseFirestore.instance.collection("logs");
 
-  double? isPrice;
-
   String? owner;
   String? projectId;
 

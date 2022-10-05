@@ -32,6 +32,7 @@ class _DetaillsState extends State<Detaills> {
   List<bool> expanded = [false, false, false, false, false, false];
   ProjectController projectController = Get.find();
   bool enabled = false;
+  double? isPrice;
 
   late List<TextEditingController> costsController = [
     TextEditingController(
@@ -68,6 +69,10 @@ class _DetaillsState extends State<Detaills> {
     setState(() {});
   }
 
+  setIsPrice({required double isPrice}) {
+    this.isPrice = isPrice;
+  }
+
   setEnabled({required bool enabled}) {
     this.enabled = enabled;
     setState(() {});
@@ -92,6 +97,7 @@ class _DetaillsState extends State<Detaills> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OwnerBuilder.detaillsColumn(
+                      setIsPrice: setIsPrice,
                       enabled: enabled,
                       setEnabled: setEnabled,
                       expanded: expanded,
@@ -114,8 +120,8 @@ class _DetaillsState extends State<Detaills> {
                 ),
                 OwnerBuilder.buildComparison(
                   redirect: false,
-                  isPrice: projectController.isPrice ??
-                      widget.totalCosts.fold(0, (a, b) => a + b),
+                  isPrice:
+                      isPrice ?? widget.totalCosts.fold(0, (a, b) => a + b),
                   shouldPrice: widget.totalBudgets.fold(0, (a, b) => a + b),
                 )
               ],
