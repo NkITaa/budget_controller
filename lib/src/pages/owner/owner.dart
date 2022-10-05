@@ -1,14 +1,12 @@
-import 'package:budget_controller/src/modells/budget.dart';
 import 'package:budget_controller/src/modells/cost.dart';
 import 'package:budget_controller/src/modells/project.dart';
+import 'package:budget_controller/src/pages/owner/components/new_project.dart';
+import 'package:budget_controller/src/pages/owner/components/project_exists.dart';
 import 'package:budget_controller/src/pages/owner/components/table.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/project_controller.dart';
 import '../../modells/user.dart';
-import '../../widget_builder.dart';
-import '../manager/manager_builder.dart';
-import 'components/owner_builder.dart';
 import 'const_owner.dart';
 
 class Owner extends StatefulWidget {
@@ -21,27 +19,19 @@ class Owner extends StatefulWidget {
 
 class _OwnerState extends State<Owner> {
   ProjectController projectController = Get.put(ProjectController());
+
+  void state() {
+    setState(() {});
+  }
+
   bool enabled = false;
   bool sortAscending = true;
   int sortColumnIndex = 0;
   int currentIndex = 0;
 
-  List<TextEditingController> controllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
-
   void toggle({required int index}) {
     currentIndex = index;
     enabled = !enabled;
-    setState(() {});
-  }
-
-  void state() {
     setState(() {});
   }
 
@@ -99,157 +89,17 @@ class _OwnerState extends State<Owner> {
                         );
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: MediaQuery.of(context).size.width,
+                            child: const CircularProgressIndicator());
                       }
+                      Project project = snapshot.data!;
                       if (snapshot.data?.budgets == null) {
-                        final GlobalKey<FormState> formKey =
-                            GlobalKey<FormState>();
-                        return Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 648,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  children: [
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        snapshot.data!.name,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 28,
-                                        ),
-                                      ),
-                                    ),
-                                    const Center(
-                                      child: Text(
-                                        "Budget Einreichen",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "Personalkosten",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 28,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        ManagerBuilder.costFieldBuilder(
-                                            controller: controllers[0],
-                                            hint: "IT-Kosten",
-                                            overlineText: COwner.arten[0]),
-                                        ManagerBuilder.costFieldBuilder(
-                                            controller: controllers[1],
-                                            hint: "Vertriebs-Kosten",
-                                            overlineText: COwner.arten[1]),
-                                        ManagerBuilder.costFieldBuilder(
-                                            controller: controllers[2],
-                                            hint: "Rechts-Kosten",
-                                            overlineText: COwner.arten[2]),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    Row(
-                                      children: [
-                                        ManagerBuilder.costFieldBuilder(
-                                            controller: controllers[3],
-                                            hint: "Management-Kosten",
-                                            overlineText: COwner.arten[3]),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              SizedBox(
-                                width: 648,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  children: [
-                                    const Text(
-                                      "Sachkosten",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 28,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        ManagerBuilder.costFieldBuilder(
-                                            controller: controllers[4],
-                                            hint: "Hardware-Kosten",
-                                            overlineText: COwner.arten[4]),
-                                        ManagerBuilder.costFieldBuilder(
-                                            controller: controllers[5],
-                                            hint: "Software-Kosten",
-                                            overlineText: COwner.arten[5]),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              CustomBuilder.customButton(
-                                  text: "Einreichen",
-                                  onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      SnackBar snackBar =
-                                          await projectController.addBudgets(
-                                        projectId: snapshot.data!.id,
-                                        budgets: COwner.arten
-                                            .asMap()
-                                            .entries
-                                            .map((entry) {
-                                          return Budget(
-                                              type: entry.value,
-                                              value: double.parse(
-                                                  controllers[entry.key]
-                                                      .text
-                                                      .trim()
-                                                      .replaceFirst("€", "")));
-                                        }).toList(),
-                                      );
-                                      setState(() {});
-                                      if (!mounted) return;
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    }
-                                  },
-                                  isLightMode: true),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          ),
-                        );
+                        return NewProject(
+                            project: project,
+                            projectController: projectController,
+                            state: state);
                       }
                       if (snapshot.data?.pending == true) {
                         return Column(
@@ -265,59 +115,16 @@ class _OwnerState extends State<Owner> {
                           ],
                         );
                       } else {
-                        List<double> totalCosts = snapshot.data?.costs
-                                ?.map((cost) => cost.value)
-                                .toList() ??
-                            [0];
-                        List<double> totalBudgets = snapshot.data?.budgets
-                                ?.map((budget) => budget.value)
-                                .toList() ??
-                            [0];
-
-                        return Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              snapshot.data!.name,
-                              style: const TextStyle(
-                                  fontSize: 25, color: Colors.black),
-                            ),
-                            OwnerBuilder.buildComparison(
-                                totalBudgets: totalBudgets,
-                                totalCosts: totalCosts,
-                                redirect: true,
-                                until: snapshot.data!.deadline,
-                                budgets: snapshot.data!.budgets,
-                                costs: snapshot.data!.costs,
-                                isPrice: totalCosts.fold(0, (a, b) => a + b),
-                                shouldPrice:
-                                    totalBudgets.fold(0, (a, b) => a + b),
-                                context: context),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: OwnerBuilder.buildTable(
-                                  projectId: snapshot.data!.id,
-                                  projectController: projectController,
-                                  costs: snapshot.data?.costs,
-                                  state: state,
-                                  context: context,
-                                  enabled: enabled,
-                                  currentIndex: currentIndex,
-                                  toggle: toggle,
-                                  sort: sort,
-                                  sortAscending: sortAscending,
-                                  sortColumnIndex: sortColumnIndex),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            )
-                          ],
-                        );
+                        return ProjectExists(
+                            project: project,
+                            projectController: projectController,
+                            state: state,
+                            toggle: toggle,
+                            enabled: enabled,
+                            sortAscending: sortAscending,
+                            currentIndex: currentIndex,
+                            sortColumnIndex: sortColumnIndex,
+                            sort: sort);
                       }
                     }),
               ),

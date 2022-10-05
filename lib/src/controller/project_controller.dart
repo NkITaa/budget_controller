@@ -159,7 +159,7 @@ class ProjectController extends GetxController {
             "Budget wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId vorgeschlagen",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Ausgabe hinzugefügt", error: false);
+          message: "Budget vorgeschlagen", error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);

@@ -45,7 +45,10 @@ class _NewProjectState extends State<NewProject> {
               );
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  width: MediaQuery.of(context).size.width,
+                  child: const CircularProgressIndicator());
             }
             List<CustomUser>? owners = snapshot.requireData;
 

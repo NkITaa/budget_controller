@@ -44,7 +44,10 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
               );
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  width: MediaQuery.of(context).size.width,
+                  child: const CircularProgressIndicator());
             }
 
             final logs = snapshot.requireData;
@@ -86,7 +89,12 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                 }
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
+                                  return SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.7,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const CircularProgressIndicator());
                                 }
                                 return Column(
                                   children: [
