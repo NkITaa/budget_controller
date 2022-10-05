@@ -41,7 +41,8 @@ class UserController extends GetxController {
               role: role));
       await LogController.writeLog(
         title: Const.createdUser,
-        notification: "Der User $email wurde mit der Rolle $role erstellt",
+        notification:
+            "${Const.signUpLog[0]} $email ${Const.signUpLog[1]} $role ${Const.signUpLog[2]}",
       );
       return CustomBuilder.customSnackBarObject(
           message: Const.createdUser, error: false);
@@ -58,7 +59,7 @@ class UserController extends GetxController {
       await LogController.writeLog(
         title: Const.sentResetMail,
         notification:
-            "Es wurde eine Resetmail an $email von ${FirebaseAuth.instance.currentUser!.uid} gesendet",
+            "${Const.resetPasswordLog[0]} $email ${Const.resetPasswordLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.resetPasswordLog[2]}",
       );
       return CustomBuilder.customSnackBarObject(
           message: Const.sentResetMail, error: false);
@@ -77,7 +78,7 @@ class UserController extends GetxController {
       await LogController.writeLog(
         title: Const.changedRole,
         notification:
-            "Es wurde die Rolle von $uid zu $role von ${FirebaseAuth.instance.currentUser!.uid} geändert",
+            "${Const.changeRoleLog[0]} $uid ${Const.changeRoleLog[1]} $role ${Const.changeRoleLog[2]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.changeRoleLog[3]}",
       );
       return CustomBuilder.customSnackBarObject(
           message: Const.changedRole, error: false);

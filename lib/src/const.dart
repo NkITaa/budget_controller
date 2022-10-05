@@ -80,4 +80,89 @@ class Const {
   static const String ownerAdded = "Owner hinzugefügt";
 
   static const String ownerDeleted = "Owner entfernt";
+
+  static const List<String> resetPasswordLog = [
+    "Es wurde eine Resetmail an",
+    "von",
+    "gesendet"
+  ];
+
+  static const List<String> changeRoleLog = [
+    "Es wurde die Rolle von",
+    "zu",
+    "von",
+    "geändert"
+  ];
+
+  static const List<String> signUpLog = [
+    "Der User",
+    "wurde mit der Rolle",
+    "erstellt"
+  ];
+
+  static const List<String> deleteOwnerLog = [
+    "Der Owner",
+    "wurde von",
+    "vom Projekt",
+    "entfernt"
+  ];
+
+  static const List<String> addOwnerLog = [
+    "Der Owner",
+    "wurde von",
+    "zum Projekt",
+    "hinzugefügt"
+  ];
+
+  static const List<String> updateBudgetLog = [
+    "Das Budget wurde von",
+    "im Projekt",
+    "geändert"
+  ];
+
+  static const List<String> updateCostLog = [
+    "Die Kosten für",
+    "wurden von",
+    "in",
+    "geändert"
+  ];
+
+  static const List<String> deleteCostLog = [
+    "Die Kosten für",
+    "wurden von",
+    "in",
+    "gelöscht"
+  ];
+
+  static const List<String> addBudgetsLog = [
+    "Budget wurden von",
+    "in",
+    "vorgeschlagen"
+  ];
+
+  static const List<String> addCostLog = [
+    "Die Kosten für",
+    "wurden von",
+    "in",
+    "hinzugefügt"
+  ];
+
+  static const List<String> acceptBudgetLog = [
+    "Der Budgetvorschlag für das Projekt",
+    "wurden von",
+    "angenommen"
+  ];
+
+  static const List<String> deleteBudgetLog = [
+    "Der Budgetvorschlag für das Projekt",
+    "wurden von",
+    "abgelehnt"
+  ];
+
+  static const List<String> createProjectLog = [
+    "Ein neues Projekt wurde von",
+    "mit dem Namen",
+    "erstellt. Die ProjektId lautet:",
+    ". Die ID des Owners lautet"
+  ];
 }
