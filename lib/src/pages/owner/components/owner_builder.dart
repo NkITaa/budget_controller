@@ -395,25 +395,24 @@ class OwnerBuilder {
     required Function updateExpanded,
     Function? setEnabled,
     Function? setIsPrice,
+    Function? updateCostsController,
     required List<TextEditingController> textController,
     required List<Cost>? costs,
     required BuildContext context,
     bool? enabled,
     required bool budget,
+    DateTime? costDeadline,
     DateTime? until,
     required List<bool> expanded,
   }) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    DateTime? dateTime;
     return Form(
       key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.45,
-          child: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return Column(
+            width: MediaQuery.of(context).size.width * 0.45,
+            child: Column(
               children: [
                 Row(
                   children: [
@@ -480,13 +479,13 @@ class OwnerBuilder {
                                       },
                                       cancelText: COwner.abort,
                                       context: context,
-                                      initialDate: dateTime ?? DateTime.now(),
+                                      initialDate:
+                                          costDeadline ?? DateTime.now(),
                                       firstDate: DateTime(2022),
                                       lastDate: DateTime.now())
                                   .then((date) {
                                 if (date != null) {
-                                  dateTime = date;
-                                  setState(() {});
+                                  updateCostsController!(dateTime: date);
                                 }
                               });
                             },
@@ -501,7 +500,7 @@ class OwnerBuilder {
                     Text(
                       FormatController.dateTimeFormatter(
                           dateTime:
-                              budget ? until! : dateTime ?? DateTime.now()),
+                              budget ? until! : costDeadline ?? DateTime.now()),
                       style: const TextStyle(color: Colors.black, fontSize: 18),
                     ),
                   ],
@@ -516,7 +515,7 @@ class OwnerBuilder {
                       List<Cost?>? costType = FormatController.relevantCosts(
                           costs: costs,
                           category: COwner.arten[index],
-                          date: dateTime ?? DateTime.now());
+                          date: costDeadline ?? DateTime.now());
                       return ExpansionTile(
                         initiallyExpanded: expanded[index],
                         onExpansionChanged: (value) {
@@ -554,9 +553,7 @@ class OwnerBuilder {
                       );
                     }),
               ],
-            );
-          }),
-        ),
+            )),
       ),
     );
   }

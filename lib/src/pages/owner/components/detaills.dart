@@ -31,7 +31,9 @@ class Detaills extends StatefulWidget {
 class _DetaillsState extends State<Detaills> {
   List<bool> expanded = [false, false, false, false, false, false];
   ProjectController projectController = Get.find();
+  late List<double> totalCosts = widget.totalCosts;
   bool enabled = false;
+  DateTime? costDeadline;
   double? isPrice;
 
   late List<TextEditingController> costsController = [
@@ -69,6 +71,21 @@ class _DetaillsState extends State<Detaills> {
     setState(() {});
   }
 
+  updateCostsController({required DateTime dateTime}) {
+    costDeadline = dateTime;
+    for (int i = 0; i < costsController.length; i++) {
+      costsController[i].text =
+          "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€";
+    }
+    isPrice = costsController
+        .map((controller) {
+          return double.parse(controller.text.replaceAll("€", ""));
+        })
+        .toList()
+        .fold<double>(0, (a, b) => (a) + b);
+    setState(() {});
+  }
+
   setIsPrice({required double isPrice}) {
     this.isPrice = isPrice;
   }
@@ -97,6 +114,8 @@ class _DetaillsState extends State<Detaills> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OwnerBuilder.detaillsColumn(
+                      costDeadline: costDeadline,
+                      updateCostsController: updateCostsController,
                       setIsPrice: setIsPrice,
                       enabled: enabled,
                       setEnabled: setEnabled,
@@ -120,8 +139,7 @@ class _DetaillsState extends State<Detaills> {
                 ),
                 OwnerBuilder.buildComparison(
                   redirect: false,
-                  isPrice:
-                      isPrice ?? widget.totalCosts.fold(0, (a, b) => a + b),
+                  isPrice: isPrice ?? totalCosts.fold(0, (a, b) => a + b),
                   shouldPrice: widget.totalBudgets.fold(0, (a, b) => a + b),
                 )
               ],
