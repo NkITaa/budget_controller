@@ -1,6 +1,7 @@
 import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:flutter/material.dart';
 
+import '../../../const.dart';
 import '../../../modells/budget.dart';
 import '../../../modells/project.dart';
 import '../../../widget_builder.dart';
@@ -53,7 +54,7 @@ class NewProject extends StatelessWidget {
                 ),
                 const Center(
                   child: Text(
-                    "Budget Einreichen",
+                    COwner.newBudgetTitle,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -63,9 +64,9 @@ class NewProject extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  "Personalkosten",
-                  style: TextStyle(
+                Text(
+                  COwner.costSections[0],
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
                   ),
@@ -77,16 +78,16 @@ class NewProject extends StatelessWidget {
                   children: [
                     ManagerBuilder.costFieldBuilder(
                         controller: controllers[0],
-                        hint: "IT-Kosten",
-                        overlineText: COwner.arten[0]),
+                        hint: COwner.typesHints[0],
+                        overlineText: Const.costTypes[0]),
                     ManagerBuilder.costFieldBuilder(
                         controller: controllers[1],
-                        hint: "Vertriebs-Kosten",
-                        overlineText: COwner.arten[1]),
+                        hint: COwner.typesHints[1],
+                        overlineText: Const.costTypes[1]),
                     ManagerBuilder.costFieldBuilder(
                         controller: controllers[2],
-                        hint: "Rechts-Kosten",
-                        overlineText: COwner.arten[2]),
+                        hint: COwner.typesHints[2],
+                        overlineText: Const.costTypes[2]),
                   ],
                 ),
                 const SizedBox(
@@ -96,8 +97,8 @@ class NewProject extends StatelessWidget {
                   children: [
                     ManagerBuilder.costFieldBuilder(
                         controller: controllers[3],
-                        hint: "Management-Kosten",
-                        overlineText: COwner.arten[3]),
+                        hint: COwner.typesHints[3],
+                        overlineText: Const.costTypes[3]),
                   ],
                 ),
               ],
@@ -112,9 +113,9 @@ class NewProject extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                const Text(
-                  "Sachkosten",
-                  style: TextStyle(
+                Text(
+                  COwner.costSections[1],
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
                   ),
@@ -126,12 +127,12 @@ class NewProject extends StatelessWidget {
                   children: [
                     ManagerBuilder.costFieldBuilder(
                         controller: controllers[4],
-                        hint: "Hardware-Kosten",
-                        overlineText: COwner.arten[4]),
+                        hint: COwner.typesHints[4],
+                        overlineText: Const.costTypes[4]),
                     ManagerBuilder.costFieldBuilder(
                         controller: controllers[5],
-                        hint: "Software-Kosten",
-                        overlineText: COwner.arten[5]),
+                        hint: COwner.typesHints[5],
+                        overlineText: Const.costTypes[5]),
                   ],
                 ),
               ],
@@ -141,12 +142,12 @@ class NewProject extends StatelessWidget {
             height: 20,
           ),
           CustomBuilder.customButton(
-              text: "Einreichen",
+              text: COwner.submit,
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   SnackBar snackBar = await projectController.addBudgets(
                     projectId: project.id,
-                    budgets: COwner.arten.asMap().entries.map((entry) {
+                    budgets: Const.costTypes.asMap().entries.map((entry) {
                       return Budget(
                           type: entry.value,
                           value: double.parse(controllers[entry.key]

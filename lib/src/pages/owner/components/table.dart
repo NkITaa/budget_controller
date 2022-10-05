@@ -1,10 +1,10 @@
+import 'package:budget_controller/src/const.dart';
 import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../controller/format_controller.dart';
 import '../../../modells/cost.dart';
 import '../../../widget_builder.dart';
-import '../const_owner.dart';
 import 'owner_builder.dart';
 
 class TableData extends DataTableSource {
@@ -45,19 +45,15 @@ class TableData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     DateTime? dateTime;
-
     String? category = costs?[index].category.toString();
-
     TextEditingController reason =
         TextEditingController(text: costs?[index].reason.toString());
-
     TextEditingController value =
         TextEditingController(text: "${costs?[index].value}€");
-
     TextEditingController description =
         TextEditingController(text: costs?[index].description.toString());
-
     final bool selectedRow = currentIndex == index;
+
     return DataRow.byIndex(index: index, cells: [
       enabled && selectedRow
           ? DataCell(
@@ -100,7 +96,7 @@ class TableData extends DataTableSource {
             ),
       enabled && selectedRow
           ? DataCell(CustomBuilder.popupDropDown(
-              arten: COwner.arten,
+              arten: Const.costTypes,
               isTable: true,
               gewaehlteArt: category,
               setArt: ({required String art}) {

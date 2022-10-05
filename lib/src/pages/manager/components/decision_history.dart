@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../const.dart';
 import '../../../controller/log_controller.dart';
 import '../../../controller/project_controller.dart';
 import '../../../modells/log.dart';
 import '../../../modells/project.dart';
 import '../../../widget_builder.dart';
-import '../../owner/const_owner.dart';
 import '../manager_builder.dart';
 
 class DecisionHistory extends StatefulWidget {
@@ -148,7 +148,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                                 text:
                                                                     "${snapshot.data?.budgets?[0].value}€"),
                                                         overlineText:
-                                                            COwner.arten[0]),
+                                                            Const.costTypes[0]),
                                                     ManagerBuilder.costFieldBuilder(
                                                         enabled: false,
                                                         controller:
@@ -156,7 +156,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                                 text:
                                                                     "${snapshot.data?.budgets?[1].value}€"),
                                                         overlineText:
-                                                            COwner.arten[1]),
+                                                            Const.costTypes[1]),
                                                     ManagerBuilder.costFieldBuilder(
                                                         enabled: false,
                                                         controller:
@@ -164,7 +164,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                                 text:
                                                                     "${snapshot.data?.budgets?[2].value}€"),
                                                         overlineText:
-                                                            COwner.arten[2]),
+                                                            Const.costTypes[2]),
                                                   ],
                                                 ),
                                                 const SizedBox(
@@ -179,7 +179,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                                 text:
                                                                     "${snapshot.data?.budgets?[3].value}€"),
                                                         overlineText:
-                                                            COwner.arten[3]),
+                                                            Const.costTypes[3]),
                                                   ],
                                                 ),
                                               ],
@@ -215,7 +215,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                                 text:
                                                                     "${snapshot.data?.budgets?[4].value}€"),
                                                         overlineText:
-                                                            COwner.arten[4]),
+                                                            Const.costTypes[4]),
                                                     ManagerBuilder.costFieldBuilder(
                                                         enabled: false,
                                                         controller:
@@ -223,7 +223,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                                 text:
                                                                     "${snapshot.data?.budgets?[5].value}€"),
                                                         overlineText:
-                                                            COwner.arten[5]),
+                                                            Const.costTypes[5]),
                                                   ],
                                                 ),
                                               ],

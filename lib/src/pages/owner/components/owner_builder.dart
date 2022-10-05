@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../const.dart';
 import '../../../controller/format_controller.dart';
 import '../../../widget_builder.dart';
 import 'table.dart';
@@ -248,7 +249,7 @@ class OwnerBuilder {
     TextEditingController reason = TextEditingController();
     TextEditingController description = TextEditingController();
     TextEditingController value = TextEditingController();
-    String category = COwner.arten[0];
+    String category = Const.costTypes[0];
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
@@ -305,7 +306,7 @@ class OwnerBuilder {
                           SizedBox(
                             width: 200,
                             child: CustomBuilder.popupDropDown(
-                                arten: COwner.arten,
+                                arten: Const.costTypes,
                                 gewaehlteArt: category,
                                 setArt: state),
                           )
@@ -371,7 +372,7 @@ class OwnerBuilder {
                             reason.text = "";
                             description.text = "";
                             value.text = "";
-                            category = COwner.arten[0];
+                            category = Const.costTypes[0];
                             dateTime = null;
                             dateExists = null;
                             if (!mounted) return;
@@ -510,11 +511,11 @@ class OwnerBuilder {
                 ),
                 ListView.builder(
                     shrinkWrap: true,
-                    itemCount: COwner.arten.length,
+                    itemCount: Const.costTypes.length,
                     itemBuilder: (context, index) {
                       List<Cost?>? costType = FormatController.relevantCosts(
                           costs: costs,
-                          category: COwner.arten[index],
+                          category: Const.costTypes[index],
                           date: costDeadline ?? DateTime.now());
                       return ExpansionTile(
                         initiallyExpanded: expanded[index],
@@ -523,7 +524,7 @@ class OwnerBuilder {
                         },
                         title: Row(
                           children: [
-                            Text("${COwner.arten[index]}: ",
+                            Text("${Const.costTypes[index]}: ",
                                 style: const TextStyle(color: Colors.black)),
                             Flexible(
                                 child: customTextFormFieldNoDeco(

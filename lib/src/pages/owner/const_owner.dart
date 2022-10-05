@@ -17,19 +17,30 @@ class COwner {
 
   static const String add = "Hinzufügen";
 
+  static const String submit = "Einreichen";
+
+  static const String newBudgetTitle = "Budget Einreichen";
+
   static const String noProject =
       "Kein Projekt zugeordnet, kontaktiere das Management";
 
-  static List<String> arten = [
-    "IT",
-    "Vertrieb",
-    "Recht",
-    "Management",
-    "Hardware",
-    "Software"
+  static const inAudit = "Dein Budgetentwurf wird geprüft";
+
+  static const List<String> costSections = [
+    "Personalkosten",
+    "Sachkosten",
   ];
 
-  static List<String> costAttributes = ["Beschreibung", "Grund", "Summe"];
+  static const List<String> typesHints = [
+    "IT-Kosten",
+    "Vertriebs-Kosten",
+    "Rechts-Kosten",
+    "Management-Kosten",
+    "Hardware-Kosten",
+    "Software-Kosten"
+  ];
+
+  static const List<String> costAttributes = ["Beschreibung", "Grund", "Summe"];
 
   static const List<String> columns = [
     "Datum",

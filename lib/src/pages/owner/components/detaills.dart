@@ -3,11 +3,11 @@ import 'package:budget_controller/src/pages/owner/components/owner_builder.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../const.dart';
 import '../../../controller/format_controller.dart';
 import '../../../modells/budget.dart';
 import '../../../modells/cost.dart';
 import '../../../widget_builder.dart';
-import '../const_owner.dart';
 
 class Detaills extends StatefulWidget {
   const Detaills(
@@ -39,22 +39,22 @@ class _DetaillsState extends State<Detaills> {
   late List<TextEditingController> costsController = [
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[0], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[0], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[1], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[1], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[2], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[2], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[3], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[3], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[4], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[4], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€")
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€")
   ];
 
   late List<TextEditingController> budgetsController = [
@@ -75,7 +75,7 @@ class _DetaillsState extends State<Detaills> {
     costDeadline = dateTime;
     for (int i = 0; i < costsController.length; i++) {
       costsController[i].text =
-          "${FormatController.relevantCosts(costs: widget.costs, category: COwner.arten[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€";
+          "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€";
     }
     isPrice = costsController
         .map((controller) {

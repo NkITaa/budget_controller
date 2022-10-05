@@ -1,6 +1,15 @@
 class Const {
   static const List<String> userRoles = ["Manager", "Owner", "Admin"];
 
+  static const List<String> costTypes = [
+    "IT",
+    "Vertrieb",
+    "Recht",
+    "Management",
+    "Hardware",
+    "Software"
+  ];
+
   static const String unknownError =
       "Unvorhergesehener Fehler, kontaktiere den Administrator";
 

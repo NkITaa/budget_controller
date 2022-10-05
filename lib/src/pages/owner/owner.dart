@@ -95,20 +95,20 @@ class _OwnerState extends State<Owner> {
                             child: const CircularProgressIndicator());
                       }
                       Project project = snapshot.data!;
-                      if (snapshot.data?.budgets == null) {
+                      if (project.budgets == null) {
                         return NewProject(
                             project: project,
                             projectController: projectController,
                             state: state);
                       }
-                      if (snapshot.data?.pending == true) {
+                      if (project.pending == true) {
                         return Column(
                           children: const [
                             SizedBox(
                               height: 100,
                             ),
                             Text(
-                              "Dein Budgetentwurf wird geprüft",
+                              COwner.inAudit,
                               style:
                                   TextStyle(fontSize: 30, color: Colors.black),
                             ),
