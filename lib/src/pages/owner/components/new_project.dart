@@ -143,7 +143,7 @@ class NewProject extends StatelessWidget {
           ),
           CustomBuilder.customButton(
               text: COwner.submit,
-              onPressed: () async {
+              onPressed: ([bool mounted = true]) async {
                 if (formKey.currentState!.validate()) {
                   SnackBar snackBar = await projectController.addBudgets(
                     projectId: project.id,
@@ -157,6 +157,7 @@ class NewProject extends StatelessWidget {
                     }).toList(),
                   );
                   state();
+                  if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },

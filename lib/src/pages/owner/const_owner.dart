@@ -21,6 +21,13 @@ class COwner {
 
   static const String newBudgetTitle = "Budget Einreichen";
 
+  static const String addedCost = "Ausgabe Hinzugefügt";
+
+  static const String deleteWarning =
+      "Möchtest du die Ausgabe wirklich löschen?";
+
+  static const String addCost = "Ausgabe Hinzufügen";
+
   static const String noProject =
       "Kein Projekt zugeordnet, kontaktiere das Management";
 

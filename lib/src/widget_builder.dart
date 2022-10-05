@@ -257,9 +257,8 @@ class CustomBuilder {
     return TextFormField(
       inputFormatters: [
         summe
-            ? FilteringTextInputFormatter.allow(RegExp("[0-9,. €]"))
-            : FilteringTextInputFormatter.allow(
-                RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
+            ? FilteringTextInputFormatter.allow(RegExp(Const.numInput))
+            : FilteringTextInputFormatter.allow(RegExp(Const.basicInput))
       ],
       validator: (value) {
         return summe

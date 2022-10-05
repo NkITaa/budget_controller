@@ -232,7 +232,7 @@ class OwnerBuilder {
           const SizedBox(
             height: 10,
           ),
-          const Text("Möchtest du die Ausgabe wirklich löschen?")
+          const Text(COwner.deleteWarning)
         ]),
         title: "",
         titlePadding: EdgeInsets.zero,
@@ -262,7 +262,7 @@ class OwnerBuilder {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: const Text(
-              "Ausgabe Hinzufügen",
+              COwner.addCost,
               style: TextStyle(color: Colors.black),
             ),
             content: SizedBox(
@@ -378,8 +378,7 @@ class OwnerBuilder {
                             if (!mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                                 CustomBuilder.customSnackBarObject(
-                                    message: "Ausgabe Hinzugefügt",
-                                    error: false));
+                                    message: COwner.addedCost, error: false));
                             setState(() {});
                           }
                         },
@@ -570,9 +569,8 @@ class OwnerBuilder {
     return TextFormField(
       inputFormatters: [
         summe
-            ? FilteringTextInputFormatter.allow(RegExp("[0-9,. €]"))
-            : FilteringTextInputFormatter.allow(
-                RegExp("[0-9a-zA-Z &üöäßÜÖÄ@€.-]"))
+            ? FilteringTextInputFormatter.allow(RegExp(Const.numInput))
+            : FilteringTextInputFormatter.allow(RegExp(Const.basicInput))
       ],
       validator: (value) {
         return summe

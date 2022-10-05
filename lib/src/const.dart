@@ -1,6 +1,10 @@
 class Const {
   static const List<String> userRoles = ["Manager", "Owner", "Admin"];
 
+  static const String basicInput = "[0-9a-zA-Z &üöäßÜÖÄ@€.-]";
+
+  static const String numInput = "[0-9,. €]";
+
   static const List<String> costTypes = [
     "IT",
     "Vertrieb",
