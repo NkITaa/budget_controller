@@ -1,3 +1,1 @@
-class CAdmin {
-  static const String signOut = "Sign out";
-}
+class CAdmin {}

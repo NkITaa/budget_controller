@@ -20,6 +20,12 @@ class Owner extends StatefulWidget {
 }
 
 class _OwnerState extends State<Owner> {
+  ProjectController projectController = Get.put(ProjectController());
+  bool enabled = false;
+  bool sortAscending = true;
+  int sortColumnIndex = 0;
+  int currentIndex = 0;
+
   List<TextEditingController> controllers = [
     TextEditingController(),
     TextEditingController(),
@@ -28,11 +34,6 @@ class _OwnerState extends State<Owner> {
     TextEditingController(),
     TextEditingController(),
   ];
-  ProjectController projectController = Get.put(ProjectController());
-
-  bool enabled = false;
-  int currentIndex = 0;
-  Project? project;
 
   void toggle({required int index}) {
     currentIndex = index;
@@ -43,9 +44,6 @@ class _OwnerState extends State<Owner> {
   void state() {
     setState(() {});
   }
-
-  int sortColumnIndex = 0;
-  bool sortAscending = true;
 
   void sort<T>(
     Comparable<T> Function(Cost d) getField,
@@ -73,7 +71,7 @@ class _OwnerState extends State<Owner> {
         child: widget.user.projectId == null
             ? const Center(
                 child: Text(
-                  "Kein Projekt zugeordnet, kontaktiere das Management",
+                  COwner.noProject,
                   style: TextStyle(fontSize: 25),
                 ),
               )

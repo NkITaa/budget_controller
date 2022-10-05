@@ -1,8 +1,6 @@
 class COwner {
   static const double criticalPercentile = 0.8;
 
-  static const String signOut = "Sign out";
-
   static const String isPrice = "Ist-Kosten";
 
   static const String shouldPrice = "Soll-Kosten";
@@ -18,6 +16,9 @@ class COwner {
   static const String close = "Schließen";
 
   static const String add = "Hinzufügen";
+
+  static const String noProject =
+      "Kein Projekt zugeordnet, kontaktiere das Management";
 
   static List<String> arten = [
     "IT",

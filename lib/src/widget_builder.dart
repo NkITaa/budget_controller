@@ -133,7 +133,7 @@ class CustomBuilder {
       decoration: const BoxDecoration(
           image: DecorationImage(
         fit: BoxFit.cover,
-        image: AssetImage("assets/logo.png"),
+        image: AssetImage(Const.logoPath),
       )),
     );
   }

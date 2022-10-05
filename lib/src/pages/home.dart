@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
               return Scaffold(
                   appBar: CustomBuilder.customAppBar(context: context),
                   drawer: CustomBuilder.customDrawer(
-                      userGroup: "Manager", context: context),
+                      userGroup: Const.userRoles[0], context: context),
                   body: Manager(
                     user: user,
                   ));
@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
               return Scaffold(
                   appBar: CustomBuilder.customAppBar(context: context),
                   drawer: CustomBuilder.customDrawer(
-                      userGroup: "Owner", context: context),
+                      userGroup: Const.userRoles[1], context: context),
                   body: Owner(
                     user: user,
                   ));
@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
               return Scaffold(
                 appBar: CustomBuilder.customAppBar(context: context),
                 drawer: CustomBuilder.customDrawer(
-                    userGroup: "Admin", context: context),
+                    userGroup: Const.userRoles[2], context: context),
                 body: Admin(
                   user: user,
                 ),

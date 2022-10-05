@@ -12,4 +12,6 @@ class Const {
   static const String nullFieldError = "Das Feld darf nicht leer sein";
 
   static const String signOut = "Ausloggen";
+
+  static const String logoPath = "assets/logo.png";
 }
