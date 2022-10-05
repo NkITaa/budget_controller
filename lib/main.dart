@@ -3,6 +3,7 @@ import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
 import 'package:budget_controller/src/pages/home.dart';
 import 'package:budget_controller/src/pages/login/login.dart';
+import 'package:budget_controller/src/widget_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,9 +52,8 @@ class _MyAppState extends State<MyApp> {
               );
             }
             if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
+              return CustomBuilder.defaultFutureError(
+                  error: snapshot.error.toString());
             }
             if (snapshot.hasData) {
               return const Home();

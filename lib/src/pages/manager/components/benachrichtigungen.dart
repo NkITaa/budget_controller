@@ -31,17 +31,8 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
           future: LogController.loadLogsManager(toDecide: true),
           builder: (BuildContext context, snapshot) {
             if (snapshot.hasError) {
-              return Column(
-                children: [
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  Text(
-                    snapshot.error.toString(),
-                    style: const TextStyle(fontSize: 30, color: Colors.black),
-                  ),
-                ],
-              );
+              return CustomBuilder.defaultFutureError(
+                  error: snapshot.error.toString());
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return SizedBox(
@@ -74,18 +65,8 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                 AsyncSnapshot<Project> snapshot,
                               ) {
                                 if (snapshot.hasError) {
-                                  return Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 100,
-                                      ),
-                                      Text(
-                                        snapshot.error.toString(),
-                                        style: const TextStyle(
-                                            fontSize: 30, color: Colors.black),
-                                      ),
-                                    ],
-                                  );
+                                  return CustomBuilder.defaultFutureError(
+                                      error: snapshot.error.toString());
                                 }
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -142,21 +123,21 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                                   enabled: false,
                                                   controller: TextEditingController(
                                                       text:
-                                                          "${snapshot.data?.budgets?[0].value}€"),
+                                                          "${snapshot.data?.budgets?[0].value}${Const.currency}"),
                                                   overlineText:
                                                       Const.costTypes[0]),
                                               ManagerBuilder.costFieldBuilder(
                                                   enabled: false,
                                                   controller: TextEditingController(
                                                       text:
-                                                          "${snapshot.data?.budgets?[1].value}€"),
+                                                          "${snapshot.data?.budgets?[1].value}${Const.currency}"),
                                                   overlineText:
                                                       Const.costTypes[1]),
                                               ManagerBuilder.costFieldBuilder(
                                                   enabled: false,
                                                   controller: TextEditingController(
                                                       text:
-                                                          "${snapshot.data?.budgets?[2].value}€"),
+                                                          "${snapshot.data?.budgets?[2].value}${Const.currency}"),
                                                   overlineText:
                                                       Const.costTypes[2]),
                                             ],
@@ -170,7 +151,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                                   enabled: false,
                                                   controller: TextEditingController(
                                                       text:
-                                                          "${snapshot.data?.budgets?[3].value}€"),
+                                                          "${snapshot.data?.budgets?[3].value}${Const.currency}"),
                                                   overlineText:
                                                       Const.costTypes[3]),
                                             ],
@@ -204,14 +185,14 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                                   enabled: false,
                                                   controller: TextEditingController(
                                                       text:
-                                                          "${snapshot.data?.budgets?[4].value}€"),
+                                                          "${snapshot.data?.budgets?[4].value}${Const.currency}"),
                                                   overlineText:
                                                       Const.costTypes[4]),
                                               ManagerBuilder.costFieldBuilder(
                                                   enabled: false,
                                                   controller: TextEditingController(
                                                       text:
-                                                          "${snapshot.data?.budgets?[5].value}€"),
+                                                          "${snapshot.data?.budgets?[5].value}${Const.currency}"),
                                                   overlineText:
                                                       Const.costTypes[5]),
                                             ],

@@ -38,18 +38,8 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                   future: LogController.loadLogsManager(toDecide: false),
                   builder: (BuildContext context, snapshot) {
                     if (snapshot.hasError) {
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 100,
-                          ),
-                          Text(
-                            snapshot.error.toString(),
-                            style: const TextStyle(
-                                fontSize: 30, color: Colors.black),
-                          ),
-                        ],
-                      );
+                      return CustomBuilder.defaultFutureError(
+                          error: snapshot.error.toString());
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return SizedBox(
@@ -80,19 +70,8 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                       AsyncSnapshot<Project> snapshot,
                                     ) {
                                       if (snapshot.hasError) {
-                                        return Column(
-                                          children: [
-                                            const SizedBox(
-                                              height: 100,
-                                            ),
-                                            Text(
-                                              snapshot.error.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 30,
-                                                  color: Colors.black),
-                                            ),
-                                          ],
-                                        );
+                                        return CustomBuilder.defaultFutureError(
+                                            error: snapshot.error.toString());
                                       }
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -146,7 +125,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                         controller:
                                                             TextEditingController(
                                                                 text:
-                                                                    "${snapshot.data?.budgets?[0].value}€"),
+                                                                    "${snapshot.data?.budgets?[0].value}${Const.currency}"),
                                                         overlineText:
                                                             Const.costTypes[0]),
                                                     ManagerBuilder.costFieldBuilder(
@@ -154,7 +133,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                         controller:
                                                             TextEditingController(
                                                                 text:
-                                                                    "${snapshot.data?.budgets?[1].value}€"),
+                                                                    "${snapshot.data?.budgets?[1].value}${Const.currency}"),
                                                         overlineText:
                                                             Const.costTypes[1]),
                                                     ManagerBuilder.costFieldBuilder(
@@ -162,7 +141,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                         controller:
                                                             TextEditingController(
                                                                 text:
-                                                                    "${snapshot.data?.budgets?[2].value}€"),
+                                                                    "${snapshot.data?.budgets?[2].value}${Const.currency}"),
                                                         overlineText:
                                                             Const.costTypes[2]),
                                                   ],
@@ -177,7 +156,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                         controller:
                                                             TextEditingController(
                                                                 text:
-                                                                    "${snapshot.data?.budgets?[3].value}€"),
+                                                                    "${snapshot.data?.budgets?[3].value}${Const.currency}"),
                                                         overlineText:
                                                             Const.costTypes[3]),
                                                   ],
@@ -213,7 +192,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                         controller:
                                                             TextEditingController(
                                                                 text:
-                                                                    "${snapshot.data?.budgets?[4].value}€"),
+                                                                    "${snapshot.data?.budgets?[4].value}${Const.currency}"),
                                                         overlineText:
                                                             Const.costTypes[4]),
                                                     ManagerBuilder.costFieldBuilder(
@@ -221,7 +200,7 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                         controller:
                                                             TextEditingController(
                                                                 text:
-                                                                    "${snapshot.data?.budgets?[5].value}€"),
+                                                                    "${snapshot.data?.budgets?[5].value}${Const.currency}"),
                                                         overlineText:
                                                             Const.costTypes[5]),
                                                   ],

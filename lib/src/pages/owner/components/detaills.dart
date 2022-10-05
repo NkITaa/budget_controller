@@ -39,31 +39,37 @@ class _DetaillsState extends State<Detaills> {
   late List<TextEditingController> costsController = [
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[0], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[0], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[1], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[1], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[2], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[2], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[3], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[3], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[4], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€"),
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[4], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
     TextEditingController(
         text:
-            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€")
+            "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}")
   ];
 
   late List<TextEditingController> budgetsController = [
-    TextEditingController(text: "${widget.budgets?[0].value ?? 0}€"),
-    TextEditingController(text: "${widget.budgets?[1].value ?? 0}€"),
-    TextEditingController(text: "${widget.budgets?[2].value ?? 0}€"),
-    TextEditingController(text: "${widget.budgets?[3].value ?? 0}€"),
-    TextEditingController(text: "${widget.budgets?[4].value ?? 0}€"),
-    TextEditingController(text: "${widget.budgets?[5].value ?? 0}€")
+    TextEditingController(
+        text: "${widget.budgets?[0].value ?? 0}${Const.currency}"),
+    TextEditingController(
+        text: "${widget.budgets?[1].value ?? 0}${Const.currency}"),
+    TextEditingController(
+        text: "${widget.budgets?[2].value ?? 0}${Const.currency}"),
+    TextEditingController(
+        text: "${widget.budgets?[3].value ?? 0}${Const.currency}"),
+    TextEditingController(
+        text: "${widget.budgets?[4].value ?? 0}${Const.currency}"),
+    TextEditingController(
+        text: "${widget.budgets?[5].value ?? 0}${Const.currency}")
   ];
 
   updateExpanded({required bool state, required int index}) {
@@ -75,11 +81,11 @@ class _DetaillsState extends State<Detaills> {
     costDeadline = dateTime;
     for (int i = 0; i < costsController.length; i++) {
       costsController[i].text =
-          "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}€";
+          "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}";
     }
     isPrice = costsController
         .map((controller) {
-          return double.parse(controller.text.replaceAll("€", ""));
+          return double.parse(controller.text.replaceAll(Const.currency, ""));
         })
         .toList()
         .fold<double>(0, (a, b) => (a) + b);

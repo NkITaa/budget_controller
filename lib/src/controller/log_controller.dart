@@ -60,4 +60,11 @@ class LogController {
         .doc(uid)
         .update({"read": true});
   }
+
+  static Future<void> setUnread({required String uid}) async {
+    await FirebaseFirestore.instance
+        .collection('logs')
+        .doc(uid)
+        .update({"read": false});
+  }
 }

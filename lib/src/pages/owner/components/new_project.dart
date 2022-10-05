@@ -153,7 +153,7 @@ class NewProject extends StatelessWidget {
                           value: double.parse(controllers[entry.key]
                               .text
                               .trim()
-                              .replaceFirst("€", "")));
+                              .replaceFirst(Const.currency, "")));
                     }).toList(),
                   );
                   state();

@@ -1,3 +1,4 @@
+import '../const.dart';
 import '../modells/cost.dart';
 
 class FormatController {
@@ -12,13 +13,13 @@ class FormatController {
     }
     if (item.contains(".")) {
       for (int i = item.indexOf(".") + 3; i < item.length; i++) {
-        if (item[i] != "€") {
+        if (item[i] != Const.currency) {
           item = item.replaceRange(i, i + 1, "");
         }
       }
     }
-    item = item.replaceAll("€", "");
-    return "$item€";
+    item = item.replaceAll(Const.currency, "");
+    return "$item${Const.currency}";
   }
 
   static String dateTimeFormatter({required DateTime dateTime}) {

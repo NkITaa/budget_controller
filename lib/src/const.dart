@@ -1,9 +1,11 @@
 class Const {
   static const List<String> userRoles = ["Manager", "Owner", "Admin"];
 
-  static const String basicInput = "[0-9a-zA-Z &üöäßÜÖÄ@€.-]";
+  static String currency = "€";
 
-  static const String numInput = "[0-9,. €]";
+  static String basicInput = "[0-9a-zA-Z &üöäßÜÖÄ@$currency.-]";
+
+  static String numInput = "[0-9,. $currency]";
 
   static const List<String> costTypes = [
     "IT",
@@ -25,6 +27,20 @@ class Const {
   static const String nullFieldError = "Das Feld darf nicht leer sein";
 
   static const String signOut = "Ausloggen";
+
+  static const String approveLogout = "Möchtest du dich wirklich abmelden?";
+
+  static const String changePassword = "Passwort ändern";
+
+  static const String chooseOwner = "Owner auswählen";
+
+  static const String search = "Suchen";
+
+  static const String decisionHistory = "Entscheidungshistorie";
+
+  static const String yes = "Ja";
+
+  static const String no = "Nein";
 
   static const String logoPath = "assets/logo.png";
 }

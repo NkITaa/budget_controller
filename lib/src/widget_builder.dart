@@ -206,16 +206,16 @@ class CustomBuilder {
                 ListTile(
                     leading: const Icon(Icons.password),
                     iconColor: Colors.white,
-                    title: const Text("Password ändern"),
+                    title: const Text(Const.changePassword),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ResetPassword()))),
-                userGroup == "Manager"
+                userGroup == Const.userRoles[0]
                     ? ListTile(
                         leading: const Icon(Icons.book_outlined),
                         iconColor: Colors.white,
-                        title: const Text("Entscheidungshistorie"),
+                        title: const Text(Const.decisionHistory),
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -263,7 +263,7 @@ class CustomBuilder {
       validator: (value) {
         return summe
             ? (value!.length < 2 ||
-                    double.parse(value.replaceAll("€", "")) < 0.01
+                    double.parse(value.replaceAll(Const.currency, "")) < 0.01
                 ? ""
                 : null)
             : uid
@@ -366,14 +366,14 @@ class CustomBuilder {
         backgroundColor: const Color(0xff7434E6),
         actions: [
           customButton(
-              text: "Ja",
+              text: Const.yes,
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 Get.back();
               }),
           customButton(
               isDarkMode: true,
-              text: "Nein",
+              text: Const.no,
               onPressed: () {
                 Get.back();
               })
@@ -383,7 +383,7 @@ class CustomBuilder {
           const SizedBox(
             height: 10,
           ),
-          const Text("Möchtest du dich wirklich abmelden?")
+          const Text(Const.approveLogout)
         ]),
         title: "",
         titlePadding: EdgeInsets.zero,
@@ -425,7 +425,7 @@ class CustomBuilder {
     return DropdownSearch<String>(
       dropdownBuilder: (context, selectedItem) {
         return Text(
-          projectController.owner ?? "Owner auswählen",
+          projectController.owner ?? Const.chooseOwner,
           style: TextStyle(
             color: projectController.owner == null ? Colors.grey : Colors.black,
           ),
@@ -445,7 +445,7 @@ class CustomBuilder {
             cursorColor: Color(0xff7434E6),
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
-              hintText: "Suchen",
+              hintText: Const.search,
               focusColor: Colors.grey,
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
@@ -482,6 +482,44 @@ class CustomBuilder {
           return null;
         }
       },
+    );
+  }
+
+  static createSubscaffold(
+      {required BuildContext context, required Widget child}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ScaffoldMessenger(
+          child: Builder(
+            builder: (context) => Scaffold(
+              backgroundColor: Colors.transparent,
+              body: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => Navigator.of(context).pop(),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: child,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static Widget defaultFutureError({required String error}) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 100,
+        ),
+        Text(
+          error,
+          style: const TextStyle(fontSize: 30, color: Colors.black),
+        ),
+      ],
     );
   }
 }

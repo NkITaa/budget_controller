@@ -1,10 +1,12 @@
 import 'package:budget_controller/src/controller/log_controller.dart';
 import 'package:budget_controller/src/controller/user_controller.dart';
+import 'package:budget_controller/src/pages/admin/admin_builder.dart';
+import 'package:budget_controller/src/widget_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../modells/log.dart';
 import '../../modells/user.dart';
-import 'admin_builder.dart';
+import 'const_admin.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key, required this.user});
@@ -17,6 +19,16 @@ class _AdminState extends State<Admin> {
   UserController userController = Get.find();
   List<bool?> tileState = [];
   bool logHistory = false;
+
+  setLogHistory({required bool value}) {
+    logHistory = value;
+    setState(() {});
+  }
+
+  setTileState({required bool value, required int index}) {
+    tileState[index] = value;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,129 +47,17 @@ class _AdminState extends State<Admin> {
             ),
             Center(
                 child: Text(
-              logHistory ? "Log-Historie" : "Logs",
+              logHistory ? CAdmin.logHistory : CAdmin.logs,
               style: const TextStyle(fontSize: 28, color: Colors.black),
             )),
             Flexible(
               child: Row(
                 children: [
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            logHistory = false;
-                            setState(() {});
-                          },
-                          icon: Icon(
-                            Icons.mail_outline,
-                            color: logHistory
-                                ? Colors.grey
-                                : const Color(0xff7434E6),
-                          )),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                            onTap: () {},
-                                            child: AdminBuilder.addUserPopup(
-                                              context: context,
-                                              userController: userController,
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.person_add_outlined,
-                              color: Colors.grey)),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                            onTap: () {},
-                                            child: AdminBuilder.changeRolePopup(
-                                              context: context,
-                                              userController: userController,
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.change_circle_outlined,
-                            color: Colors.grey,
-                          )),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                            onTap: () {},
-                                            child: AdminBuilder.resetPassword(
-                                              context: context,
-                                              userController: userController,
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.key,
-                            color: Colors.grey,
-                          )),
-                      IconButton(
-                          onPressed: () {
-                            logHistory = true;
-                            setState(() {});
-                          },
-                          icon: Icon(
-                            Icons.book_outlined,
-                            color: logHistory
-                                ? const Color(0xff7434E6)
-                                : Colors.grey,
-                          )),
-                    ],
-                  ),
+                  AdminBuilder.buildIconBar(
+                      setLogHistory: setLogHistory,
+                      context: context,
+                      userController: userController,
+                      logHistory: logHistory),
                   Flexible(
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height - 130,
@@ -170,19 +70,8 @@ class _AdminState extends State<Admin> {
                             future: LogController.loadLogs(),
                             builder: (BuildContext context, snapshot) {
                               if (snapshot.hasError) {
-                                snapshot.printError();
-                                return Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 100,
-                                    ),
-                                    Text(
-                                      snapshot.error.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 30, color: Colors.black),
-                                    ),
-                                  ],
-                                );
+                                return CustomBuilder.defaultFutureError(
+                                    error: snapshot.error.toString());
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -205,130 +94,19 @@ class _AdminState extends State<Admin> {
                                     Log log = logs[index];
                                     tileState.add(log.read);
                                     if (logHistory) {
-                                      return ExpansionTile(
-                                        title: Row(
-                                          children: [
-                                            Checkbox(
-                                                checkColor:
-                                                    const Color(0xff7434E6),
-                                                activeColor: Colors.transparent,
-                                                value: tileState[index],
-                                                onChanged: (curValue) async {
-                                                  if (curValue = true) {
-                                                    tileState[index] = curValue;
-                                                    await LogController.setRead(
-                                                        uid: log.id);
-                                                    setState(() {});
-                                                  } else {
-                                                    null;
-                                                  }
-                                                }),
-                                            Text(
-                                              log.title,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        ),
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 28.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Nachricht: ${log.notification}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    "Ticket Nummer: ${log.id}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    "Vom: ${log.date.toString()}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      );
+                                      return AdminBuilder.buildLogExpansionTile(
+                                          setTileState: setTileState,
+                                          value: tileState[index]!,
+                                          log: log,
+                                          index: index);
                                     } else {
                                       if (!tileState[index]!) {
-                                        return ExpansionTile(
-                                          title: Row(
-                                            children: [
-                                              Checkbox(
-                                                  value: tileState[index],
-                                                  onChanged: (curValue) async {
-                                                    if (curValue = true) {
-                                                      tileState[index] =
-                                                          curValue;
-                                                      await LogController
-                                                          .setRead(uid: log.id);
-                                                      setState(() {});
-                                                    } else {
-                                                      null;
-                                                    }
-                                                  }),
-                                              Text(
-                                                log.title,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 28.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Nachricht: ${log.notification}",
-                                                      style: const TextStyle(
-                                                          color: Colors.black),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                      "Ticket Nummer: ${log.id}",
-                                                      style: const TextStyle(
-                                                          color: Colors.black),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                      "Vom: ${log.date.toString()}",
-                                                      style: const TextStyle(
-                                                          color: Colors.black),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        );
+                                        return AdminBuilder
+                                            .buildLogExpansionTile(
+                                                setTileState: setTileState,
+                                                value: tileState[index]!,
+                                                log: log,
+                                                index: index);
                                       } else {
                                         return Container();
                                       }

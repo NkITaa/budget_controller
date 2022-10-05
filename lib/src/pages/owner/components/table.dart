@@ -49,7 +49,7 @@ class TableData extends DataTableSource {
     TextEditingController reason =
         TextEditingController(text: costs?[index].reason.toString());
     TextEditingController value =
-        TextEditingController(text: "${costs?[index].value}€");
+        TextEditingController(text: "${costs?[index].value}${Const.currency}");
     TextEditingController description =
         TextEditingController(text: costs?[index].description.toString());
     final bool selectedRow = currentIndex == index;
@@ -136,8 +136,9 @@ class TableData extends DataTableSource {
                           costNew: Cost(
                               creation: dateTime ?? costs![index].creation,
                               category: category!,
-                              value: double.parse(
-                                  value.text.trim().replaceFirst("€", "")),
+                              value: double.parse(value.text
+                                  .trim()
+                                  .replaceFirst(Const.currency, "")),
                               reason: reason.text.trim(),
                               description: description.text.trim(),
                               responsibility:

@@ -47,7 +47,7 @@ class OwnerBuilder {
             Container(
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Text("${isPrice.toStringAsFixed(2)}€",
+              child: Text("${isPrice.toStringAsFixed(2)}${Const.currency}",
                   style: TextStyle(
                       color: critical ? Colors.red : Colors.green,
                       fontSize: 22)),
@@ -73,7 +73,7 @@ class OwnerBuilder {
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              child: Text("${shouldPrice.toStringAsFixed(2)}€",
+              child: Text("${shouldPrice.toStringAsFixed(2)}${Const.currency}",
                   style: const TextStyle(color: Colors.black, fontSize: 22)),
             )
           ],
@@ -145,30 +145,12 @@ class OwnerBuilder {
                         return IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            showDialog(
+                            CustomBuilder.createSubscaffold(
                               context: context,
-                              builder: (BuildContext context) {
-                                return ScaffoldMessenger(
-                                  child: Builder(
-                                    builder: (context) => Scaffold(
-                                      backgroundColor: Colors.transparent,
-                                      body: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: GestureDetector(
-                                          onTap: () {},
-                                          child: buildAddCostPopup(
-                                              projectId: projectId,
-                                              projectController:
-                                                  projectController,
-                                              state2: state),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
+                              child: buildAddCostPopup(
+                                  projectId: projectId,
+                                  projectController: projectController,
+                                  state2: state),
                             );
                           },
                         );
@@ -362,8 +344,9 @@ class OwnerBuilder {
                               cost: Cost(
                                   creation: dateTime!,
                                   category: category,
-                                  value: double.parse(
-                                      value.text.trim().replaceFirst("€", "")),
+                                  value: double.parse(value.text
+                                      .trim()
+                                      .replaceFirst(Const.currency, "")),
                                   reason: reason.text.trim(),
                                   description: description.text.trim(),
                                   responsibility:
@@ -434,8 +417,9 @@ class OwnerBuilder {
                                 if (enabled!) {
                                   List<double> projections = textController.map(
                                     (e) {
-                                      return double.parse(
-                                          e.text.trim().replaceAll("€", ""));
+                                      return double.parse(e.text
+                                          .trim()
+                                          .replaceAll(Const.currency, ""));
                                     },
                                   ).toList();
                                   setIsPrice!(
@@ -543,7 +527,7 @@ class OwnerBuilder {
                               itemCount: costType?.length ?? 0,
                               itemBuilder: (context, index) {
                                 return Text(
-                                    "${costType![index]!.description}${costType[index]!.value}€",
+                                    "${costType![index]!.description}${costType[index]!.value}${Const.currency}",
                                     style: TextStyle(
                                         color: budget
                                             ? Colors.transparent
@@ -576,7 +560,7 @@ class OwnerBuilder {
         return summe
             ? (value!.length < 2 || nullAllowed
                 ? null
-                : double.parse(value.replaceAll("€", "")) < 0.01
+                : double.parse(value.replaceAll(Const.currency, "")) < 0.01
                     ? ""
                     : null)
             : (value!.length < 3 ? "" : null);

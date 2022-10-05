@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/project_controller.dart';
 import '../../modells/user.dart';
+import '../../widget_builder.dart';
 import 'const_owner.dart';
 
 class Owner extends StatefulWidget {
@@ -74,19 +75,8 @@ class _OwnerState extends State<Owner> {
                       AsyncSnapshot<Project> snapshot,
                     ) {
                       if (snapshot.hasError) {
-                        snapshot.printError();
-                        return Column(
-                          children: [
-                            const SizedBox(
-                              height: 100,
-                            ),
-                            Text(
-                              snapshot.error.toString(),
-                              style: const TextStyle(
-                                  fontSize: 30, color: Colors.black),
-                            ),
-                          ],
-                        );
+                        return CustomBuilder.defaultFutureError(
+                            error: snapshot.error.toString());
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return SizedBox(
