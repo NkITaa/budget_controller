@@ -16,6 +16,17 @@ class Const {
     "Software"
   ];
 
+  static const List<String> costSections = [
+    "Personalkosten",
+    "Sachkosten",
+  ];
+
+  static const String message = "Nachricht:";
+
+  static const String ticketNum = "Ticket Nummer:";
+
+  static const String from = "Vom:";
+
   static const String unknownError =
       "Unvorhergesehener Fehler, kontaktiere den Administrator";
 
@@ -43,4 +54,30 @@ class Const {
   static const String no = "Nein";
 
   static const String logoPath = "assets/logo.png";
+
+  static const String changedRole = "Rolle geändert";
+
+  static const String sentResetMail = "Resetmail gesendet";
+
+  static const String createdUser = "User angelegt";
+
+  static const String createdProject = "Projekt erstellt";
+
+  static const String budgetRejected = "Budget abgelehnt";
+
+  static const String budgetApproved = "Budget angenommen";
+
+  static const String budgetSuggested = "Budget vorgeschlagen";
+
+  static const String budgetUpdated = "Budget bearbeitet";
+
+  static const String addedCost = "Kosten hinzugefügt";
+
+  static const String costDeleted = "Kosten gelöscht";
+
+  static const String costUpdated = "Kosten bearbeitet";
+
+  static const String ownerAdded = "Owner hinzugefügt";
+
+  static const String ownerDeleted = "Owner entfernt";
 }

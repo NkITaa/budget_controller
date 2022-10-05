@@ -40,11 +40,11 @@ class UserController extends GetxController {
               projectId: projectId,
               role: role));
       await LogController.writeLog(
-        title: "Rolle erstellt",
+        title: Const.createdUser,
         notification: "Der User $email wurde mit der Rolle $role erstellt",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "User angelegt", error: false);
+          message: Const.createdUser, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -56,12 +56,12 @@ class UserController extends GetxController {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       await LogController.writeLog(
-        title: "Resetmail gesendet",
+        title: Const.sentResetMail,
         notification:
             "Es wurde eine Resetmail an $email von ${FirebaseAuth.instance.currentUser!.uid} gesendet",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Rücksetzungsmail gesendet", error: false);
+          message: Const.sentResetMail, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -75,12 +75,12 @@ class UserController extends GetxController {
     try {
       await userCollection.doc(uid).update({'projectsId': role});
       await LogController.writeLog(
-        title: "Rolle geändert",
+        title: Const.changedRole,
         notification:
             "Es wurde die Rolle von $uid zu $role von ${FirebaseAuth.instance.currentUser!.uid} geändert",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Rolle geändert", error: false);
+          message: Const.changedRole, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);

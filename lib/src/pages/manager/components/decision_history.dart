@@ -108,9 +108,9 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
-                                                const Text(
-                                                  "Personalkosten",
-                                                  style: TextStyle(
+                                                Text(
+                                                  Const.costSections[0],
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 28,
                                                   ),
@@ -175,9 +175,9 @@ class _DecisionHistoryState extends State<DecisionHistory> {
                                               textBaseline:
                                                   TextBaseline.alphabetic,
                                               children: [
-                                                const Text(
-                                                  "Sachkosten",
-                                                  style: TextStyle(
+                                                Text(
+                                                  Const.costSections[1],
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 28,
                                                   ),

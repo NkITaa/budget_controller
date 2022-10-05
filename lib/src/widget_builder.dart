@@ -71,7 +71,7 @@ class CustomBuilder {
           }
         },
         decoration: InputDecoration(
-            helperText: " ",
+            helperText: "",
             contentPadding: const EdgeInsets.only(left: 20),
             filled: true,
             hintStyle: TextStyle(color: Colors.grey[800]),

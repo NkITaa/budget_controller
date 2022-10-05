@@ -1,4 +1,5 @@
 import 'package:budget_controller/src/controller/user_controller.dart';
+import 'package:budget_controller/src/pages/manager/const_manager.dart';
 import 'package:budget_controller/src/widget_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,7 +56,7 @@ class _NewProjectState extends State<NewProject> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       const Text(
-                        "Metainfos",
+                        CManager.metainfos,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 28,
@@ -67,7 +68,7 @@ class _NewProjectState extends State<NewProject> {
                               width: 200,
                               child: CustomBuilder.popUpTextField(
                                   controller: projectName,
-                                  hint: "Projektname")),
+                                  hint: CManager.projectName)),
                           const SizedBox(
                             width: 35,
                           ),
@@ -114,7 +115,7 @@ class _NewProjectState extends State<NewProject> {
                   height: 50,
                 ),
                 CustomBuilder.customButton(
-                    text: "Anlegen",
+                    text: CManager.create,
                     onPressed: () async {
                       if (deadline == null) {
                         dateExists = false;

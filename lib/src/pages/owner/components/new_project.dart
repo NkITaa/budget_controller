@@ -65,7 +65,7 @@ class NewProject extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  COwner.costSections[0],
+                  Const.costSections[0],
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -114,7 +114,7 @@ class NewProject extends StatelessWidget {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Text(
-                  COwner.costSections[1],
+                  Const.costSections[1],
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 28,

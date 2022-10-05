@@ -195,7 +195,7 @@ class OwnerBuilder {
         backgroundColor: const Color(0xff7434E6),
         actions: [
           CustomBuilder.customButton(
-              text: "Ja",
+              text: Const.yes,
               onPressed: () async {
                 await projectController.deleteCost(
                     projectId: projectId, cost: cost);
@@ -204,7 +204,7 @@ class OwnerBuilder {
               }),
           CustomBuilder.customButton(
               isDarkMode: true,
-              text: "Nein",
+              text: Const.no,
               onPressed: () {
                 Get.back();
               })

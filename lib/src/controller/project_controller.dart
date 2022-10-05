@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../const.dart';
 import '../modells/budget.dart';
 import '../modells/user.dart';
 import '../widget_builder.dart';
@@ -38,12 +39,12 @@ class ProjectController extends GetxController {
       await userController.setProject(uid: ownerId, projectId: projectId);
       await LogController.writeLog(
         projectId: projectId,
-        title: "Projekt erstellt",
+        title: Const.createdProject,
         notification:
             "Ein neues Projekt wurde von ${FirebaseAuth.instance.currentUser!.uid} mit dem Namen $projectName erstellt. Die ProjektId lautet: $projectId. Die ID des Owners lautet $ownerId",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Projekt angelegt", error: false);
+          message: Const.createdProject, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -90,12 +91,12 @@ class ProjectController extends GetxController {
       await LogController.writeLog(
         toManager: false,
         projectId: projectId,
-        title: "Budget abgelehnt",
+        title: Const.budgetRejected,
         notification:
             "Der Budgetvorschlag für das Projekt $projectId wurden von ${FirebaseAuth.instance.currentUser!.uid} abgelehnt",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Budgetvorschlag abgelehnt", error: false);
+          message: Const.budgetRejected, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -110,12 +111,12 @@ class ProjectController extends GetxController {
       await LogController.writeLog(
         toManager: false,
         projectId: projectId,
-        title: "Budget angenommen",
+        title: Const.budgetApproved,
         notification:
             "Der Budgetvorschlag für das Projekt $projectId wurden von ${FirebaseAuth.instance.currentUser!.uid} angenommen",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Budgetvorschlag angenommen", error: false);
+          message: Const.budgetApproved, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -132,12 +133,12 @@ class ProjectController extends GetxController {
       });
       await LogController.writeLog(
         projectId: projectId,
-        title: "Kosten hinzugefügt",
+        title: Const.addedCost,
         notification:
             "Die Kosten für ${cost.reason} wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId hinzugefügt",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Ausgabe hinzugefügt", error: false);
+          message: Const.addedCost, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -154,12 +155,12 @@ class ProjectController extends GetxController {
       await LogController.writeLog(
         projectId: projectId,
         toManager: true,
-        title: "Budget vorgeschlagen",
+        title: Const.budgetSuggested,
         notification:
             "Budget wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId vorgeschlagen",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Budget vorgeschlagen", error: false);
+          message: Const.budgetSuggested, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -176,12 +177,12 @@ class ProjectController extends GetxController {
       });
       await LogController.writeLog(
         projectId: projectId,
-        title: "Kosten gelöscht",
+        title: Const.costDeleted,
         notification:
             "Die Kosten für ${cost.reason} wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId gelöscht",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Ausgabe gelöscht", error: false);
+          message: Const.costDeleted, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -202,12 +203,12 @@ class ProjectController extends GetxController {
       });
       await LogController.writeLog(
         projectId: projectId,
-        title: "Kosten bearbeitet",
+        title: Const.costUpdated,
         notification:
             "Die Kosten für ${costOld.reason} wurden von ${FirebaseAuth.instance.currentUser!.uid} in $projectId geändert",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Ausgabe bearbeitet", error: false);
+          message: Const.costUpdated, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -229,12 +230,12 @@ class ProjectController extends GetxController {
       });
       await LogController.writeLog(
         projectId: projectId,
-        title: "Budget geändert",
+        title: Const.budgetUpdated,
         notification:
             "Das Budget wurde von ${FirebaseAuth.instance.currentUser!.uid} im Projekt $projectId geändert",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Budget bearbeitet", error: false);
+          message: Const.budgetUpdated, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -252,12 +253,12 @@ class ProjectController extends GetxController {
       });
       await LogController.writeLog(
         projectId: projectId,
-        title: "Owner hinzugefügt",
+        title: Const.ownerAdded,
         notification:
             "Der Owner ${owner.id} wurde von ${FirebaseAuth.instance.currentUser!.uid} zum Projekt $projectId hinzugefügt",
       );
       return CustomBuilder.customSnackBarObject(
-          message: "Owner hinzugefügt", error: false);
+          message: Const.ownerAdded, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -275,11 +276,11 @@ class ProjectController extends GetxController {
       });
       await LogController.writeLog(
           projectId: projectId,
-          title: "Owner entfernt",
+          title: Const.ownerDeleted,
           notification:
               "Der Owner ${owner.id} wurde von ${FirebaseAuth.instance.currentUser!.uid} vom Projekt $projectId entfernt");
       return CustomBuilder.customSnackBarObject(
-          message: "Owner entfernt", error: false);
+          message: Const.ownerDeleted, error: false);
     } on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);

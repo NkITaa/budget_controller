@@ -406,21 +406,21 @@ class AdminBuilder {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${CAdmin.message} ${log.notification}",
+                  "${Const.message} ${log.notification}",
                   style: const TextStyle(color: Colors.black),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  "${CAdmin.ticketNum} ${log.id}",
+                  "${Const.ticketNum} ${log.id}",
                   style: const TextStyle(color: Colors.black),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  "${CAdmin.from} ${log.date.toString()}",
+                  "${Const.from} ${log.date.toString()}",
                   style: const TextStyle(color: Colors.black),
                 ),
               ],

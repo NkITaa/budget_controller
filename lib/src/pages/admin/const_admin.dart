@@ -18,10 +18,4 @@ class CAdmin {
   static const String resetPassword = "Passwort zurücksetzen";
 
   static const String changeRole = "Rolle ändern";
-
-  static const String message = "Nachricht:";
-
-  static const String ticketNum = "Ticket Nummer:";
-
-  static const String from = "Vom:";
 }

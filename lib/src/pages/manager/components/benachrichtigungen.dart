@@ -7,6 +7,7 @@ import '../../../controller/project_controller.dart';
 import '../../../modells/log.dart';
 import '../../../modells/project.dart';
 import '../../../widget_builder.dart';
+import '../const_manager.dart';
 import '../manager_builder.dart';
 
 class Benachrichtigungen extends StatefulWidget {
@@ -97,7 +98,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                           ),
                                           const Center(
                                             child: Text(
-                                              "Budget genehmigen",
+                                              CManager.approveProject,
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 20,
@@ -107,9 +108,9 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          const Text(
-                                            "Personalkosten",
-                                            style: TextStyle(
+                                          Text(
+                                            Const.costSections[0],
+                                            style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 28,
                                             ),
@@ -169,9 +170,9 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                             CrossAxisAlignment.baseline,
                                         textBaseline: TextBaseline.alphabetic,
                                         children: [
-                                          const Text(
-                                            "Sachkosten",
-                                            style: TextStyle(
+                                          Text(
+                                            Const.costSections[1],
+                                            style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 28,
                                             ),
@@ -208,7 +209,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         CustomBuilder.customButton(
-                                          text: "Annehmen",
+                                          text: CManager.accept,
                                           isDarkMode: true,
                                           onPressed: () async {
                                             SnackBar snackBar =
@@ -227,7 +228,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                           width: 25,
                                         ),
                                         CustomBuilder.customButton(
-                                            text: "Ablehnen",
+                                            text: CManager.reject,
                                             onPressed: () async {
                                               SnackBar snackBar =
                                                   await projectController
@@ -257,7 +258,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Nachricht: ${log.notification}",
+                                      "${Const.message} ${log.notification}",
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -265,7 +266,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                       height: 5,
                                     ),
                                     Text(
-                                      "Ticket Nummer: ${log.id}",
+                                      "${Const.ticketNum} ${log.id}",
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -273,7 +274,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                       height: 5,
                                     ),
                                     Text(
-                                      "Vom: ${log.date.toString()}",
+                                      "${Const.from} ${log.date.toString()}",
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),

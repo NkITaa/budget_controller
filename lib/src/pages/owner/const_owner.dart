@@ -33,11 +33,6 @@ class COwner {
 
   static const inAudit = "Dein Budgetentwurf wird geprüft";
 
-  static const List<String> costSections = [
-    "Personalkosten",
-    "Sachkosten",
-  ];
-
   static const List<String> typesHints = [
     "IT-Kosten",
     "Vertriebs-Kosten",
