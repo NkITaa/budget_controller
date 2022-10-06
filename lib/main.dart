@@ -10,25 +10,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Enables Popping of Circular Progress Indicator
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+// Enables Messaging through Flutters "SnackBar"
 final GlobalKey<ScaffoldMessengerState> messengerKey =
     GlobalKey<ScaffoldMessengerState>();
+
+/// Initializes:
+///
+/// * Firebase
+/// * UserController
+/// * ProjectController
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Get.put(UserController());
   Get.put(ProjectController());
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
   final UserController userController = Get.find();
 
   @override
@@ -37,12 +40,22 @@ class _MyAppState extends State<MyApp> {
         scaffoldMessengerKey: messengerKey,
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
+
+        /// Sets Applications:
+        ///
+        /// * TextTheme
+        /// * ScaffoldTheme
         theme: ThemeData(
           textTheme: GoogleFonts.dmSansTextTheme(
             Theme.of(context).textTheme.apply(bodyColor: Colors.white),
           ),
           scaffoldBackgroundColor: const Color(0xff7434E6),
         ),
+
+        /// Listens to Authentication Stream:
+        ///
+        /// * User Authenticated: Home Screen
+        /// * User Not Authenticated: Login Screen
         home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

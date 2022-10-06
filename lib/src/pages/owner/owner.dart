@@ -19,7 +19,7 @@ class Owner extends StatefulWidget {
 }
 
 class _OwnerState extends State<Owner> {
-  ProjectController projectController = Get.put(ProjectController());
+  ProjectController projectController = Get.find();
 
   void state() {
     setState(() {});

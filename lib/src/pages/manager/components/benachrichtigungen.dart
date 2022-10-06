@@ -16,7 +16,7 @@ class Benachrichtigungen extends StatefulWidget {
 }
 
 class _BenachrichtigungenState extends State<Benachrichtigungen> {
-  ProjectController projectController = Get.put(ProjectController());
+  ProjectController projectController = Get.find();
   List<bool?> tileState = [];
 
   @override

@@ -15,7 +15,7 @@ class DecisionHistory extends StatefulWidget {
 }
 
 class _DecisionHistoryState extends State<DecisionHistory> {
-  ProjectController projectController = Get.put(ProjectController());
+  ProjectController projectController = Get.find();
 
   @override
   Widget build(BuildContext context) {
