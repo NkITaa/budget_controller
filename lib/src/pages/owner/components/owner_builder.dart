@@ -235,8 +235,8 @@ class OwnerBuilder {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
-        state({required String art}) {
-          category = art;
+        state({required String type}) {
+          category = type;
           setState(() {});
         }
 
@@ -265,7 +265,7 @@ class OwnerBuilder {
                                 CustomBuilder.customDatePicker(
                                   future: false,
                                   context: context,
-                                  dateTime: dateTime,
+                                  chosenDate: dateTime,
                                 ).then((date) {
                                   if (date != null) {
                                     dateTime = date;
@@ -288,22 +288,22 @@ class OwnerBuilder {
                           SizedBox(
                             width: 200,
                             child: CustomBuilder.popupDropDown(
-                                arten: Const.costTypes,
-                                gewaehlteArt: category,
-                                setArt: state),
+                                types: Const.costTypes,
+                                chosenType: category,
+                                setType: state),
                           )
                         ],
                       ),
-                      CustomBuilder.popUpTextField(
+                      CustomBuilder.defaultTextField(
                         controller: description,
                         hint: COwner.costAttributes[0],
                       ),
-                      CustomBuilder.popUpTextField(
+                      CustomBuilder.defaultTextField(
                         controller: reason,
                         hint: COwner.costAttributes[1],
                       ),
-                      CustomBuilder.popUpTextField(
-                        isSumme: true,
+                      CustomBuilder.defaultTextField(
+                        isNum: true,
                         controller: value,
                         hint: COwner.costAttributes[2],
                       ),
@@ -441,7 +441,7 @@ class OwnerBuilder {
                             onPressed: () {
                               CustomBuilder.customDatePicker(
                                       context: context,
-                                      dateTime: costDeadline,
+                                      chosenDate: costDeadline,
                                       future: false)
                                   .then((date) {
                                 if (date != null) {

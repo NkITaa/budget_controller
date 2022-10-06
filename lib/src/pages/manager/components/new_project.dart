@@ -66,7 +66,7 @@ class _NewProjectState extends State<NewProject> {
                         children: [
                           SizedBox(
                               width: 200,
-                              child: CustomBuilder.popUpTextField(
+                              child: CustomBuilder.defaultTextField(
                                   controller: projectName,
                                   hint: CManager.projectName)),
                           const SizedBox(
@@ -85,7 +85,7 @@ class _NewProjectState extends State<NewProject> {
                                 CustomBuilder.customDatePicker(
                                         future: true,
                                         context: context,
-                                        dateTime: deadline)
+                                        chosenDate: deadline)
                                     .then((date) {
                                   deadline = date;
                                   dateExists = true;

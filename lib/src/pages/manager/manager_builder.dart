@@ -23,11 +23,11 @@ class ManagerBuilder {
           ),
           SizedBox(
               width: 200,
-              child: CustomBuilder.popUpTextField(
+              child: CustomBuilder.defaultTextField(
                   controller: controller,
                   enabled: enabled,
                   hint: hint,
-                  isSumme: true)),
+                  isNum: true)),
         ],
       ),
     );

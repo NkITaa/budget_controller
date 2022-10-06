@@ -37,13 +37,13 @@ class AdminBuilder {
         ),
         content: StatefulBuilder(builder: (context, setState) {
           AnimateIconController controller = AnimateIconController();
-          stateRole({required String art}) {
-            selectedRole = art;
+          stateRole({required String type}) {
+            selectedRole = type;
             setState(() {});
           }
 
-          stateProject({required String art}) {
-            projectController.projectId = art;
+          stateProject({required String type}) {
+            projectController.projectId = type;
             setState(() {});
           }
 
@@ -61,7 +61,7 @@ class AdminBuilder {
                         child: Row(
                           children: [
                             Flexible(
-                              child: CustomBuilder.popUpTextField(
+                              child: CustomBuilder.defaultTextField(
                                   controller: emailController,
                                   hint: CAdmin.addUserHints[0],
                                   isMail: true),
@@ -72,9 +72,9 @@ class AdminBuilder {
                             SizedBox(
                               width: 150,
                               child: CustomBuilder.popupDropDown(
-                                arten: Const.userRoles,
-                                gewaehlteArt: selectedRole,
-                                setArt: stateRole,
+                                types: Const.userRoles,
+                                chosenType: selectedRole,
+                                setType: stateRole,
                               ),
                             ),
                           ],
@@ -90,7 +90,7 @@ class AdminBuilder {
                             children: [
                               SizedBox(
                                 width: 224,
-                                child: CustomBuilder.popUpTextField(
+                                child: CustomBuilder.defaultTextField(
                                   controller: passwordController,
                                   hint: CAdmin.addUserHints[1],
                                 ),
@@ -114,12 +114,12 @@ class AdminBuilder {
                                         return SizedBox(
                                             width: 150,
                                             child: CustomBuilder.popupDropDown(
-                                                gewaehlteArt:
+                                                chosenType:
                                                     projectController.projectId,
-                                                arten: snapshot.data
+                                                types: snapshot.data
                                                     ?.map((e) => e.id)
                                                     .toList(),
-                                                setArt: stateProject));
+                                                setType: stateProject));
                                       })
                                   : Container(),
                             ],
@@ -182,8 +182,8 @@ class AdminBuilder {
           style: TextStyle(color: Colors.black),
         ),
         content: StatefulBuilder(builder: (context, setState) {
-          stateRole({required String art}) {
-            selectedRole = art;
+          stateRole({required String type}) {
+            selectedRole = type;
             setState(() {});
           }
 
@@ -195,7 +195,7 @@ class AdminBuilder {
                   child: Form(
                       key: formKey,
                       child: Column(children: [
-                        CustomBuilder.popUpTextField(
+                        CustomBuilder.defaultTextField(
                           controller: idController,
                           hint: CAdmin.addUserHints[2],
                           isUid: true,
@@ -203,9 +203,9 @@ class AdminBuilder {
                         SizedBox(
                             width: 225,
                             child: CustomBuilder.popupDropDown(
-                              arten: Const.userRoles,
-                              gewaehlteArt: selectedRole,
-                              setArt: stateRole,
+                              types: Const.userRoles,
+                              chosenType: selectedRole,
+                              setType: stateRole,
                             )),
                       ]))));
         }),
@@ -265,7 +265,7 @@ class AdminBuilder {
                 child: Form(
                     key: formKey,
                     child: Column(children: [
-                      CustomBuilder.popUpTextField(
+                      CustomBuilder.defaultTextField(
                         controller: emailController,
                         hint: CAdmin.addUserHints[0],
                       ),

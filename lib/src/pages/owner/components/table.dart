@@ -77,7 +77,7 @@ class TableData extends DataTableSource {
                           CustomBuilder.customDatePicker(
                                   future: false,
                                   context: context,
-                                  dateTime: dateTime)
+                                  chosenDate: dateTime)
                               .then((date) {
                             if (date != null) {
                               dateTime = date;
@@ -99,11 +99,11 @@ class TableData extends DataTableSource {
             ),
       enabled && selectedRow
           ? DataCell(CustomBuilder.popupDropDown(
-              arten: Const.costTypes,
+              types: Const.costTypes,
               isTable: true,
-              gewaehlteArt: category,
-              setArt: ({required String art}) {
-                category = art;
+              chosenType: category,
+              setType: ({required String type}) {
+                category = type;
               }))
           : DataCell(
               Text(
