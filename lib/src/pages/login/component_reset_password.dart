@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../main.dart';
 import '../../controller/user_controller.dart';
 import 'const_login.dart';
+import 'login_builder.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -45,7 +46,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   const SizedBox(
                     height: 20,
                   ),
-                  CustomBuilder.loginTextFormField(
+                  LoginBuilder.textFormField(
                     controller: emailController,
                     hint: CLogin.mailHint,
                   ),

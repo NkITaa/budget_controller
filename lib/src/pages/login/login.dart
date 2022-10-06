@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../main.dart';
 import '../../widget_builder.dart';
+import 'login_builder.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -44,7 +45,7 @@ class _LoginState extends State<Login> {
                     child: Text(CLogin.mailHeading),
                   ),
                 ),
-                CustomBuilder.loginTextFormField(
+                LoginBuilder.textFormField(
                   controller: emailController,
                   hint: CLogin.mailHint,
                 ),
@@ -55,7 +56,7 @@ class _LoginState extends State<Login> {
                     child: Text(CLogin.passwordHeading),
                   ),
                 ),
-                CustomBuilder.loginTextFormField(
+                LoginBuilder.textFormField(
                     controller: passwordController,
                     hint: CLogin.passwordHint,
                     isPassword: true),
