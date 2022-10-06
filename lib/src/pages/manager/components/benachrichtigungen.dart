@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../const.dart';
 import '../../../controller/log_controller.dart';
 import '../../../controller/project_controller.dart';
 import '../../../modells/log.dart';
@@ -129,38 +127,7 @@ class _BenachrichtigungenState extends State<Benachrichtigungen> {
                                   ],
                                 );
                               })
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 28.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${Const.message} ${log.notification}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${Const.ticketNum} ${log.id}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${Const.from} ${log.date.toString()}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          : Container(),
                     ],
                   );
                 } else {
