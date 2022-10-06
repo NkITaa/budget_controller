@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../modells/user.dart';
 import 'components/benachrichtigungen.dart';
+import 'const_manager.dart';
 
 class Manager extends StatefulWidget {
   const Manager({super.key, required this.user});
@@ -20,12 +21,6 @@ class _ManagerState extends State<Manager> {
     const Project(),
     const NewProject(),
     const Benachrichtigungen()
-  ];
-  List<String> title = [
-    "KPIs",
-    "Projekt XYZ",
-    "Projekt anlegen",
-    "Benachrichtigung"
   ];
 
   @override
@@ -47,7 +42,7 @@ class _ManagerState extends State<Manager> {
               children: [
                 Center(
                     child: Text(
-                  title[selectedIndex],
+                  CManager.titles[selectedIndex],
                   style: const TextStyle(fontSize: 28, color: Colors.black),
                 )),
                 Row(

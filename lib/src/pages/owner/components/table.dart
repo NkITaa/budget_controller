@@ -38,10 +38,13 @@ class TableData extends DataTableSource {
 
   @override
   bool get isRowCountApproximate => false;
+
   @override
   int get rowCount => costs?.length ?? 0;
+
   @override
   int get selectedRowCount => 0;
+
   @override
   DataRow getRow(int index) {
     DateTime? dateTime;

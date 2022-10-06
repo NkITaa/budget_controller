@@ -10,4 +10,11 @@ class CManager {
   static const String projectName = "Projektname";
 
   static const String metainfos = "Metainfos";
+
+  static const List<String> titles = [
+    "KPIs",
+    "Projekt XYZ",
+    "Projekt anlegen",
+    "Benachrichtigung"
+  ];
 }

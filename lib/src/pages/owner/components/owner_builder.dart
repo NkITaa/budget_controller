@@ -439,34 +439,10 @@ class OwnerBuilder {
                             ))
                         : IconButton(
                             onPressed: () {
-                              showDatePicker(
-                                      builder: (context, child) {
-                                        return Theme(
-                                          data: Theme.of(context).copyWith(
-                                            colorScheme:
-                                                const ColorScheme.light(
-                                              primary: Color(0xff7434E6),
-                                              onPrimary: Colors.white,
-                                              onSurface: Colors.white,
-                                            ),
-                                            dialogBackgroundColor: Colors.black,
-                                            textButtonTheme:
-                                                TextButtonThemeData(
-                                              style: TextButton.styleFrom(
-                                                foregroundColor:
-                                                    const Color(0xff7434E6),
-                                              ),
-                                            ),
-                                          ),
-                                          child: child!,
-                                        );
-                                      },
-                                      cancelText: COwner.abort,
+                              CustomBuilder.customDatePicker(
                                       context: context,
-                                      initialDate:
-                                          costDeadline ?? DateTime.now(),
-                                      firstDate: DateTime(2022),
-                                      lastDate: DateTime.now())
+                                      dateTime: costDeadline,
+                                      future: false)
                                   .then((date) {
                                 if (date != null) {
                                   updateCostsController!(dateTime: date);
