@@ -19,27 +19,27 @@ class Owner extends StatefulWidget {
 }
 
 class _OwnerState extends State<Owner> {
-  // Gets access to all methods of the Project Controller
+  // Gets access to all methods of the ProjectController
   ProjectController projectController = Get.find();
 
-  // informs whether the editing Button in the Table was pressed
+  // Informs whether the editing Button in the Table was pressed
   bool enabled = false;
 
-  // holds value of row that is edited
+  // Holds value of row that is edited
   int editedRow = 0;
 
-  // holds value of Column that is sorted
+  // Holds value of Column that is sorted
   int sortColumnIndex = 0;
 
-  // holds value whether row is sorted ascending or descending
+  // Holds value whether row is sorted ascending or descending
   bool sortAscending = true;
 
-  // method that is passed on to other part-widgets to change the state in the parent class
+  // Method that is passed on to other part-widgets to change the state in the parent class
   void state() {
     setState(() {});
   }
 
-  /// method that handles the row selection (is passed on to part-widgets)
+  /// Method that handles the row selection (is passed on to part-widgets)
   ///
   /// * the editedRow is set here
   /// * the enabled value is toggled
@@ -50,7 +50,7 @@ class _OwnerState extends State<Owner> {
     setState(() {});
   }
 
-  /// method that handles the sort functionality in the table (is passed on to part-widgets)
+  /// Method that handles the sort functionality in the table (is passed on to part-widgets)
   ///
   /// * the Table sort method is trigerred
   /// * the Column that is sorted is set
@@ -80,7 +80,7 @@ class _OwnerState extends State<Owner> {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child:
 
-            // depending if the user has a Project ID a message or a Future Builder is depicted
+            // Depending if the user has a Project ID a message or a FutureBuilder is depicted
             widget.user.projectId == null
                 ? const Center(
                     child: Text(
@@ -99,13 +99,13 @@ class _OwnerState extends State<Owner> {
                               BuildContext context,
                               AsyncSnapshot<Project> snapshot,
                             ) {
-                              //shows ErrorText when Authentication Stream has an error
+                              // Shows ErrorText when Authentication Stream has an error
                               if (snapshot.hasError) {
                                 return CustomBuilder.defaultFutureError(
                                     error: snapshot.error.toString());
                               }
 
-                              //shows ProgressIndicator during loading
+                              // Shows ProgressIndicator during loading
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return SizedBox(
