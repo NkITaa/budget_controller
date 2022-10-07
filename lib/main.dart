@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xff7434E6),
         ),
 
-        // Listens to Authentication Stream:
+        // Listens to authenticationStream:
         home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
               );
             }
 
-            //shows ErrorText when Authentication Stream has an error
+            //shows ErrorText when authenticationStream has an error
             if (snapshot.hasError) {
               return CustomBuilder.defaultFutureError(
                   error: snapshot.error.toString());
