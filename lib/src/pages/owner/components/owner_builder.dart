@@ -160,11 +160,9 @@ class OwnerBuilder {
             ],
           ),
           columns: COwner.columns.map((column) {
-            int index = COwner.columns.indexOf(column);
             return DataColumn(
               onSort: (columnIndex, ascending) {
                 ControllerOwner.specificSort(
-                    index: index,
                     columnIndex: columnIndex,
                     ascending: ascending,
                     source: source,
