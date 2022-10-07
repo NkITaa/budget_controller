@@ -21,6 +21,7 @@ class Project {
     required this.budgets,
   });
 
+  // serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
       "pending": pending,
@@ -34,6 +35,7 @@ class Project {
     };
   }
 
+  // serializes Object from JSON
   static Project fromJson(DocumentSnapshot<Object?> project) {
     List<dynamic>? costsUnserialized = project["costs"];
     List<dynamic>? budgetsUnserialized = project["budgets"];
