@@ -27,18 +27,18 @@ class Home extends StatelessWidget {
         BuildContext context,
         AsyncSnapshot<CustomUser> snapshot,
       ) {
+        //shows ErrorText when Authentication Stream has an error
+        if (snapshot.hasError) {
+          return CustomBuilder.defaultFutureError(
+              error: snapshot.error.toString());
+        }
+
         //shows ProgressIndicator during loading
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SizedBox(
               height: MediaQuery.of(context).size.height * 0.7,
               width: MediaQuery.of(context).size.width,
               child: const CircularProgressIndicator());
-        }
-
-        //shows ErrorText when Authentication Stream has an error
-        if (snapshot.hasError) {
-          return CustomBuilder.defaultFutureError(
-              error: snapshot.error.toString());
         }
 
         CustomUser user = snapshot.data!;

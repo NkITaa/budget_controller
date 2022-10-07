@@ -11,14 +11,14 @@ class TableData extends DataTableSource {
   TableData(
       {required this.formKey,
       required this.costs,
-      required this.currentIndex,
+      required this.editedRow,
       required this.enabled,
       required this.toggle,
       required this.projectId,
       required this.projectController,
       required this.context});
   final GlobalKey<FormState> formKey;
-  final int currentIndex;
+  final int editedRow;
   final String projectId;
   final bool enabled;
   final Function toggle;
@@ -55,7 +55,7 @@ class TableData extends DataTableSource {
         TextEditingController(text: "${costs?[index].value}${Const.currency}");
     TextEditingController description =
         TextEditingController(text: costs?[index].description.toString());
-    final bool selectedRow = currentIndex == index;
+    final bool selectedRow = editedRow == index;
 
     return DataRow.byIndex(index: index, cells: [
       enabled && selectedRow

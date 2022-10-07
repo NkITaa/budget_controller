@@ -104,7 +104,7 @@ class OwnerBuilder {
       required List<Cost>? costs,
       required bool sortAscending,
       required int sortColumnIndex,
-      required int currentIndex,
+      required int editedRow,
       required String projectId,
       required Function toggle,
       required Function state,
@@ -118,7 +118,7 @@ class OwnerBuilder {
         projectController: projectController,
         costs: costs,
         formKey: formKey,
-        currentIndex: currentIndex,
+        editedRow: editedRow,
         enabled: enabled,
         toggle: toggle,
         context: context);

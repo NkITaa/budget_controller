@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../modells/project.dart';
 import 'owner_builder.dart';
 
-class ProjectExists extends StatefulWidget {
-  const ProjectExists(
+class ProjectExists extends StatelessWidget {
+  ProjectExists(
       {super.key,
       required this.project,
       required this.projectController,
@@ -13,7 +13,7 @@ class ProjectExists extends StatefulWidget {
       required this.toggle,
       required this.enabled,
       required this.sortAscending,
-      required this.currentIndex,
+      required this.editedRow,
       required this.sortColumnIndex,
       required this.sort});
 
@@ -21,22 +21,17 @@ class ProjectExists extends StatefulWidget {
   final ProjectController projectController;
   final bool enabled;
   final bool sortAscending;
-  final int currentIndex;
+  final int editedRow;
   final int sortColumnIndex;
   final Function state;
   final Function toggle;
   final Function sort;
 
-  @override
-  State<ProjectExists> createState() => _ProjectExistsState();
-}
-
-class _ProjectExistsState extends State<ProjectExists> {
   late List<double> totalCosts =
-      widget.project.costs?.map((cost) => cost.value).toList() ?? [0];
+      project.costs?.map((cost) => cost.value).toList() ?? [0];
 
   late List<double> totalBudgets =
-      widget.project.budgets?.map((budget) => budget.value).toList() ?? [0];
+      project.budgets?.map((budget) => budget.value).toList() ?? [0];
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +41,16 @@ class _ProjectExistsState extends State<ProjectExists> {
           height: 20,
         ),
         Text(
-          widget.project.name,
+          project.name,
           style: const TextStyle(fontSize: 25, color: Colors.black),
         ),
         OwnerBuilder.buildComparison(
             totalBudgets: totalBudgets,
             totalCosts: totalCosts,
             redirect: true,
-            until: widget.project.deadline,
-            budgets: widget.project.budgets,
-            costs: widget.project.costs,
+            until: project.deadline,
+            budgets: project.budgets,
+            costs: project.costs,
             isPrice: totalCosts.fold(0, (a, b) => a + b),
             shouldPrice: totalBudgets.fold(0, (a, b) => a + b),
             context: context),
@@ -65,17 +60,17 @@ class _ProjectExistsState extends State<ProjectExists> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: OwnerBuilder.buildTable(
-              projectId: widget.project.id,
-              projectController: widget.projectController,
-              costs: widget.project.costs,
-              state: widget.state,
+              projectId: project.id,
+              projectController: projectController,
+              costs: project.costs,
+              state: state,
               context: context,
-              enabled: widget.enabled,
-              currentIndex: widget.currentIndex,
-              toggle: widget.toggle,
-              sort: widget.sort,
-              sortAscending: widget.sortAscending,
-              sortColumnIndex: widget.sortColumnIndex),
+              enabled: enabled,
+              editedRow: editedRow,
+              toggle: toggle,
+              sort: sort,
+              sortAscending: sortAscending,
+              sortColumnIndex: sortColumnIndex),
         ),
         const SizedBox(
           height: 50,
