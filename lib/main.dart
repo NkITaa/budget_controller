@@ -13,7 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 // Enables Popping of Circular Progress Indicator
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-// Enables Messaging through Flutters "SnackBar"
+// Enables messaging through Flutters "SnackBar"
 final GlobalKey<ScaffoldMessengerState> messengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
