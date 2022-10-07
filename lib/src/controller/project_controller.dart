@@ -7,27 +7,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../const.dart';
 import '../modells/budget.dart';
-import '../modells/user.dart';
 import '../widget_builder.dart';
 import 'log_controller.dart';
 
 class ProjectController extends GetxController {
+  // references  the "project" Collection in Firebase
   CollectionReference projectCollection =
       FirebaseFirestore.instance.collection("project");
+
+  // references  the "logs" Collection in Firebase
   CollectionReference logCollection =
       FirebaseFirestore.instance.collection("logs");
 
+  // OwnerId in DropDown selection is saved here temporarily
   String? owner;
+
+  // ProjectId in DropDown selection is saved here temporarily
   String? projectId;
 
+  // creates a new Project in the database
   Future<SnackBar> createProject(
       {required String projectName,
       required String ownerId,
       required DateTime deadline,
       required UserController userController}) async {
+    // creates a new document for a new project
     DocumentReference newProject = projectCollection.doc();
+
+    // gets the id of the new document
     String projectId = newProject.id;
+
     try {
+      // creates a temporary Project Object
       Project project = Project(
           deadline: deadline,
           id: projectId,
@@ -35,59 +46,87 @@ class ProjectController extends GetxController {
           ownerId: ownerId,
           costs: null,
           budgets: null);
+
+      // writes & serializes the project object to the database
       await newProject.set(project.toJson());
+
+      // the specific project Id is written in the document of the selected owner
       await userController.setProject(uid: ownerId, projectId: projectId);
+
+      // writes a Log, when the project was created
       await LogController.writeLog(
         projectId: projectId,
         title: Const.createdProject,
         notification:
             "${Const.createProjectLog[0]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.createProjectLog[1]} $projectName ${Const.createProjectLog[2]} $projectId${Const.createProjectLog[3]} $ownerId",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.createdProject, error: false);
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
+  // loads ownerless Projects
   Future<List<Project>?> loadProjects() async {
-    var projects = await FirebaseFirestore.instance
-        .collection('project')
-        .get()
-        .then((value) {
-      return value.docs;
-    });
+    // creates a list that will save all the ownerless Projects
     List<Project> ownerlessProjects = [];
+
     try {
+      // gets all projects
+      var projects = await projectCollection.get().then((value) {
+        return value.docs;
+      });
+
       if (projects.isNotEmpty) {
+        // iterates through all projects & when no owner is assigned they get added to the List
         for (int i = 0; i < projects.length; i++) {
           var ownerlessProject = projects[i];
           if (ownerlessProject["ownerId"] == null) {
+            // Project gets deserialized & added to the List
             Project temp = Project.fromJson(ownerlessProject);
             ownerlessProjects.add(temp);
           }
         }
       }
+
+      // the projects without owners gets returned
       return ownerlessProjects;
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is shown
+    on FirebaseException catch (e) {
       CustomBuilder.customSnackBar(message: e.toString(), error: true);
       return null;
     }
   }
 
+  // gets project by projectId
   Future<Project> getProject({required String projectId}) async {
-    var projectCollection = FirebaseFirestore.instance.collection('project');
+    // gets project by projectId
     return projectCollection.doc(projectId).get().then((project) {
+      // deserializes project from Json
       return Project.fromJson(project);
     });
   }
 
+  // Budget gets deleted in the database
   Future<SnackBar> deleteBudget(
       {required String projectId, required String logId}) async {
     try {
+      // the value of the budgets attribute is set to null
       await projectCollection.doc(projectId).update({'budgets': null});
+
+      // after that the toManager variable is set to false
       await logCollection.doc(logId).update({'toManager': false});
+
+      // writes a Log, when the budget was deleted
       await LogController.writeLog(
         toManager: false,
         projectId: projectId,
@@ -95,19 +134,30 @@ class ProjectController extends GetxController {
         notification:
             "${Const.deleteBudgetLog[0]} $projectId ${Const.deleteBudgetLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.deleteBudgetLog[2]}",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.budgetRejected, error: false);
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
+  // accepts Budget in the database
   Future<SnackBar> acceptBudget(
       {required String projectId, required String logId}) async {
     try {
+      // the pending variable is set to true
       await projectCollection.doc(projectId).update({'pending': false});
+
+      // after that the toManager variable is set to false
       await logCollection.doc(logId).update({'toManager': false});
+
+      // writes a Log, when the budget was accepted
       await LogController.writeLog(
         toManager: false,
         projectId: projectId,
@@ -115,43 +165,62 @@ class ProjectController extends GetxController {
         notification:
             "${Const.acceptBudgetLog[0]} $projectId ${Const.acceptBudgetLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.acceptBudgetLog[2]}",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.budgetApproved, error: false);
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
+  // adds Cost to the database
   Future<SnackBar> addCost({
     required String projectId,
     required Cost cost,
   }) async {
     try {
+      // the value of the specific Cost is added to the existing costs
       await projectCollection.doc(projectId).update({
+        // the Cost is serialized and added to the "costs" attribute
         'costs': FieldValue.arrayUnion([cost.toJson()])
       });
+
+      // writes a Log, when the cost was added
       await LogController.writeLog(
         projectId: projectId,
         title: Const.addedCost,
         notification:
             "${Const.addCostLog[0]} ${cost.reason} ${Const.addCostLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.addCostLog[2]} $projectId ${Const.addCostLog[3]}",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.addedCost, error: false);
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
+  // add Budgets to the database
   Future<SnackBar> addBudgets({
     required String projectId,
     required List<Budget> budgets,
   }) async {
     try {
+      // all the Budgets get serialized & written as a List to the "budgets" attribute in the database
       await projectCollection.doc(projectId).update(
           {"budgets": budgets.map((budget) => budget.toJson()).toList()});
+
+      // writes a Log, when the budget was added
       await LogController.writeLog(
         projectId: projectId,
         toManager: true,
@@ -159,129 +228,82 @@ class ProjectController extends GetxController {
         notification:
             "${Const.addBudgetsLog[0]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.addBudgetsLog[1]} $projectId ${Const.addBudgetsLog[2]}",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.budgetSuggested, error: false);
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
+  // deletes Cost from the database
   Future<SnackBar> deleteCost({
     required String projectId,
     required Cost cost,
   }) async {
     try {
+      // the exact cost gets serialied and deleted from the "costs" attribute in the database
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([cost.toJson()])
       });
+
+      // writes a Log, when the cost was deleted
       await LogController.writeLog(
         projectId: projectId,
         title: Const.costDeleted,
         notification:
             "${Const.deleteCostLog[0]} ${cost.reason} ${Const.deleteCostLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.deleteCostLog[2]} $projectId ${Const.deleteCostLog[3]}",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.costDeleted, error: false);
-    } on FirebaseException catch (e) {
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
+  // updates specific cost in the database
   Future<SnackBar> updateCost({
     required String projectId,
     required Cost costOld,
     required Cost costNew,
   }) async {
     try {
+      // first the old cost gets serialized and deleted from the database
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([costOld.toJson()])
       });
+
+      // after that the new cost is written to the database
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([costNew.toJson()])
       });
+
+      // writes a Log, when the cost was updated
       await LogController.writeLog(
         projectId: projectId,
         title: Const.costUpdated,
         notification:
             "${Const.updateCostLog[0]} ${costOld.reason} ${Const.updateCostLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.updateCostLog[2]} $projectId ${Const.updateCostLog[3]}",
       );
+
+      // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.costUpdated, error: false);
-    } on FirebaseException catch (e) {
-      return CustomBuilder.customSnackBarObject(
-          message: e.toString(), error: true);
     }
-  }
 
-  Future<SnackBar> updateBudget(
-      {required String projectId,
-      required Budget budgetOld,
-      required Budget budgetNew,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
-    try {
-      await projectCollection.doc(projectId).update({
-        'budgets': FieldValue.arrayRemove([budgetOld.toJson()])
-      });
-      await projectCollection.doc(projectId).update({
-        'budgets': FieldValue.arrayUnion([budgetNew.toJson()])
-      });
-      await LogController.writeLog(
-        projectId: projectId,
-        title: Const.budgetUpdated,
-        notification:
-            "${Const.updateBudgetLog[0]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.updateBudgetLog[1]} $projectId ${Const.updateBudgetLog[2]}",
-      );
-      return CustomBuilder.customSnackBarObject(
-          message: Const.budgetUpdated, error: false);
-    } on FirebaseException catch (e) {
-      return CustomBuilder.customSnackBarObject(
-          message: e.toString(), error: true);
-    }
-  }
-
-  Future<SnackBar> addOwner(
-      {required String projectId,
-      required CustomUser owner,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
-    try {
-      await projectCollection.doc(projectId).update({
-        'owner': FieldValue.arrayUnion([owner.toJson()])
-      });
-      await LogController.writeLog(
-        projectId: projectId,
-        title: Const.ownerAdded,
-        notification:
-            "${Const.addOwnerLog[0]} ${owner.id} ${Const.addOwnerLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.addOwnerLog[2]} $projectId ${Const.addOwnerLog[3]}",
-      );
-      return CustomBuilder.customSnackBarObject(
-          message: Const.ownerAdded, error: false);
-    } on FirebaseException catch (e) {
-      return CustomBuilder.customSnackBarObject(
-          message: e.toString(), error: true);
-    }
-  }
-
-  Future<SnackBar> deleteOwner(
-      {required String projectId,
-      required CustomUser owner,
-      required BuildContext context}) async {
-    CustomBuilder.customProgressIndicator(context: context);
-    try {
-      await projectCollection.doc(projectId).update({
-        'costs': FieldValue.arrayRemove([owner.toJson()])
-      });
-      await LogController.writeLog(
-          projectId: projectId,
-          title: Const.ownerDeleted,
-          notification:
-              "${Const.deleteOwnerLog[0]} ${owner.id} ${Const.deleteOwnerLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.deleteOwnerLog[2]} $projectId ${Const.deleteOwnerLog[3]}");
-      return CustomBuilder.customSnackBarObject(
-          message: Const.ownerDeleted, error: false);
-    } on FirebaseException catch (e) {
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
