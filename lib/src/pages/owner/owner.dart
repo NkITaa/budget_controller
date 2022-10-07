@@ -80,7 +80,7 @@ class _OwnerState extends State<Owner> {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child:
 
-            // depending if the user has a Project ID a message or a Future Builder is depicted
+            // depending if the user has a Project ID a message or a FutureBuilder is depicted
             widget.user.projectId == null
                 ? const Center(
                     child: Text(
