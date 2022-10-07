@@ -5,6 +5,7 @@ import '../../modells/project.dart';
 import '../../widget_builder.dart';
 
 class ManagerBuilder {
+  // defines a specific costField by altering the width of the defaultTextField
   static Widget costFieldBuilder(
       {required TextEditingController controller,
       String? hint,
@@ -33,6 +34,7 @@ class ManagerBuilder {
     );
   }
 
+  /// Depicts the submitted costs of a specific ProjectS
   static Widget projectExpansionTile({required Project project}) {
     return Column(
       children: [
@@ -42,6 +44,7 @@ class ManagerBuilder {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
+              // shows the Projectsname
               Center(
                 child: Text(
                   project.name,
@@ -54,6 +57,8 @@ class ManagerBuilder {
               const SizedBox(
                 height: 10,
               ),
+
+              // shows all costs of the first Cost Type
               Text(
                 Const.costSections[0],
                 style: const TextStyle(
@@ -105,6 +110,8 @@ class ManagerBuilder {
         const SizedBox(
           height: 30,
         ),
+
+        // shows all suggested costs of the second Cost Type
         SizedBox(
           width: 648,
           child: Column(

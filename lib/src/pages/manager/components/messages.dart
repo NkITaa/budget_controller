@@ -8,14 +8,14 @@ import '../../../widget_builder.dart';
 import '../const_manager.dart';
 import '../manager_builder.dart';
 
-class Benachrichtigungen extends StatefulWidget {
-  const Benachrichtigungen({super.key});
+class Messages extends StatefulWidget {
+  const Messages({super.key});
 
   @override
-  State<Benachrichtigungen> createState() => _BenachrichtigungenState();
+  State<Messages> createState() => _MessagesState();
 }
 
-class _BenachrichtigungenState extends State<Benachrichtigungen> {
+class _MessagesState extends State<Messages> {
   ProjectController projectController = Get.find();
   List<bool?> tileState = [];
 
