@@ -4,7 +4,7 @@ import 'package:budget_controller/src/pages/manager/components/project.dart';
 import 'package:flutter/material.dart';
 
 import '../../modells/user.dart';
-import 'components/benachrichtigungen.dart';
+import 'components/messages.dart';
 import 'const_manager.dart';
 
 class Manager extends StatefulWidget {
@@ -15,12 +15,15 @@ class Manager extends StatefulWidget {
 }
 
 class _ManagerState extends State<Manager> {
+  // is the Index of the Page that is selected
   int selectedIndex = 0;
+
+  // holds List of all Pages
   List<Widget> pages = [
     const KPIs(),
     const Project(),
     const NewProject(),
-    const Benachrichtigungen()
+    const Messages()
   ];
 
   @override
@@ -40,11 +43,19 @@ class _ManagerState extends State<Manager> {
             ),
             Stack(
               children: [
+                //Title of specific Page
                 Center(
                     child: Text(
                   CManager.titles[selectedIndex],
                   style: const TextStyle(fontSize: 28, color: Colors.black),
                 )),
+
+                /// Row of Navigation Icons
+                ///
+                /// * Icon: bar_chart_outlined -> sets Index to 3: KPIs Screen
+                /// * Icon: file_copy  -> sets Index to 3: Project Screen
+                /// * Icon: add -> sets Index to 3: NewProject Screen
+                /// * Icon: mail_outline -> sets Index to 3: Messages Screen
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -94,6 +105,8 @@ class _ManagerState extends State<Manager> {
                 ),
               ],
             ),
+
+            // returns the specific page
             pages[selectedIndex]
           ],
         ),

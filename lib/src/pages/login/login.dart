@@ -14,11 +14,24 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  /// TextControllers for
+  ///
+  /// * Email
+  /// * Password
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  // formKey that validates the input in controllers
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // enables usage of user Controller Method
   final UserController userController = Get.find();
 
+  /// builds the whole Login Screen, consisting of:
+  ///
+  /// * Logo
+  /// * email & password TextFields
+  /// * Submit button
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -15,11 +15,20 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+  // value of email TextField is controlled here
   final TextEditingController emailController = TextEditingController();
 
+  // enables usage of userController methods
   final UserController userController = Get.find();
+
+  // formKey that validates the input in controller
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  /// whole Reset Password Screen, consisting of
+  ///
+  /// * Logo
+  /// * Email Field
+  /// * Submit button, that sends resetmail to adress, when the form of the controller is valid
   @override
   Widget build(BuildContext context) {
     return Scaffold(

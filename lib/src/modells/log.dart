@@ -20,6 +20,7 @@ class Log {
       this.read = false,
       this.toManager});
 
+  // serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
       "notification": notification,
@@ -33,6 +34,7 @@ class Log {
     };
   }
 
+  // serializes Object from JSON
   static Log fromJson(QueryDocumentSnapshot<Map<String, dynamic>> log) {
     return Log(
       userId: log["userId"],

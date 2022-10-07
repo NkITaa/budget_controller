@@ -147,17 +147,17 @@ class TableData extends DataTableSource {
       ///
       /// * row == selected -> Cost TextField is enabled
       /// * row != selected -> Cost TextField is disabled
-      DataCell(OwnerBuilder.customTextFormFieldNoDeco(
+      DataCell(OwnerBuilder.textFormFieldNoDeco(
           enabled: enabled,
           additionalRequirement: selectedRow,
           controller: value,
-          isSumme: true)),
+          isNum: true)),
 
       /// Description Data Cell
       ///
       /// * row == selected -> Description TextField is enabled
       /// * row != selected -> Description TextField is disabled
-      DataCell(OwnerBuilder.customTextFormFieldNoDeco(
+      DataCell(OwnerBuilder.textFormFieldNoDeco(
           enabled: enabled,
           additionalRequirement: selectedRow,
           controller: description)),
@@ -166,7 +166,7 @@ class TableData extends DataTableSource {
       ///
       /// * row == selected -> Reason TextField is enabled
       /// * row != selected -> Reason TextField is disabled
-      DataCell(OwnerBuilder.customTextFormFieldNoDeco(
+      DataCell(OwnerBuilder.textFormFieldNoDeco(
           enabled: enabled,
           additionalRequirement: selectedRow,
           controller: reason)),

@@ -14,17 +14,21 @@ import '../../../modells/cost.dart';
 import 'detaills.dart';
 
 class OwnerBuilder {
-  static Widget buildComparison(
-      {required double isPrice,
-      List<Cost>? costs,
-      DateTime? until,
-      List<Budget>? budgets,
-      required double shouldPrice,
-      required bool redirect,
-      BuildContext? context,
-      List<double>? totalBudgets,
-      List<double>? totalCosts}) {
+  static Widget buildComparison({
+    required double isPrice,
+    required double shouldPrice,
+    required bool redirect,
+    BuildContext? context,
+    List<double>? totalBudgets,
+    List<double>? totalCosts,
+    List<Budget>? budgets,
+    DateTime? until,
+    List<Cost>? costs,
+  }) {
+    // tells whether the costs are critically high
     bool critical = false;
+
+    // sets the critical bool when a percentile is exceeded
     isPrice / shouldPrice > COwner.criticalPercentile
         ? critical = true
         : critical = false;
@@ -32,6 +36,7 @@ class OwnerBuilder {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // Column that depicts the is-Costs
         Column(
           children: [
             const SizedBox(
@@ -57,6 +62,8 @@ class OwnerBuilder {
         const SizedBox(
           width: 50,
         ),
+
+        // Column that depicts the budgets-Costs
         Column(
           children: [
             const SizedBox(
@@ -78,6 +85,8 @@ class OwnerBuilder {
             )
           ],
         ),
+
+        // Info-Icon that redirects to the Detaills Screen
         redirect
             ? IconButton(
                 icon: const Icon(Icons.info_outline),
@@ -99,6 +108,7 @@ class OwnerBuilder {
     );
   }
 
+  // returns Widget that makes up the entire table
   static Widget buildTable(
       {required bool enabled,
       required List<Cost>? costs,
@@ -109,9 +119,15 @@ class OwnerBuilder {
       required Function toggle,
       required Function state,
       required Function sort,
-      required ProjectController projectController}) {
+      required ProjectController projectController,
+      required BuildContext context}) {
+    // defines max num of rows that can be depicted on one table page
     int rowsPerPage = 10;
+
+    // formKey that validates the input that is altered in row
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    // Object that holds the Table Contents
     TableData source = TableData(
       projectId: projectId,
       projectController: projectController,
@@ -127,6 +143,15 @@ class OwnerBuilder {
         key: formKey,
         child: PaginatedDataTable(
           source: source,
+          rowsPerPage: rowsPerPage,
+          showCheckboxColumn: false,
+          sortColumnIndex: sortColumnIndex,
+          sortAscending: sortAscending,
+
+          /// Header of Table, consists of:
+          ///
+          /// * Title
+          /// * Add Icon, that enables the adding of additional costs
           header: Stack(
             children: [
               const Center(
@@ -138,26 +163,27 @@ class OwnerBuilder {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  StreamBuilder<Object>(
-                      stream: null,
-                      builder: (context, snapshot) {
-                        return IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {
-                            CustomBuilder.createSubscaffold(
-                              context: context,
-                              child: buildAddCostPopup(
-                                  projectId: projectId,
-                                  projectController: projectController,
-                                  state2: state),
-                            );
-                          },
-                        );
-                      }),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      CustomBuilder.createSubscaffold(
+                        context: context,
+                        child: buildAddCostPopup(
+                            projectId: projectId,
+                            projectController: projectController,
+                            state2: state),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
           ),
+
+          /// Column
+          ///
+          /// * on sort a function gets executed, that sorts the specific Column
+          /// * depicts a specific label in each Column
           columns: COwner.columns.map((column) {
             return DataColumn(
               onSort: (columnIndex, ascending) {
@@ -173,15 +199,12 @@ class OwnerBuilder {
               ),
             );
           }).toList(),
-          rowsPerPage: rowsPerPage,
-          showCheckboxColumn: false,
-          sortColumnIndex: sortColumnIndex,
-          sortAscending: sortAscending,
         ),
       ),
     );
   }
 
+  // Warning PopUp
   static deleteWarning(
       {required ProjectController projectController,
       required Cost cost,
@@ -189,7 +212,20 @@ class OwnerBuilder {
       required Function toggle,
       required int index}) {
     Get.defaultDialog(
-        backgroundColor: const Color(0xff7434E6),
+
+        // Content that is depicted inside of the box
+        content: Column(children: [
+          CustomBuilder.customLogo(size: 50),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(COwner.deleteWarning)
+        ]),
+
+        /// Buttons that are depicted under the content
+        ///
+        /// * on yes -> the delete Function is executed
+        /// * on no -> the dialog gets closed
         actions: [
           CustomBuilder.customButton(
               text: Const.yes,
@@ -206,185 +242,222 @@ class OwnerBuilder {
                 Get.back();
               })
         ],
-        content: Column(children: [
-          CustomBuilder.customLogo(size: 50),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(COwner.deleteWarning)
-        ]),
+
+        // Styling
+        backgroundColor: const Color(0xff7434E6),
         title: "",
         titlePadding: EdgeInsets.zero,
         titleStyle: const TextStyle(fontSize: 0));
   }
 
+  // returns the PopUp where costs can be added
   static buildAddCostPopup(
       {required String projectId,
       required Function state2,
       required ProjectController projectController}) {
+    // formKey that validates the input that is altered in row
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    // holds the value of specific date when a cost has been created
     DateTime? dateTime;
+
+    // checks whether the compulsory date is defined
     bool? dateExists;
+
+    // TextEditingController that contains the costs-reason
     TextEditingController reason = TextEditingController();
+
+    // TextEditingController that contains the costs-description
     TextEditingController description = TextEditingController();
+
+    // TextEditingController that contains the costs-value
     TextEditingController value = TextEditingController();
+
+    // Sets the default value of DropDown that contains all the categories
     String category = Const.costTypes[0];
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
+        /// Sets Category
+        ///
+        /// * On DropDown selection the new category gets assigned
+        /// * after that the state in the StatefulBuilder gets called
         state({required String type}) {
           category = type;
           setState(() {});
         }
 
         return AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            title: const Text(
-              COwner.addCost,
-              style: TextStyle(color: Colors.black),
-            ),
-            content: SizedBox(
-              height: 200,
-              width: 300,
-              child: Form(
-                key: formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                CustomBuilder.customDatePicker(
-                                  future: false,
-                                  context: context,
-                                  chosenDate: dateTime,
-                                ).then((date) {
-                                  if (date != null) {
-                                    dateTime = date;
-                                    dateExists = true;
-                                    setState(() {});
-                                  }
-                                });
-                              },
-                              icon: Icon(
-                                Icons.calendar_month,
-                                color: (dateExists ?? true)
-                                    ? dateTime != null
-                                        ? const Color(0xff7434E6)
-                                        : Colors.black
-                                    : Colors.red,
-                              )),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: CustomBuilder.popupDropDown(
-                                types: Const.costTypes,
-                                chosenType: category,
-                                setType: state),
-                          )
-                        ],
-                      ),
-                      CustomBuilder.defaultTextField(
-                        controller: description,
-                        hint: COwner.costAttributes[0],
-                      ),
-                      CustomBuilder.defaultTextField(
-                        controller: reason,
-                        hint: COwner.costAttributes[1],
-                      ),
-                      CustomBuilder.defaultTextField(
-                        isNum: true,
-                        controller: value,
-                        hint: COwner.costAttributes[2],
-                      ),
-                    ],
-                  ),
+          /// Content of the AlertDialog
+          content: SizedBox(
+            height: 200,
+            width: 300,
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    /// upper Row of Content, containing:
+                    ///
+                    /// * DatePicker, where a cost date gets picked
+                    /// * DropDown, where the CostCategory gets selected
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              CustomBuilder.customDatePicker(
+                                future: false,
+                                context: context,
+                                chosenDate: dateTime,
+                              ).then((date) {
+                                if (date != null) {
+                                  dateTime = date;
+                                  dateExists = true;
+                                  setState(() {});
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              Icons.calendar_month,
+                              color: (dateExists ?? true)
+                                  ? dateTime != null
+                                      ? const Color(0xff7434E6)
+                                      : Colors.black
+                                  : Colors.red,
+                            )),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        SizedBox(
+                          width: 200,
+                          child: CustomBuilder.popupDropDown(
+                              types: Const.costTypes,
+                              chosenType: category,
+                              setType: state),
+                        )
+                      ],
+                    ),
+
+                    /// TextFields, for:
+                    ///
+                    /// * Entering of Cost-Description
+                    /// * Entering of Cost-Reason
+                    /// * Entering of Cost-Value
+                    CustomBuilder.defaultTextField(
+                      controller: description,
+                      hint: COwner.costAttributes[0],
+                    ),
+                    CustomBuilder.defaultTextField(
+                      controller: reason,
+                      hint: COwner.costAttributes[1],
+                    ),
+                    CustomBuilder.defaultTextField(
+                      isNum: true,
+                      controller: value,
+                      hint: COwner.costAttributes[2],
+                    ),
+                  ],
                 ),
               ),
             ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    CustomBuilder.customButton(
-                        onPressed: () {
-                          Get.back();
-                          state2();
-                        },
-                        text: COwner.close),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CustomBuilder.customButton(
-                        onPressed: ([bool mounted = true]) async {
-                          if (dateTime == null) {
-                            dateExists = false;
-                            setState(() {});
-                          }
-                          if (dateTime != null) {
-                            dateExists = true;
-                            setState(() {});
-                          }
-                          if (formKey.currentState!.validate() &&
-                              dateTime != null) {
-                            await projectController.addCost(
-                              projectId: projectId,
-                              cost: Cost(
-                                  creation: dateTime!,
-                                  category: category,
-                                  value: double.parse(value.text
-                                      .trim()
-                                      .replaceFirst(Const.currency, "")),
-                                  reason: reason.text.trim(),
-                                  description: description.text.trim(),
-                                  responsibility:
-                                      FirebaseAuth.instance.currentUser!.uid),
-                            );
-                            reason.text = "";
-                            description.text = "";
-                            value.text = "";
-                            category = Const.costTypes[0];
-                            dateTime = null;
-                            dateExists = null;
-                            if (!mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                CustomBuilder.customSnackBarObject(
-                                    message: COwner.addedCost, error: false));
-                            setState(() {});
-                          }
-                        },
-                        text: COwner.add)
-                  ],
-                ),
-              )
-            ]);
+          ),
+
+          /// Actions Section, with
+          ///
+          /// * Get Back Button -> PopUp is closed
+          /// * Submit Button
+          ///     * Input Validated -> Cost is added to Project
+          ///     * Input Invalid -> User Gets Feedback & Cost is not added to Project
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomBuilder.customButton(
+                      onPressed: () {
+                        Get.back();
+                        state2();
+                      },
+                      text: COwner.close),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  CustomBuilder.customButton(
+                      onPressed: ([bool mounted = true]) async {
+                        if (dateTime == null) {
+                          dateExists = false;
+                          setState(() {});
+                        }
+                        if (dateTime != null) {
+                          dateExists = true;
+                          setState(() {});
+                        }
+                        if (formKey.currentState!.validate() &&
+                            dateTime != null) {
+                          await projectController.addCost(
+                            projectId: projectId,
+                            cost: Cost(
+                                creation: dateTime!,
+                                category: category,
+                                value: double.parse(value.text
+                                    .trim()
+                                    .replaceFirst(Const.currency, "")),
+                                reason: reason.text.trim(),
+                                description: description.text.trim(),
+                                responsibility:
+                                    FirebaseAuth.instance.currentUser!.uid),
+                          );
+                          reason.text = "";
+                          description.text = "";
+                          value.text = "";
+                          category = Const.costTypes[0];
+                          dateTime = null;
+                          dateExists = null;
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              CustomBuilder.customSnackBarObject(
+                                  message: COwner.addedCost, error: false));
+                          setState(() {});
+                        }
+                      },
+                      text: COwner.add)
+                ],
+              ),
+            )
+          ],
+
+          // Basic Styling
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          title: const Text(
+            COwner.addCost,
+            style: TextStyle(color: Colors.black),
+          ),
+        );
       },
     );
   }
 
+  // Builds a Column with cost/budgets Listings in Detaillsscreen
   static Widget detaillsColumn({
     required Function updateExpanded,
-    Function? setEnabled,
-    Function? setIsPrice,
-    Function? updateCostsController,
     required List<TextEditingController> textController,
     required List<Cost>? costs,
     required BuildContext context,
-    bool? enabled,
     required bool budget,
-    DateTime? costDeadline,
-    DateTime? until,
     required List<bool> expanded,
+    Function? updateCostsController,
+    DateTime? until,
+    DateTime? costDeadline,
+    Function? setIsPrice,
+    bool? enabled,
+    Function? setEnabled,
   }) {
+    // formKey that validates the input that is altered
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -394,6 +467,12 @@ class OwnerBuilder {
             width: MediaQuery.of(context).size.width * 0.45,
             child: Column(
               children: [
+                /// Header of the Detaills Sections, depending on value of bool "budget", different Views are shown
+                ///
+                /// * budget == true -> Only a Title is shown with due date of Budget
+                /// * budget == false -> Title is shown with the due date of the budget & additionally 2 IconButtons are depicted
+                ///             1. Icon ->  bar_chart_outlined: Enables editing of CostSums, so that forecasts are possible
+                ///             2. Icon ->  calendar_month: Enables input of date, which removes all costs after this date from Forecast
                 Row(
                   children: [
                     const SizedBox(
@@ -465,6 +544,11 @@ class OwnerBuilder {
                 const SizedBox(
                   height: 30,
                 ),
+
+                /// Body of Detaills Section
+                ///
+                /// * budget == true -> Budget values is shown; Editing of Forecats is defaultly disabled
+                /// * budget == false -> Cost values is shown; Editing of Forecats is enabled when pressed on enable button
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: Const.costTypes.length,
@@ -483,12 +567,12 @@ class OwnerBuilder {
                             Text("${Const.costTypes[index]}: ",
                                 style: const TextStyle(color: Colors.black)),
                             Flexible(
-                                child: customTextFormFieldNoDeco(
+                                child: textFormFieldNoDeco(
                                     isNullAllowed: true,
                                     enabled: enabled ?? false,
                                     additionalRequirement: !budget,
                                     controller: textController[index],
-                                    isSumme: true))
+                                    isNum: true))
                           ],
                         ),
                         iconColor: const Color(0xff7434E6),
@@ -515,40 +599,65 @@ class OwnerBuilder {
     );
   }
 
-  static Widget customTextFormFieldNoDeco(
+  // returns textFormField that looks like a usual Text Widget when not enabled
+  static Widget textFormFieldNoDeco(
       {required bool enabled,
       required bool additionalRequirement,
       required TextEditingController controller,
-      bool? isSumme,
+      bool? isNum,
       bool? isNullAllowed}) {
-    bool summe = isSumme ?? false;
+    /// Assigns bools in Constructor to new Variable
+    ///
+    /// * when the bool is defined it is set to the Constructors value
+    /// * when the bool is undefined it is set to false
+    bool num = isNum ?? false;
     bool nullAllowed = isNullAllowed ?? false;
+
     return TextFormField(
+      // Allows different input, depending on if the input is a num or not
       inputFormatters: [
-        summe
+        num
             ? FilteringTextInputFormatter.allow(RegExp(Const.numInput))
             : FilteringTextInputFormatter.allow(RegExp(Const.basicInput))
       ],
+      // Validates Input
       validator: (value) {
-        return summe
-            ? (value!.length < 2 || nullAllowed
-                ? null
-                : double.parse(value.replaceAll(Const.currency, "")) < 0.01
-                    ? ""
-                    : null)
-            : (value!.length < 3 ? "" : null);
+        return
+
+            // if the input is a num following conditions apply:
+            num
+                ? (value!.length < 2 || nullAllowed
+                    ? null
+                    : double.parse(value.replaceAll(Const.currency, "")) < 0.01
+                        ? ""
+                        : null)
+
+                // if the input is not a num or user id following conditions apply:
+                : (value!.length < 3 ? "" : null);
       },
+
+      // assigns the TextEditingController from the Constructor to the Textfield
+      controller: controller,
+
+      // Executes Function after every input
       onChanged: (item) {
-        if (summe) {
+        // When a num is entered in the TextField the input is formated accordingly
+        if (num) {
           TextSelection previousSelection = controller.selection;
           controller.text = FormatController.formatInput(item: item);
           controller.selection = previousSelection;
         }
       },
-      enabled: enabled && additionalRequirement,
-      maxLength: 20,
-      controller: controller,
+
+      /// Sets TextFields maxLength depending on:
+      ///
+      /// * if its a num
+      /// * or not
+      maxLength: num ? 9 : 20,
+
+      // Defines the TextFields Style
       cursorColor: const Color(0xff7434E6),
+      enabled: enabled && additionalRequirement,
       decoration: const InputDecoration(
         errorStyle: TextStyle(fontSize: 0.1),
         enabledBorder: UnderlineInputBorder(
