@@ -19,7 +19,7 @@ class Owner extends StatefulWidget {
 }
 
 class _OwnerState extends State<Owner> {
-  // Gets Access to all methods of the Project Controller
+  // Gets access to all methods of the Project Controller
   ProjectController projectController = Get.find();
 
   // informs whether the editing Button in the Table was pressed
