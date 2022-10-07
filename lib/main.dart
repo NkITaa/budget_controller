@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// Enables Popping of Circular Progress Indicator
+// Enables Popping of CircularProgressIndicator
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Enables messaging through Flutters "SnackBar"
