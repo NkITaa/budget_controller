@@ -14,7 +14,7 @@ import 'controller/project_controller.dart';
 
 // Defines Widget Pieces that are used across the application
 class CustomBuilder {
-  // Depiction of Default Progress Indicator
+  // Depiction of default ProgressIndicator
   static void customProgressIndicator({required BuildContext context}) {
     showDialog(
         context: context,
@@ -85,7 +85,7 @@ class CustomBuilder {
 
       /// Sets Button Text
       ///
-      /// * The depicted text is the value of the text variable in the constructor
+      /// * the depicted text is the value of the text variable in the constructor
       /// * when darkMode == true the text color is altered
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -97,7 +97,7 @@ class CustomBuilder {
     );
   }
 
-  /// Returns a customsized Logo-Image
+  /// Returns a customsized LogoImage
   ///
   /// * the size property in the constructor defines the logos height & width
   static Widget customLogo({required double size}) {
@@ -119,12 +119,12 @@ class CustomBuilder {
       preferredSize: const Size.fromHeight(60),
 
       child: AppBar(
-        // defines the AppBars design properties
+        // Defines the AppBars design properties
         toolbarHeight: 50,
         backgroundColor: const Color(0xff7434E6),
         elevation: 0,
 
-        // defines the AppBars Contents
+        // Defines the AppBars Contents
         actions: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -140,7 +140,7 @@ class CustomBuilder {
     );
   }
 
-  // Return the Apps deault Drawer
+  // Return the Apps default Drawer
   static Widget customDrawer(
       {required String userGroup, required BuildContext context}) {
     // Creates an animation Controller in order to animate the Checkmark
@@ -195,8 +195,8 @@ class CustomBuilder {
 
                 /// Drawer Body
                 ///
-                /// * depicts Tile that redirects to the ResetPassword Page
-                /// * if userGroup == Manager an Additional Tile that redirects to the Managers Decision History is shown
+                /// * depicts Tile that redirects to the ResetPasswordPage
+                /// * if userGroup == Manager an additional Tile that redirects to the Managers Decision History is shown
                 ListTile(
                     leading: const Icon(Icons.password),
                     iconColor: Colors.white,
@@ -242,7 +242,7 @@ class CustomBuilder {
     );
   }
 
-  // returns the applications default TextFied
+  // Returns the applications default TextFied
   static Widget defaultTextField(
       {required TextEditingController controller,
       bool? enabled,
@@ -270,7 +270,7 @@ class CustomBuilder {
         // Validates Input
         return
 
-            // if the input is a num following conditions apply:
+            // If the input is a num following conditions apply:
             num
                 ? (value!.length < 2 ||
                         double.parse(value.replaceAll(Const.currency, "")) <
@@ -278,15 +278,15 @@ class CustomBuilder {
                     ? ""
                     : null)
 
-                // if the input is a user id following conditions apply:
+                // If the input is a UserId following conditions apply:
                 : uid
                     ? (value!.length < 28 ? "" : null)
 
-                    // if the input is not a num or user id following conditions apply:
+                    // If the input is not a num or userId following conditions apply:
                     : (value!.length < 3 ? "" : null);
       },
 
-      // assigns the TextEditingController from the Constructor to the Textfield
+      // Assigns the TextEditingController from the Constructor to the Textfield
       controller: controller,
 
       // Executes Function after every input
@@ -331,7 +331,7 @@ class CustomBuilder {
     );
   }
 
-  // returns the applications default DropDownButton
+  // Returns the applications default DropDownButton
   static Widget popupDropDown({
     required String? chosenType,
     required List<String>? types,
@@ -345,10 +345,10 @@ class CustomBuilder {
     bool table = isTable ?? false;
 
     return DropdownButtonFormField(
-      // sets the value that is shown in the DropDown-Box
+      // Sets the value that is shown in the DropDownBox
       value: chosenType,
 
-      // adds all types in the selection section of the DropDown
+      // Adds all types in the selection section of the DropDownBox
       items: types
           ?.map((art) => DropdownMenuItem(
                 value: art,
@@ -360,14 +360,14 @@ class CustomBuilder {
               ))
           .toList(),
 
-      // updates value when new value is selected
+      // Updates value when new value is selected
       onChanged: (type) {
         setType(type: type);
       },
 
-      /// sets the Widgets Style
+      /// Sets the Widgets Style
       ///
-      /// * Design alters depending on whether the dropdown is in a table or not
+      /// * Design alters depending on whether the Dropdown is in a table or not
       focusColor: Colors.transparent,
       style: const TextStyle(color: Colors.black),
       icon: Icon(
@@ -388,7 +388,7 @@ class CustomBuilder {
     );
   }
 
-  // return the applications default Checkmark
+  // Return the applications default Checkmark
   static Widget animateCheckmark(
       {required bool Function() onPressed,
       required AnimateIconController controller,
@@ -399,7 +399,7 @@ class CustomBuilder {
     /// * when the bool is undefined it is set to false
     bool dark = isDark ?? false;
 
-    // returns a Widget that animates from a copy mark to a checkmark
+    // Returns a Widget that animates from a copy mark to a checkmark
     return AnimateIcons(
       startIcon: Icons.copy_all_outlined,
       endIcon: Icons.check,
@@ -452,7 +452,7 @@ class CustomBuilder {
         titleStyle: const TextStyle(fontSize: 0));
   }
 
-  // returns a custom date Picker
+  // Returns a custom DatePicker
   static Future<DateTime?> customDatePicker(
       {required BuildContext context,
       required DateTime? chosenDate,
@@ -461,7 +461,7 @@ class CustomBuilder {
         builder: (context, child) {
           return
 
-              // the Pickers design is set
+              // The Pickers design is set
               Theme(
             data: Theme.of(context).copyWith(
               colorScheme: const ColorScheme.light(
@@ -482,7 +482,7 @@ class CustomBuilder {
         cancelText: COwner.abort,
         context: context,
 
-        /// the Pickers initial date & data ranges are defined from the Constructor
+        /// The Pickers initial date & data ranges are defined from the Constructor
         ///
         /// * when the chosenDate is undefined the inital day is the current date
         /// * depending if the future should be shown only future dates or rather past dates are shown
@@ -491,23 +491,23 @@ class CustomBuilder {
         lastDate: future ? DateTime(2030) : DateTime.now());
   }
 
-  // returns a dropDown that also has search functionalities
+  // Returns a DropDown that also has search functionalities
   static Widget customSearchDropDown({required List<String> items}) {
-    // projectController is initialized to access certain methods
+    // ProjectController is initialized to access certain methods
     ProjectController projectController = Get.find();
 
     return DropdownSearch<String>(
-      // all constructor items are given to the Widget
+      // All constructor items are given to the Widget
       items: items,
 
-      // when the input changes the selected value is assigned to a variable
+      // When the input changes the selected value is assigned to a variable
       onChanged: (currentItem) {
         projectController.owner = currentItem;
       },
 
-      //the input gets validated
+      // The input gets validated
       validator: (String? item) {
-        // when the owner value is not defined an error is triggered
+        // When the owner value is not defined an error is triggered
         if (projectController.owner == null) {
           return "";
         } else {
@@ -515,7 +515,7 @@ class CustomBuilder {
         }
       },
 
-      // style definition of the Widgets dropdown
+      // Style definition of the Widgets Dropdown
       dropdownBuilder: (context, selectedItem) {
         return Text(
           projectController.owner ?? Const.chooseOwner,
@@ -525,7 +525,7 @@ class CustomBuilder {
         );
       },
 
-      // style definition of the Widgets menu
+      // Style definition of the WidgetsMenu
       popupProps: PopupProps.menu(
         itemBuilder: (context, item, isSelected) {
           return Padding(
@@ -553,7 +553,7 @@ class CustomBuilder {
         showSearchBox: true,
       ),
 
-      // general design are designed here
+      // General design are designed here
       dropdownButtonProps: const DropdownButtonProps(
         color: Colors.black,
       ),
@@ -571,7 +571,7 @@ class CustomBuilder {
     );
   }
 
-  // creation of a Subscaffold in order to show SnackBars in PopUps
+  // Creation of a Subscaffold in order to show SnackBars in PopUps
   static createSubscaffold(
       {required BuildContext context, required Widget child}) {
     showDialog(
@@ -596,7 +596,7 @@ class CustomBuilder {
     );
   }
 
-  // returns a Widget that is depicted when a Future build execution returns an error
+  // Returns a Widget that is depicted when a Future build execution returns an error
   static Widget defaultFutureError({required String error}) {
     return Column(
       children: [

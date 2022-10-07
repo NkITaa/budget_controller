@@ -19,28 +19,28 @@ class TableData extends DataTableSource {
     required this.projectController,
   });
 
-  // Gets Access to all methods of the Project Controller
+  // Gets Access to all methods of the ProjectController
   final ProjectController projectController;
 
   // Enables Checking if all values in Form fulfill the requirements
   final GlobalKey<FormState> formKey;
 
-  // informs whether the editing Button in the Table was pressed
+  // Informs whether the editing Button in the Table was pressed
   final bool enabled;
 
-  // holds value of row that is edited
+  // Holds value of row that is edited
   final int editedRow;
 
-  // holds the project ID
+  // Holds the project ID
   final String projectId;
 
-  // holds a List of all the costs
+  // Holds a List of all the costs
   final List<Cost>? costs;
 
-  // is the Owner classes toggle Function
+  // Is the Owner classes toggle function
   final Function toggle;
 
-  /// method that handles the sort functionality in the table
+  /// Method that handles the sort functionality in the table
   ///
   /// * Darts sort method is called
   /// * depending on bool ascending the table is sorted ascending or descending
@@ -57,28 +57,28 @@ class TableData extends DataTableSource {
   // Custom Table Row is created
   @override
   DataRow getRow(int index) {
-    // specific cost is gotten by index
+    // Specific cost is gotten by index
     Cost cost = costs![index];
 
-    // create Date of cost
+    // Create Date of cost
     DateTime dateTime = cost.creation;
 
-    // category of cost
+    // Category of cost
     String category = cost.category.toString();
 
-    // reason of cost accrue
+    // Reason of cost accrue
     TextEditingController reason =
         TextEditingController(text: cost.reason.toString());
 
-    // value of cost
+    // Value of cost
     TextEditingController value =
         TextEditingController(text: "${cost.value}${Const.currency}");
 
-    // description of cost
+    // Description of cost
     TextEditingController description =
         TextEditingController(text: cost.description.toString());
 
-    // row selected when the edited row equals the build-index
+    // Row selected when the edited row equals the build-index
     final bool selectedRow = editedRow == index;
 
     return DataRow.byIndex(index: index, cells: [
@@ -231,7 +231,7 @@ class TableData extends DataTableSource {
     ]);
   }
 
-  /// defaultly overwritten Methods in interface
+  /// Defaultly overwritten Methods in interface
   ///
   @override
   bool get isRowCountApproximate => false;

@@ -1,4 +1,4 @@
-// defines Constants that are used in the Admin UI
+// Defines Constants that are used in the Admin UI
 class CAdmin {
   static const String logHistory = "Log-Historie";
 

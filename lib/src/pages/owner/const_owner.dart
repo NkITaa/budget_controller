@@ -1,4 +1,4 @@
-// defines Constants that are used in the Owner UI
+// Defines Constants that are used in the Owner UI
 class COwner {
   static const double criticalPercentile = 0.8;
 

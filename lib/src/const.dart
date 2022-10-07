@@ -1,4 +1,4 @@
-// defines Constants that are used across the whole application
+// Defines Constants that are used across the whole application
 class Const {
   static const List<String> userRoles = ["Manager", "Owner", "Admin"];
 

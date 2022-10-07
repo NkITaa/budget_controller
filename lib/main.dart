@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// Enables Popping of Circular Progress Indicator
+// Enables popping of CircularProgressIndicator
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-// Enables Messaging through Flutters "SnackBar"
+// Enables messaging through Flutters SnackBar
 final GlobalKey<ScaffoldMessengerState> messengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
@@ -52,27 +52,27 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xff7434E6),
         ),
 
-        // Listens to Authentication Stream:
+        // Listens to AuthenticatedStream:
         home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            //shows ProgressIndicator during loading
+            // Shows ProgressIndicator during loading
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            //shows ErrorText when Authentication Stream has an error
+            // Shows ErrorText when AuthenticatedStream has an error
             if (snapshot.hasError) {
               return CustomBuilder.defaultFutureError(
                   error: snapshot.error.toString());
             }
 
-            /// alters Screen depending if user is authenticated
+            /// Alters Screen depending if user is authenticated
             ///
-            /// * User Authenticated: Home Screen
-            /// * User Not Authenticated: Login Screen
+            /// * User authenticated: HomeScreen
+            /// * User not authenticated: LoginScreen
             if (snapshot.hasData) {
               return Home();
             } else {

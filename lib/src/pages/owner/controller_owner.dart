@@ -2,14 +2,14 @@ import '../../modells/cost.dart';
 import 'components/table.dart';
 
 class ControllerOwner {
-  /// depending on Index the sort method is called with specific sortable
+  /// Depending on Index the sort method is called with specific sortable
   ///
-  /// * columnIndex == 0 -> sort Method is called with Comparable DateTime
-  /// * columnIndex == 1 -> sort Method is called with Comparable String
-  /// * columnIndex == 2 -> sort Method is called with Comparable num
-  /// * columnIndex == 3 -> sort Method is called with Comparable String
-  /// * columnIndex == 4 -> sort Method is called with Comparable String
-  /// * columnIndex == 5 -> sort Method is called with Comparable String
+  /// * ColumnIndex == 0 -> sort Method is called with Comparable DateTime
+  /// * ColumnIndex == 1 -> sort Method is called with Comparable String
+  /// * ColumnIndex == 2 -> sort Method is called with Comparable num
+  /// * ColumnIndex == 3 -> sort Method is called with Comparable String
+  /// * ColumnIndex == 4 -> sort Method is called with Comparable String
+  /// * ColumnIndex == 5 -> sort Method is called with Comparable String
   static void specificSort({
     required int columnIndex,
     required bool ascending,
