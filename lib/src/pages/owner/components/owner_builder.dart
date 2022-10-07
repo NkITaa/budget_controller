@@ -109,19 +109,18 @@ class OwnerBuilder {
       required Function toggle,
       required Function state,
       required Function sort,
-      required BuildContext context,
       required ProjectController projectController}) {
     int rowsPerPage = 10;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TableData source = TableData(
-        projectId: projectId,
-        projectController: projectController,
-        costs: costs,
-        formKey: formKey,
-        editedRow: editedRow,
-        enabled: enabled,
-        toggle: toggle,
-        context: context);
+      projectId: projectId,
+      projectController: projectController,
+      costs: costs,
+      formKey: formKey,
+      editedRow: editedRow,
+      enabled: enabled,
+      toggle: toggle,
+    );
     return SizedBox(
       width: 1300,
       child: Form(

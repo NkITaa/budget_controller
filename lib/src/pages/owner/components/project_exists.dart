@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../modells/project.dart';
 import 'owner_builder.dart';
 
-class ProjectExists extends StatelessWidget {
-  ProjectExists(
+class ProjectExists extends StatefulWidget {
+  const ProjectExists(
       {super.key,
       required this.project,
       required this.projectController,
@@ -27,11 +27,16 @@ class ProjectExists extends StatelessWidget {
   final Function toggle;
   final Function sort;
 
+  @override
+  State<ProjectExists> createState() => _ProjectExistsState();
+}
+
+class _ProjectExistsState extends State<ProjectExists> {
   late List<double> totalCosts =
-      project.costs?.map((cost) => cost.value).toList() ?? [0];
+      widget.project.costs?.map((cost) => cost.value).toList() ?? [0];
 
   late List<double> totalBudgets =
-      project.budgets?.map((budget) => budget.value).toList() ?? [0];
+      widget.project.budgets?.map((budget) => budget.value).toList() ?? [0];
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +46,16 @@ class ProjectExists extends StatelessWidget {
           height: 20,
         ),
         Text(
-          project.name,
+          widget.project.name,
           style: const TextStyle(fontSize: 25, color: Colors.black),
         ),
         OwnerBuilder.buildComparison(
             totalBudgets: totalBudgets,
             totalCosts: totalCosts,
             redirect: true,
-            until: project.deadline,
-            budgets: project.budgets,
-            costs: project.costs,
+            until: widget.project.deadline,
+            budgets: widget.project.budgets,
+            costs: widget.project.costs,
             isPrice: totalCosts.fold(0, (a, b) => a + b),
             shouldPrice: totalBudgets.fold(0, (a, b) => a + b),
             context: context),
@@ -60,17 +65,16 @@ class ProjectExists extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: OwnerBuilder.buildTable(
-              projectId: project.id,
-              projectController: projectController,
-              costs: project.costs,
-              state: state,
-              context: context,
-              enabled: enabled,
-              editedRow: editedRow,
-              toggle: toggle,
-              sort: sort,
-              sortAscending: sortAscending,
-              sortColumnIndex: sortColumnIndex),
+              projectId: widget.project.id,
+              projectController: widget.projectController,
+              costs: widget.project.costs,
+              state: widget.state,
+              enabled: widget.enabled,
+              editedRow: widget.editedRow,
+              toggle: widget.toggle,
+              sort: widget.sort,
+              sortAscending: widget.sortAscending,
+              sortColumnIndex: widget.sortColumnIndex),
         ),
         const SizedBox(
           height: 50,
