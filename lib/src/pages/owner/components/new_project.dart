@@ -15,9 +15,16 @@ class NewProject extends StatelessWidget {
       required this.projectController,
       required this.state});
 
+  // specific Project that the budget is suggested on
   final Project project;
+
+  // sets State in Parentclass
   final Function state;
+
+  // Enables access to all Methods in projectController
   final ProjectController projectController;
+
+  // Defines Controller for each Costtype
   final List<TextEditingController> controllers = [
     TextEditingController(),
     TextEditingController(),
@@ -34,6 +41,7 @@ class NewProject extends StatelessWidget {
       key: formKey,
       child: Column(
         children: [
+          // Depicts the pages Title with the first Costsection
           SizedBox(
             width: 648,
             child: Column(
@@ -107,6 +115,8 @@ class NewProject extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
+
+          // Depicts the pages second and last Costsection
           SizedBox(
             width: 648,
             child: Column(
@@ -141,6 +151,11 @@ class NewProject extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
+
+          /// Submits the written Budget
+          ///
+          /// * Form != valid -> Budget is not submited, error shown in TextFields
+          /// * Form == valid -> Budget is submited & send to Manager
           CustomBuilder.customButton(
               text: COwner.submit,
               onPressed: ([bool mounted = true]) async {
