@@ -28,8 +28,7 @@ class Const {
 
   static const String from = "Vom:";
 
-  static const String unknownError =
-      "Unvorhergesehener Fehler, kontaktiere den Administrator";
+  static const String roleUnknows = "User Rolle nicht bekannt";
 
   static const String lengthError =
       "Das Passwort muss mindestens 6 Zeichen enthalten";
