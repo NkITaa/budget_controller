@@ -1,3 +1,4 @@
+// defines Constants that are used in the Login UI
 class CLogin {
   static const String mailHint = "Mail";
   static const String mailHeading = "Bitte E-Mail eingeben";

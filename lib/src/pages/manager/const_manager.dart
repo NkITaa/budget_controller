@@ -1,3 +1,4 @@
+// defines Constants that are used in the Manager UI
 class CManager {
   static const String approveProject = "Budget genehmigen";
 
