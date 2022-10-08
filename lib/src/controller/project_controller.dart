@@ -25,6 +25,9 @@ class ProjectController extends GetxController {
   // ProjectId in DropDown selection is saved here temporarily
   String? projectId;
 
+  // saves temporarily specific project Costs for Owner Project-Table
+  List<Cost>? costs;
+
   // creates a new Project in the database
   Future<SnackBar> createProject(
       {required String projectName,

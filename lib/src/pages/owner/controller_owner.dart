@@ -9,7 +9,6 @@ class ControllerOwner {
   /// * ColumnIndex == 2 -> sort Method is called with Comparable num
   /// * ColumnIndex == 3 -> sort Method is called with Comparable String
   /// * ColumnIndex == 4 -> sort Method is called with Comparable String
-  /// * ColumnIndex == 5 -> sort Method is called with Comparable String
   static void specificSort({
     required int columnIndex,
     required bool ascending,
@@ -26,14 +25,11 @@ class ControllerOwner {
                 ? sort<num>(
                     (Cost cost) => cost.value, columnIndex, ascending, source)
                 : columnIndex == 3
-                    ? sort<String>((Cost cost) => cost.reason, columnIndex,
+                    ? sort<String>((Cost cost) => cost.description, columnIndex,
                         ascending, source)
                     : columnIndex == 4
-                        ? sort<String>((Cost cost) => cost.description,
-                            columnIndex, ascending, source)
-                        : columnIndex == 5
-                            ? sort<String>((Cost cost) => cost.responsibility,
-                                columnIndex, ascending, source)
-                            : null;
+                        ? sort<String>((Cost cost) => cost.reason, columnIndex,
+                            ascending, source)
+                        : null;
   }
 }

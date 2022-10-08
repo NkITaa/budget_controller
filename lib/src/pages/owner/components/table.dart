@@ -45,20 +45,21 @@ class TableData extends DataTableSource {
   /// * Darts sort method is called
   /// * depending on bool ascending the table is sorted ascending or descending
   sortMe<T>(Comparable<T> Function(Cost cost) getField, bool ascending) {
-    return costs?.sort((a, b) {
+    costs?.sort((a, b) {
       final Comparable<T> aValue = getField(a);
       final Comparable<T> bValue = getField(b);
       return ascending
           ? Comparable.compare(aValue, bValue)
           : Comparable.compare(bValue, aValue);
     });
+    projectController.costs = costs;
   }
 
   // Custom Table Row is created
   @override
   DataRow getRow(int index) {
     // Specific cost is gotten by index
-    Cost cost = costs![index];
+    Cost cost = projectController.costs?[index] ?? costs![index];
 
     // Create Date of cost
     DateTime dateTime = cost.creation;
@@ -184,20 +185,23 @@ class TableData extends DataTableSource {
                         color: Color(0xff7434E6)),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
+                        Cost newCost = Cost(
+                            creation: dateTime,
+                            category: category,
+                            value: double.parse(value.text
+                                .trim()
+                                .replaceFirst(Const.currency, "")),
+                            reason: reason.text.trim(),
+                            description: description.text.trim(),
+                            responsibility:
+                                FirebaseAuth.instance.currentUser!.uid);
                         await projectController.updateCost(
                           projectId: projectId,
                           costOld: cost,
-                          costNew: Cost(
-                              creation: dateTime,
-                              category: category,
-                              value: double.parse(value.text
-                                  .trim()
-                                  .replaceFirst(Const.currency, "")),
-                              reason: reason.text.trim(),
-                              description: description.text.trim(),
-                              responsibility:
-                                  FirebaseAuth.instance.currentUser!.uid),
+                          costNew: newCost,
                         );
+                        projectController.costs?.remove(cost);
+                        projectController.costs?.add(newCost);
                         toggle(index: index);
                       }
                     },

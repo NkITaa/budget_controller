@@ -233,6 +233,7 @@ class OwnerBuilder {
               onPressed: () async {
                 await projectController.deleteCost(
                     projectId: projectId, cost: cost);
+                projectController.costs?.remove(cost);
                 toggle(index: index);
                 Get.back();
               }),
