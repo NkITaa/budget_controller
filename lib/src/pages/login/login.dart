@@ -6,6 +6,7 @@ import '../../../main.dart';
 import '../../widget_builder.dart';
 import 'login_builder.dart';
 
+// The applications Login page
 class Login extends StatefulWidget {
   const Login({super.key});
 

@@ -7,6 +7,7 @@ import '../../controller/user_controller.dart';
 import 'const_login.dart';
 import 'login_builder.dart';
 
+// Defines page that enables to send a password reset mail to user
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 

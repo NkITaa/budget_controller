@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Definition of Log Object
 class Log {
   String notification;
   String title;

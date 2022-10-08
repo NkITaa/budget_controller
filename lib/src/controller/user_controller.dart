@@ -7,6 +7,7 @@ import '../const.dart';
 import '../widget_builder.dart';
 import 'log_controller.dart';
 
+// Defines Methods for the User Handling in Firebase
 class UserController extends GetxController {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("user");

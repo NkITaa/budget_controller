@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Definition of CustomUser Object
 class CustomUser {
   String id;
   String? projectId;

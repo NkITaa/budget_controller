@@ -1,6 +1,7 @@
 import '../const.dart';
 import '../modells/cost.dart';
 
+// Defines Methods to handle the formatting of data
 class FormatController {
   // formatter that controlls the number input
   static String formatInput({required String item}) {

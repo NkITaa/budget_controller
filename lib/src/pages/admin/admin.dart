@@ -8,7 +8,7 @@ import '../../modells/log.dart';
 import '../../modells/user.dart';
 import 'const_admin.dart';
 
-// skeleton of Admin Page
+// Skeleton of Admin Page
 class Admin extends StatefulWidget {
   const Admin({super.key, required this.user});
 

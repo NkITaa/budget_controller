@@ -1,3 +1,4 @@
+// Definition of Cost Object
 class Cost {
   DateTime creation;
   String category;

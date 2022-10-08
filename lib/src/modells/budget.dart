@@ -1,3 +1,4 @@
+// Definition of Budget Object
 class Budget {
   String type;
   double value;

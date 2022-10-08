@@ -2,6 +2,7 @@ import 'package:budget_controller/src/modells/budget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cost.dart';
 
+// Definition of Project Object
 class Project {
   String id;
   String name;

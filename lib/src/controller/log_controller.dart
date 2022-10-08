@@ -2,6 +2,7 @@ import 'package:budget_controller/src/modells/log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Defines Methods for the Log Handling in Firebase
 class LogController {
   // new Log is written to database
   static Future<void> writeLog(

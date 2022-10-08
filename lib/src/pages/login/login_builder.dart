@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../const.dart';
 
+// Defines Widget Pieces that are used across the Login UI
 class LoginBuilder {
   // specific Login textFormField
   static Widget textFormField({

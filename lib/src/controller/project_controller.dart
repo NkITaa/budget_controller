@@ -10,6 +10,7 @@ import '../modells/budget.dart';
 import '../widget_builder.dart';
 import 'log_controller.dart';
 
+// Defines Methods for the Project Handling in Firebase
 class ProjectController extends GetxController {
   // references  the "project" Collection in Firebase
   CollectionReference projectCollection =
