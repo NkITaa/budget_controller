@@ -14,7 +14,6 @@ class CManager {
 
   static const List<String> titles = [
     "KPIs",
-    "Projekt XYZ",
     "Projekt anlegen",
     "Benachrichtigung"
   ];

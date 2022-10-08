@@ -1,6 +1,5 @@
 import 'package:budget_controller/src/pages/manager/components/kpis.dart';
 import 'package:budget_controller/src/pages/manager/components/new_project.dart';
-import 'package:budget_controller/src/pages/manager/components/project.dart';
 import 'package:flutter/material.dart';
 
 import '../../modells/user.dart';
@@ -20,12 +19,7 @@ class _ManagerState extends State<Manager> {
   int selectedIndex = 0;
 
   // holds List of all Pages
-  List<Widget> pages = [
-    const KPIs(),
-    const Project(),
-    const NewProject(),
-    const Messages()
-  ];
+  List<Widget> pages = [const KPIs(), const NewProject(), const Messages()];
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +48,6 @@ class _ManagerState extends State<Manager> {
                 /// Row of Navigation Icons
                 ///
                 /// * Icon: bar_chart_outlined -> sets Index to 3: KPIs Screen
-                /// * Icon: file_copy  -> sets Index to 3: Project Screen
                 /// * Icon: add -> sets Index to 3: NewProject Screen
                 /// * Icon: mail_outline -> sets Index to 3: Messages Screen
                 Row(
@@ -75,7 +68,7 @@ class _ManagerState extends State<Manager> {
                           setState(() {});
                         },
                         icon: Icon(
-                          Icons.file_copy,
+                          Icons.add,
                           color: selectedIndex == 1
                               ? const Color(0xff7434E6)
                               : Colors.grey,
@@ -86,19 +79,8 @@ class _ManagerState extends State<Manager> {
                           setState(() {});
                         },
                         icon: Icon(
-                          Icons.add,
-                          color: selectedIndex == 2
-                              ? const Color(0xff7434E6)
-                              : Colors.grey,
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          selectedIndex = 3;
-                          setState(() {});
-                        },
-                        icon: Icon(
                           Icons.mail_outline,
-                          color: selectedIndex == 3
+                          color: selectedIndex == 2
                               ? const Color(0xff7434E6)
                               : Colors.grey,
                         )),
