@@ -1,7 +1,6 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:budget_controller/main.dart';
 import 'package:budget_controller/src/pages/login/component_reset_password.dart';
-import 'package:budget_controller/src/pages/manager/components/decision_history.dart';
 import 'package:budget_controller/src/pages/owner/const_owner.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -196,7 +195,6 @@ class CustomBuilder {
                 /// Drawer Body
                 ///
                 /// * depicts Tile that redirects to the ResetPasswordPage
-                /// * if userGroup == Manager an additional Tile that redirects to the Managers Decision History is shown
                 ListTile(
                     leading: const Icon(Icons.password),
                     iconColor: Colors.white,
@@ -205,16 +203,6 @@ class CustomBuilder {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ResetPassword()))),
-                userGroup == Const.userRoles[0]
-                    ? ListTile(
-                        leading: const Icon(Icons.book_outlined),
-                        iconColor: Colors.white,
-                        title: const Text(Const.decisionHistory),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DecisionHistory())))
-                    : Container()
               ],
             );
           }),
