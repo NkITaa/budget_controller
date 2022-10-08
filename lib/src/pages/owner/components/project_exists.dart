@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../modells/project.dart';
 import 'owner_builder.dart';
 
+// Screen that is shown when project exists
 class ProjectExists extends StatefulWidget {
   const ProjectExists(
       {super.key,

@@ -8,6 +8,7 @@ import '../../../widget_builder.dart';
 import '../../manager/manager_builder.dart';
 import '../const_owner.dart';
 
+// Screen that is shown when a new Project has to be created
 class NewProject extends StatelessWidget {
   NewProject(
       {super.key,

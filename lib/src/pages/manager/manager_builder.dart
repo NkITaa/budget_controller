@@ -4,6 +4,7 @@ import '../../const.dart';
 import '../../modells/project.dart';
 import '../../widget_builder.dart';
 
+// Defines Widget Pieces that are used across the Manager UI
 class ManagerBuilder {
   // defines a specific costField by altering the width of the defaultTextField
   static Widget costFieldBuilder(

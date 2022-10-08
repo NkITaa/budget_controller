@@ -7,6 +7,7 @@ import '../../modells/user.dart';
 import 'components/messages.dart';
 import 'const_manager.dart';
 
+// Skeleton for all Manager Screens
 class Manager extends StatefulWidget {
   const Manager({super.key, required this.user});
   final CustomUser user;

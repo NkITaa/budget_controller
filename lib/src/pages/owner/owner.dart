@@ -10,6 +10,7 @@ import '../../modells/user.dart';
 import '../../widget_builder.dart';
 import 'const_owner.dart';
 
+// Skeleton for all Owner Screens
 class Owner extends StatefulWidget {
   const Owner({super.key, required this.user});
   final CustomUser user;

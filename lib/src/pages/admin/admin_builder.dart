@@ -13,6 +13,7 @@ import '../../widget_builder.dart';
 import '../owner/const_owner.dart';
 import 'const_admin.dart';
 
+// Defines Widget Pieces that are used across the Admin UI
 class AdminBuilder {
   static addUserPopup({
     required UserController userController,

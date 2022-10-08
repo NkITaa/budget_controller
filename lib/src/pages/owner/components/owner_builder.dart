@@ -13,6 +13,7 @@ import '../const_owner.dart';
 import '../../../modells/cost.dart';
 import 'detaills.dart';
 
+// Defines Widget Pieces that are used across the Owner UI
 class OwnerBuilder {
   static Widget buildComparison({
     required double isPrice,
