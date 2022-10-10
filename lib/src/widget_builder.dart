@@ -481,7 +481,7 @@ class CustomBuilder {
 
   // Returns a DropDown that also has search functionalities
   static Widget customSearchDropDown(
-      {required bool project, required List<String> items}) {
+      {required bool project, required List<String> items, Function? state}) {
     // ProjectController is initialized to access certain methods
     ProjectController projectController = Get.find();
 
@@ -491,12 +491,15 @@ class CustomBuilder {
 
       /// When the input changes the selected value is assigned to a variable
       ///
-      /// * project == true -> value assigned to projectId
+      /// * project == true -> value assigned to projectId & sets State in parent
       /// * project != true -> value assigned to owner
       onChanged: (currentItem) {
-        project
-            ? projectController.projectId = currentItem
-            : projectController.owner = currentItem;
+        if (project) {
+          projectController.projectId = currentItem;
+          state!();
+        } else {
+          projectController.owner = currentItem;
+        }
       },
 
       // The input gets validated

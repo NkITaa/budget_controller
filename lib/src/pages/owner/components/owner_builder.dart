@@ -479,7 +479,7 @@ class OwnerBuilder {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.45,
+            width: 300,
             child: Column(
               children: [
                 /// Header of the Detaills Sections, depending on value of bool "budget", different Views are shown

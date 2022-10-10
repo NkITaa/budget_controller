@@ -1,8 +1,11 @@
+import 'package:budget_controller/src/controller/project_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../const.dart';
+import '../../controller/format_controller.dart';
 import '../../modells/project.dart';
 import '../../widget_builder.dart';
+import '../owner/components/owner_builder.dart';
 
 // Defines Widget Pieces that are used across the Manager UI
 class ManagerBuilder {
@@ -153,5 +156,190 @@ class ManagerBuilder {
         )
       ],
     );
+  }
+
+  static Widget showPreview(
+      {required ProjectController projectController,
+      required BuildContext context}) {
+    // List of boolean that is altered depending on, wheter the DetaillsColumn Expandable Button is expanded
+    List<bool> expanded = [false, false, false, false, false, false];
+
+    // determines whether editing of costs is enabled or disabled
+    bool _enabled = false;
+
+    // holds currently active costDeadline
+    DateTime? costDeadline;
+
+    // holds currently projected isPrice
+    double? _isPrice;
+
+    return FutureBuilder(
+        future: projectController.getProject(
+            projectId: projectController.projectId!),
+        builder: (context, snapshot) {
+          // Shows ErrorText when Snapshot has an error
+          if (snapshot.hasError) {
+            return CustomBuilder.defaultFutureError(
+                error: snapshot.error.toString());
+          }
+
+          // Shows ProgressIndicator during loading
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width,
+                child: const CircularProgressIndicator());
+          }
+
+          final project = snapshot.requireData;
+
+          // lists all CostTypes with specific value
+          late List<TextEditingController> costsController = [
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[0], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[1], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[2], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[3], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[4], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}"),
+            TextEditingController(
+                text:
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}")
+          ];
+
+          // lists all BudgetTypes with specific value
+          late List<TextEditingController> budgetsController = [
+            TextEditingController(
+                text: "${project.budgets?[0].value ?? 0}${Const.currency}"),
+            TextEditingController(
+                text: "${project.budgets?[1].value ?? 0}${Const.currency}"),
+            TextEditingController(
+                text: "${project.budgets?[2].value ?? 0}${Const.currency}"),
+            TextEditingController(
+                text: "${project.budgets?[3].value ?? 0}${Const.currency}"),
+            TextEditingController(
+                text: "${project.budgets?[4].value ?? 0}${Const.currency}"),
+            TextEditingController(
+                text: "${project.budgets?[5].value ?? 0}${Const.currency}")
+          ];
+
+          // enables stateSetting
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            // updates Expanded State of ExpandableButton
+            updateExpanded({required bool state, required int index}) {
+              // reassigns state of specific ExpandableTile when triggered
+              expanded[index] = state;
+
+              // State is State to upgrade values graphically
+              setState(() {});
+            }
+
+            // updates Costs when costDeadline is altered
+            updateCostsController({required DateTime dateTime}) {
+              // costDeadline is reassigned
+              costDeadline = dateTime;
+              // the new value of the specific costs is written in the specific TextEditingController
+              for (int i = 0; i < costsController.length; i++) {
+                costsController[i].text =
+                    "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}";
+              }
+
+              // the total isPrice is accordingly updated with sum of new specific costs
+              _isPrice = costsController
+                  .map((controller) {
+                    return double.parse(
+                        controller.text.replaceAll(Const.currency, ""));
+                  })
+                  .toList()
+                  .fold<double>(0, (a, b) => (a) + b);
+
+              // State is State to upgrade values graphically
+              setState(() {});
+            }
+
+            // value of isPrice is updated, when projections are entered
+            setIsPrice({required double isPrice}) {
+              // value is assigned to classes variable
+              _isPrice = isPrice;
+
+              // State is State to upgrade values graphically
+              setState(() {});
+            }
+
+            // value of enabled is updated, when the editing mode is activated
+            setEnabled({required bool enabled}) {
+              // value is assigned to classes variable
+              _enabled = enabled;
+              // State is State to upgrade values graphically
+              setState(() {});
+            }
+
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      /// Builds the Columns
+                      ///
+                      /// * First: Cost Column
+                      /// * Secondly: Budget Column
+                      OwnerBuilder.detaillsColumn(
+                        costDeadline: costDeadline,
+                        updateCostsController: updateCostsController,
+                        setIsPrice: setIsPrice,
+                        enabled: _enabled,
+                        setEnabled: setEnabled,
+                        expanded: expanded,
+                        updateExpanded: updateExpanded,
+                        textController: costsController,
+                        costs: project.costs,
+                        context: context,
+                        budget: false,
+                      ),
+                      OwnerBuilder.detaillsColumn(
+                        until: project.deadline,
+                        textController: budgetsController,
+                        expanded: expanded,
+                        updateExpanded: updateExpanded,
+                        costs: project.costs,
+                        context: context,
+                        budget: true,
+                      )
+                    ],
+                  ),
+
+                  // Comparison that shows forecasted values in Comparison with Budget
+                  OwnerBuilder.buildComparison(
+                    redirect: false,
+                    isPrice: _isPrice ??
+                        (project.costs?.map((cost) => cost.value).toList() ??
+                                [0])
+                            .fold(0, (a, b) => a + b),
+                    shouldPrice: (project.budgets
+                                ?.map((budget) => budget.value)
+                                .toList() ??
+                            [0])
+                        .fold(0, (a, b) => a + b),
+                  )
+                ],
+              ),
+            );
+          });
+        });
   }
 }
