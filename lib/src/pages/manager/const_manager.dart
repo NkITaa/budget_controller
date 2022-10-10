@@ -15,8 +15,8 @@ class CManager {
   static const String metainfos = "Metainfos";
 
   static const List<String> titles = [
-    "KPIs",
+    "Benachrichtigung",
+    "Projekte",
     "Projekt anlegen",
-    "Benachrichtigung"
   ];
 }

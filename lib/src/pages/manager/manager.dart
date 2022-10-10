@@ -19,7 +19,11 @@ class _ManagerState extends State<Manager> {
   int selectedIndex = 0;
 
   // holds List of all Pages
-  List<Widget> pages = [const KPIs(), const NewProject(), const Messages()];
+  List<Widget> pages = [
+    const Messages(),
+    const KPIs(),
+    const NewProject(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +62,28 @@ class _ManagerState extends State<Manager> {
                           selectedIndex = 0;
                           setState(() {});
                         },
-                        icon: Icon(Icons.bar_chart_outlined,
-                            color: selectedIndex == 0
-                                ? const Color(0xff7434E6)
-                                : Colors.grey)),
+                        icon: Icon(
+                          Icons.mail_outline,
+                          color: selectedIndex == 0
+                              ? const Color(0xff7434E6)
+                              : Colors.grey,
+                        )),
                     IconButton(
                         onPressed: () {
                           selectedIndex = 1;
                           setState(() {});
                         },
-                        icon: Icon(
-                          Icons.add,
-                          color: selectedIndex == 1
-                              ? const Color(0xff7434E6)
-                              : Colors.grey,
-                        )),
+                        icon: Icon(Icons.search,
+                            color: selectedIndex == 1
+                                ? const Color(0xff7434E6)
+                                : Colors.grey)),
                     IconButton(
                         onPressed: () {
                           selectedIndex = 2;
                           setState(() {});
                         },
                         icon: Icon(
-                          Icons.mail_outline,
+                          Icons.add,
                           color: selectedIndex == 2
                               ? const Color(0xff7434E6)
                               : Colors.grey,
