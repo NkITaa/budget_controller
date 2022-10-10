@@ -598,12 +598,14 @@ class OwnerBuilder {
                               shrinkWrap: true,
                               itemCount: costType?.length ?? 0,
                               itemBuilder: (context, index) {
-                                return Text(
-                                    "${costType![index]!.description}${costType[index]!.value}${Const.currency}",
-                                    style: TextStyle(
-                                        color: budget
-                                            ? Colors.transparent
-                                            : Colors.black));
+                                return Center(
+                                  child: Text(
+                                      "${costType![index]!.description} - ${costType[index]!.value}${Const.currency}",
+                                      style: TextStyle(
+                                          color: budget
+                                              ? Colors.transparent
+                                              : Colors.black)),
+                                );
                               })
                         ],
                       );

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../const.dart';
+import '../../controller/format_controller.dart';
 import '../../controller/log_controller.dart';
 import '../../widget_builder.dart';
 import '../owner/const_owner.dart';
@@ -479,7 +480,7 @@ class AdminBuilder {
                 }
               }),
           Text(
-            log.title,
+            "${log.title} - ${FormatController.dateTimeFormatter(dateTime: log.date)}",
             style: TextStyle(color: log.warning ? Colors.yellow : Colors.black),
           )
         ],
