@@ -480,7 +480,8 @@ class CustomBuilder {
   }
 
   // Returns a DropDown that also has search functionalities
-  static Widget customSearchDropDown({required List<String> items}) {
+  static Widget customSearchDropDown(
+      {required bool project, required List<String> items}) {
     // ProjectController is initialized to access certain methods
     ProjectController projectController = Get.find();
 
@@ -488,9 +489,14 @@ class CustomBuilder {
       // All constructor items are given to the Widget
       items: items,
 
-      // When the input changes the selected value is assigned to a variable
+      /// When the input changes the selected value is assigned to a variable
+      ///
+      /// * project == true -> value assigned to projectId
+      /// * project != true -> value assigned to owner
       onChanged: (currentItem) {
-        projectController.owner = currentItem;
+        project
+            ? projectController.projectId = currentItem
+            : projectController.owner = currentItem;
       },
 
       // The input gets validated
@@ -506,7 +512,9 @@ class CustomBuilder {
       // Style definition of the Widgets Dropdown
       dropdownBuilder: (context, selectedItem) {
         return Text(
-          projectController.owner ?? Const.chooseOwner,
+          project
+              ? projectController.projectId ?? Const.chooseProject
+              : projectController.owner ?? Const.chooseOwner,
           style: TextStyle(
             color: projectController.owner == null ? Colors.grey : Colors.black,
           ),

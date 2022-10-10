@@ -97,6 +97,7 @@ class _NewProjectState extends State<NewProject> {
                           SizedBox(
                               width: 200,
                               child: CustomBuilder.customSearchDropDown(
+                                project: false,
                                 items: owners.map((e) => e.id).toList(),
                               )),
                           const SizedBox(

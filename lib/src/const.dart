@@ -45,6 +45,8 @@ class Const {
 
   static const String chooseOwner = "Owner auswählen";
 
+  static const String chooseProject = "Projekt auswählen";
+
   static const String search = "Suchen";
 
   static const String decisionHistory = "Entscheidungshistorie";

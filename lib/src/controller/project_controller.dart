@@ -382,4 +382,30 @@ class ProjectController extends GetxController {
           message: e.toString(), error: true);
     }
   }
+
+  // gets ProjectIDs
+  Future<List<String?>> getProjectIds() async {
+    // List that records projectIds
+    List<String> projectIds = [];
+
+    // gets all projects
+    var projects = await projectCollection.get().then((value) {
+      return value.docs;
+    });
+
+    if (projects.isNotEmpty) {
+      // iterates through all Projects
+      for (int i = 0; i < projects.length; i++) {
+        var project = projects[i];
+
+        // deserializes projects JSON
+        Project temp = Project.fromJson(project);
+
+        // adds specific projectId to List
+        projectIds.add(temp.id);
+      }
+    }
+
+    return projectIds;
+  }
 }
