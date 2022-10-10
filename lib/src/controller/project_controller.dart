@@ -295,6 +295,7 @@ class ProjectController extends GetxController {
 
       // writes a Log, when the cost was updated
       await LogController.writeLog(
+        warning: true,
         projectId: projectId,
         title: Const.costUpdated,
         notification:
@@ -321,6 +322,7 @@ class ProjectController extends GetxController {
 
       // writes a Log, when the critical tile was set
       await LogController.writeLog(
+        warning: true,
         toManager: true,
         projectId: projectId,
         title: Const.criticalBudget,

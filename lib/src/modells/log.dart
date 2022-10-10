@@ -10,6 +10,7 @@ class Log {
   DateTime date;
   bool read;
   bool? toManager;
+  bool warning;
 
   Log(
       {required this.notification,
@@ -19,11 +20,13 @@ class Log {
       required this.userId,
       required this.projectId,
       this.read = false,
+      this.warning = false,
       this.toManager});
 
   // serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
+      "warning": warning,
       "notification": notification,
       "title": title,
       "id": id,
@@ -38,6 +41,7 @@ class Log {
   // serializes Object from JSON
   static Log fromJson(QueryDocumentSnapshot<Map<String, dynamic>> log) {
     return Log(
+      warning: log["warning"],
       userId: log["userId"],
       projectId: log["projectId"],
       notification: log["notification"],

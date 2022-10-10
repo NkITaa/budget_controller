@@ -8,6 +8,7 @@ class LogController {
   static Future<void> writeLog(
       {required String notification,
       String? projectId,
+      bool? warning,
       required String title,
       bool? toManager}) async {
     CollectionReference logCollection =
@@ -17,6 +18,7 @@ class LogController {
 
     // a temporary Log Object is created
     Log temp = Log(
+        warning: warning ?? false,
         projectId: projectId,
         userId: FirebaseAuth.instance.currentUser!.uid,
         toManager: toManager,

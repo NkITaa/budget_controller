@@ -480,7 +480,7 @@ class AdminBuilder {
               }),
           Text(
             log.title,
-            style: const TextStyle(color: Colors.black),
+            style: TextStyle(color: log.warning ? Colors.yellow : Colors.black),
           )
         ],
       ),
