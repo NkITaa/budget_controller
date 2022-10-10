@@ -155,7 +155,7 @@ class ProjectController extends GetxController {
   Future<SnackBar> acceptBudget(
       {required String projectId, required String logId}) async {
     try {
-      // the pending variable is set to true
+      // the pending variable is set to false
       await projectCollection.doc(projectId).update({'pending': false});
 
       // after that the toManager variable is set to false
@@ -304,6 +304,76 @@ class ProjectController extends GetxController {
       // returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.costUpdated, error: false);
+    }
+
+    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    on FirebaseException catch (e) {
+      return CustomBuilder.customSnackBarObject(
+          message: e.toString(), error: true);
+    }
+  }
+
+  // Informs Manager, that cost situation in Budget is critical
+  Future<void> setCritical({required String projectId}) async {
+    try {
+      // first the value of the critical property gets updated
+      await projectCollection.doc(projectId).update({'critical': true});
+
+      // writes a Log, when the critical tile was set
+      await LogController.writeLog(
+        toManager: true,
+        projectId: projectId,
+        title: Const.criticalBudget,
+        notification:
+            "${Const.criticalBudgetLog[0]} $projectId ${Const.criticalBudgetLog[1]} ${FirebaseAuth.instance.currentUser!.uid}",
+      );
+    }
+
+    // when an error with Firebase happened, a Text is displayed
+    on FirebaseException catch (e) {
+      Text(e.toString());
+    }
+  }
+
+  // Sets the critical situation to normal, when the critical budget is normal again
+  Future<void> setUncritical({required String projectId}) async {
+    try {
+      // first the value of the critical property gets updated
+      await projectCollection.doc(projectId).update({'critical': false});
+
+      // writes a Log, when the critical tile was set
+      await LogController.writeLog(
+        projectId: projectId,
+        title: Const.uncriticallisedBudget,
+        notification:
+            "${Const.uncriticallisedBudgetLog[0]} $projectId ${Const.uncriticallisedBudgetLog[1]} ${FirebaseAuth.instance.currentUser!.uid}",
+      );
+    }
+
+    // when an error with Firebase happened, a Text is displayed
+    on FirebaseException catch (e) {
+      Text(e.toString());
+    }
+  }
+
+  Future<SnackBar> setRead(
+      {required String projectId, required String logId}) async {
+    try {
+      // after that the toManager variable is set to false
+      await logCollection.doc(logId).update({'toManager': false});
+
+      // writes a Log, when the transgression was read
+      await LogController.writeLog(
+        toManager: false,
+        projectId: projectId,
+        title: Const.readBudgettransgression,
+        notification:
+            "${Const.readBudgettransgressionLog[0]} $projectId ${Const.readBudgettransgressionLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.readBudgettransgressionLog[2]}",
+      );
+
+      // returns a success SnackBar when all steps were successfull
+      return CustomBuilder.customSnackBarObject(
+          message: Const.readBudgettransgression, error: false);
     }
 
     // when an error with Firebase happened, an error SnackBar with the specific error is returned

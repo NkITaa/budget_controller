@@ -7,6 +7,7 @@ class Project {
   String id;
   String name;
   String ownerId;
+  bool critical;
   bool pending;
   DateTime deadline;
   List<Cost>? costs;
@@ -14,6 +15,7 @@ class Project {
 
   Project({
     this.pending = true,
+    this.critical = false,
     required this.deadline,
     required this.id,
     required this.name,
@@ -25,6 +27,7 @@ class Project {
   // serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
+      "critical": critical,
       "pending": pending,
       "deadline": deadline,
       "id": id,
@@ -49,6 +52,7 @@ class Project {
     }).toList();
 
     return Project(
+        critical: project["critical"],
         pending: project["pending"],
         deadline: DateTime.parse(project["deadline"].toDate().toString()),
         id: project["id"],

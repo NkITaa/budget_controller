@@ -72,10 +72,13 @@ class _ProjectExistsState extends State<ProjectExists> {
 
         // builds the compare tile
         OwnerBuilder.buildComparison(
+            projectId: widget.project.id,
+            criticalFirebase: widget.project.critical,
             totalBudgets: totalBudgets,
             totalCosts: totalCosts,
             redirect: true,
             until: widget.project.deadline,
+            projectController: widget.projectController,
             budgets: widget.project.budgets,
             costs: widget.project.costs,
             isPrice: totalCosts.fold(0, (a, b) => a + b),

@@ -19,6 +19,9 @@ class OwnerBuilder {
     required double isPrice,
     required double shouldPrice,
     required bool redirect,
+    String? projectId,
+    bool? criticalFirebase,
+    ProjectController? projectController,
     BuildContext? context,
     List<double>? totalBudgets,
     List<double>? totalCosts,
@@ -33,6 +36,16 @@ class OwnerBuilder {
     isPrice / shouldPrice > COwner.criticalPercentile
         ? critical = true
         : critical = false;
+
+    // sets the cost to critical, when the costs are higher than the budget
+    if (critical && redirect && !criticalFirebase!) {
+      projectController!.setCritical(projectId: projectId!);
+    }
+
+    // sets the cost to uncritical, when the costs are lower than the budget, but are marked as critical in Firebase
+    if (!critical && redirect && criticalFirebase!) {
+      projectController!.setUncritical(projectId: projectId!);
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

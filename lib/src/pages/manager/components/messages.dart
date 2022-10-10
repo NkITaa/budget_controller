@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../const.dart';
 import '../../../controller/log_controller.dart';
 import '../../../controller/project_controller.dart';
 import '../../../modells/log.dart';
@@ -103,48 +104,80 @@ class _MessagesState extends State<Messages> {
                                 ManagerBuilder.projectExpansionTile(
                                     project: project),
 
-                                /// Builds two buttons
+                                /// Decides which Options to show
                                 ///
-                                /// * accept -> the budget is accepted and the owner gets access to work on the project
-                                /// * reject -> the budget gets rejected, the owner has to create a new budget
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomBuilder.customButton(
-                                      text: CManager.accept,
-                                      isDarkMode: true,
-                                      onPressed: () async {
-                                        SnackBar snackBar =
-                                            await projectController
-                                                .acceptBudget(
-                                                    projectId: log.projectId!,
-                                                    logId: log.id);
-                                        if (!mounted) return;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
-                                        setState(() {});
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      width: 25,
-                                    ),
-                                    CustomBuilder.customButton(
-                                        text: CManager.reject,
-                                        onPressed: () async {
-                                          SnackBar snackBar =
-                                              await projectController
-                                                  .deleteBudget(
-                                                      logId: log.id,
-                                                      projectId:
-                                                          log.projectId!);
-                                          if (!mounted) return;
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
-                                          setState(() {});
-                                        },
-                                        isLightMode: true),
-                                  ],
-                                ),
+                                /// * log.title == budgetSuggested -> 2 Buttons with accept or reject
+                                /// * log.title != budgetSuggested -> 1 Button where log can be set as read
+                                log.title == Const.budgetSuggested
+                                    ?
+
+                                    /// Builds two buttons
+                                    ///
+                                    /// * accept -> the budget is accepted and the owner gets access to work on the project
+                                    /// * reject -> the budget gets rejected, the owner has to create a new budget
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CustomBuilder.customButton(
+                                            text: CManager.accept,
+                                            isDarkMode: true,
+                                            onPressed: () async {
+                                              SnackBar snackBar =
+                                                  await projectController
+                                                      .acceptBudget(
+                                                          projectId:
+                                                              log.projectId!,
+                                                          logId: log.id);
+                                              if (!mounted) return;
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              setState(() {});
+                                            },
+                                          ),
+                                          const SizedBox(
+                                            width: 25,
+                                          ),
+                                          CustomBuilder.customButton(
+                                              text: CManager.reject,
+                                              onPressed: () async {
+                                                SnackBar snackBar =
+                                                    await projectController
+                                                        .deleteBudget(
+                                                            logId: log.id,
+                                                            projectId:
+                                                                log.projectId!);
+                                                if (!mounted) return;
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(snackBar);
+                                                setState(() {});
+                                              },
+                                              isLightMode: true),
+                                        ],
+                                      )
+                                    // Builds one Button, that changes the toManager value when read
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CustomBuilder.customButton(
+                                            text: CManager.read,
+                                            isDarkMode: true,
+                                            onPressed: () async {
+                                              SnackBar snackBar =
+                                                  await projectController
+                                                      .setRead(
+                                                          projectId:
+                                                              log.projectId!,
+                                                          logId: log.id);
+                                              if (!mounted) return;
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                 const SizedBox(
                                   height: 40,
                                 )

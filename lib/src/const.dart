@@ -81,6 +81,13 @@ class Const {
 
   static const String ownerDeleted = "Owner entfernt";
 
+  static const String criticalBudget = "Budget überschritten";
+
+  static const String uncriticallisedBudget = "Budget wieder unterschritten";
+
+  static const String readBudgettransgression =
+      "Budgetüberschreitung wurde gesehen";
+
   static const List<String> resetPasswordLog = [
     "Es wurde eine Resetmail an",
     "von",
@@ -164,5 +171,21 @@ class Const {
     "mit dem Namen",
     "erstellt. Die ProjektId lautet:",
     ". Die ID des Owners lautet"
+  ];
+
+  static const List<String> criticalBudgetLog = [
+    "Das Budget im Projekt:",
+    "wurde überschritten. Unter Verantwortung des Owners:",
+  ];
+
+  static const List<String> uncriticallisedBudgetLog = [
+    "Das Budget im Projekt:",
+    "wurde wieder unterschritten. Unter Verantwortung des Owners:",
+  ];
+
+  static const List<String> readBudgettransgressionLog = [
+    "Das Budget im Projekt:",
+    "wurde überschritten. Und von dem Owner:",
+    "gesehen"
   ];
 }

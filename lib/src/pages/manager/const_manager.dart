@@ -8,6 +8,8 @@ class CManager {
 
   static const String create = "Anlegen";
 
+  static const String read = "Gesehen";
+
   static const String projectName = "Projektname";
 
   static const String metainfos = "Metainfos";
