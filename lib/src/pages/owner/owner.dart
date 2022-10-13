@@ -86,7 +86,7 @@ class _OwnerState extends State<Owner> {
                 ? const Center(
                     child: Text(
                       COwner.noProject,
-                      style: TextStyle(fontSize: 25),
+                      style: TextStyle(fontSize: 25, color: Colors.black),
                     ),
                   )
                 : SingleChildScrollView(
