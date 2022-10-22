@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
               appBar: CustomBuilder.customAppBar(context: context),
               drawer: CustomBuilder.customDrawer(
                   userGroup: Const.userRoles[0], context: context),
-              body: Manager(
+              body: Admin(
                 user: user,
               ));
         }
@@ -63,7 +63,7 @@ class Home extends StatelessWidget {
               appBar: CustomBuilder.customAppBar(context: context),
               drawer: CustomBuilder.customDrawer(
                   userGroup: Const.userRoles[1], context: context),
-              body: Owner(
+              body: Manager(
                 user: user,
               ));
         }
@@ -72,7 +72,7 @@ class Home extends StatelessWidget {
             appBar: CustomBuilder.customAppBar(context: context),
             drawer: CustomBuilder.customDrawer(
                 userGroup: Const.userRoles[2], context: context),
-            body: Admin(
+            body: Owner(
               user: user,
             ),
           );
