@@ -16,10 +16,10 @@ class NewProject extends StatelessWidget {
       required this.projectController,
       required this.state});
 
-  // specific Project that the budget is suggested on
+  // Specific Project that the budget is suggested on
   final Project project;
 
-  // sets State in Parentclass
+  // Sets State in Parentclass
   final Function state;
 
   // Enables access to all Methods in projectController

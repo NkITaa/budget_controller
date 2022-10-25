@@ -13,7 +13,7 @@ class Budget {
     return {"type": type, "value": value};
   }
 
-  // serializes Object from JSON
+  // Serializes Object from JSON
   static Budget fromJson(dynamic budget) {
     return Budget(
       type: budget["type"],

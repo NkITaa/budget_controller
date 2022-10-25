@@ -43,7 +43,7 @@ class TableData extends DataTableSource {
   /// Method that handles the sort functionality in the table
   ///
   /// * Darts sort method is called
-  /// * depending on bool ascending the table is sorted ascending or descending
+  /// * Depending on bool ascending the table is sorted ascending or descending
   sortMe<T>(Comparable<T> Function(Cost cost) getField, bool ascending) {
     costs?.sort((a, b) {
       final Comparable<T> aValue = getField(a);

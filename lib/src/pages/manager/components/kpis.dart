@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../widget_builder.dart';
 
-// shows KPIs to all projects & enables selection of specific project
+// Shows KPIs to all projects & enables selection of specific project
 class KPIs extends StatefulWidget {
   const KPIs({super.key});
 
@@ -17,7 +17,7 @@ class _KPIsState extends State<KPIs> {
   // Enables access to all Methods in the projectController
   ProjectController projectController = Get.find();
 
-  // enables stateSetting from child-widget
+  // Enables stateSetting from child-widget
   void state() {
     setState(() {});
   }
@@ -54,7 +54,7 @@ class _KPIsState extends State<KPIs> {
                     project: true,
                     items: projectIds.map((e) => e!).toList(),
                   )),
-              // only when a projectId is chosen a project preview is shown
+              // Only when a projectId is chosen a project preview is shown
               projectController.projectId != null
                   ? ManagerBuilder.showPreview(
                       context: context, projectController: projectController)

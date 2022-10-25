@@ -9,7 +9,7 @@ import '../owner/components/owner_builder.dart';
 
 // Defines Widget Pieces that are used across the Manager UI
 class ManagerBuilder {
-  // defines a specific costField by altering the width of the defaultTextField
+  // Defines a specific costField by altering the width of the defaultTextField
   static Widget costFieldBuilder(
       {required TextEditingController controller,
       String? hint,
@@ -48,7 +48,7 @@ class ManagerBuilder {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              // shows the Projectsname
+              // Shows the Projectsname
               Center(
                 child: Text(
                   project.name,
@@ -62,7 +62,7 @@ class ManagerBuilder {
                 height: 10,
               ),
 
-              // shows all costs of the first Cost Type
+              // Shows all costs of the first Cost Type
               Text(
                 Const.costSections[0],
                 style: const TextStyle(
@@ -115,7 +115,7 @@ class ManagerBuilder {
           height: 30,
         ),
 
-        // shows all suggested costs of the second Cost Type
+        // Shows all suggested costs of the second Cost Type
         SizedBox(
           width: 648,
           child: Column(
@@ -164,13 +164,13 @@ class ManagerBuilder {
     // List of boolean that is altered depending on, wheter the DetaillsColumn Expandable Button is expanded
     List<bool> expanded = [false, false, false, false, false, false];
 
-    // determines whether editing of costs is enabled or disabled
+    // Determines whether editing of costs is enabled or disabled
     bool _enabled = false;
 
-    // holds currently active costDeadline
+    // Holds currently active costDeadline
     DateTime? costDeadline;
 
-    // holds currently projected isPrice
+    // Holds currently projected isPrice
     double? _isPrice;
 
     return FutureBuilder(
@@ -193,7 +193,7 @@ class ManagerBuilder {
 
           final project = snapshot.requireData;
 
-          // lists all CostTypes with specific value
+          // Lists all CostTypes with specific value
           late List<TextEditingController> costsController = [
             TextEditingController(
                 text:
@@ -215,7 +215,7 @@ class ManagerBuilder {
                     "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}")
           ];
 
-          // lists all BudgetTypes with specific value
+          // Lists all BudgetTypes with specific value
           late List<TextEditingController> budgetsController = [
             TextEditingController(
                 text: "${project.budgets?[0].value ?? 0}${Const.currency}"),
@@ -231,29 +231,29 @@ class ManagerBuilder {
                 text: "${project.budgets?[5].value ?? 0}${Const.currency}")
           ];
 
-          // enables stateSetting
+          // Enables stateSetting
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            // updates Expanded State of ExpandableButton
+            // Updates Expanded State of ExpandableButton
             updateExpanded({required bool state, required int index}) {
-              // reassigns state of specific ExpandableTile when triggered
+              // Reassigns state of specific ExpandableTile when triggered
               expanded[index] = state;
 
               // State is State to upgrade values graphically
               setState(() {});
             }
 
-            // updates Costs when costDeadline is altered
+            // Updates osts when costDeadline is altered
             updateCostsController({required DateTime dateTime}) {
-              // costDeadline is reassigned
+              // CostDeadline is reassigned
               costDeadline = dateTime;
-              // the new value of the specific costs is written in the specific TextEditingController
+              // The new value of the specific costs is written in the specific TextEditingController
               for (int i = 0; i < costsController.length; i++) {
                 costsController[i].text =
                     "${FormatController.relevantCosts(costs: project.costs, category: Const.costTypes[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}";
               }
 
-              // the total isPrice is accordingly updated with sum of new specific costs
+              // The total isPrice is accordingly updated with sum of new specific costs
               _isPrice = costsController
                   .map((controller) {
                     return double.parse(
@@ -266,18 +266,18 @@ class ManagerBuilder {
               setState(() {});
             }
 
-            // value of isPrice is updated, when projections are entered
+            // Value of isPrice is updated, when projections are entered
             setIsPrice({required double isPrice}) {
-              // value is assigned to classes variable
+              // Value is assigned to classes variable
               _isPrice = isPrice;
 
               // State is State to upgrade values graphically
               setState(() {});
             }
 
-            // value of enabled is updated, when the editing mode is activated
+            // Value of enabled is updated, when the editing mode is activated
             setEnabled({required bool enabled}) {
-              // value is assigned to classes variable
+              // Value is assigned to classes variable
               _enabled = enabled;
               // State is State to upgrade values graphically
               setState(() {});

@@ -18,10 +18,10 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
-  // enables access to all projectController methods
+  // Enables access to all projectController methods
   ProjectController projectController = Get.find();
 
-  // will hold the data, that depicts whether the los is relevant to the manager
+  // Will hold the data, that depicts whether the los is relevant to the manager
   List<bool?> tileState = [];
 
   @override
@@ -52,7 +52,7 @@ class _MessagesState extends State<Messages> {
 
             final logs = snapshot.requireData;
 
-            // builds all the relevant Decision that have to be taken in a list
+            // Builds all the relevant Decision that have to be taken in a list
             return ListView.builder(
               shrinkWrap: true,
               itemCount: logs!.length,
@@ -60,10 +60,10 @@ class _MessagesState extends State<Messages> {
                 Log log = logs[index];
                 tileState.add(log.toManager);
 
-                /// evaluates whether the decision has to be shown
+                /// Evaluates whether the decision has to be shown
                 ///
-                /// tileState == true -> shows decision
-                /// tileState != true -> doesnt show anything
+                /// TileState == true -> shows decision
+                /// TileState != true -> doesnt show anything
                 if (tileState[index] == true) {
                   return ExpansionTile(
                     title: Text(
@@ -100,7 +100,7 @@ class _MessagesState extends State<Messages> {
                             Project project = snapshot.data!;
                             return Column(
                               children: [
-                                // depicts the detailled Budget of the decision
+                                // Depicts the detailled Budget of the decision
                                 ManagerBuilder.projectExpansionTile(
                                     project: project),
 

@@ -45,16 +45,16 @@ class _DetaillsState extends State<Detaills> {
   // Enables Access to all ProjectController Methods
   ProjectController projectController = Get.find();
 
-  // determines whether editing of costs is enabled or disabled
+  // Determines whether editing of costs is enabled or disabled
   bool enabled = false;
 
-  // holds currently active costDeadline
+  // Holds currently active costDeadline
   DateTime? costDeadline;
 
-  // holds currently projected isPrice
+  // Holds currently projected isPrice
   double? isPrice;
 
-  // lists all CostTypes with specific value
+  // Lists all CostTypes with specific value
   late List<TextEditingController> costsController = [
     TextEditingController(
         text:
@@ -76,7 +76,7 @@ class _DetaillsState extends State<Detaills> {
             "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[5], date: DateTime.now())?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}")
   ];
 
-  // lists all BudgetTypes with specific value
+  // Lists all BudgetTypes with specific value
   late List<TextEditingController> budgetsController = [
     TextEditingController(
         text: "${widget.budgets?[0].value ?? 0}${Const.currency}"),
@@ -92,27 +92,27 @@ class _DetaillsState extends State<Detaills> {
         text: "${widget.budgets?[5].value ?? 0}${Const.currency}")
   ];
 
-  // updates Expanded State of ExpandableButton
+  // Updates Expanded State of ExpandableButton
   updateExpanded({required bool state, required int index}) {
-    // reassigns state of specific ExpandableTile when triggered
+    // Reassigns state of specific ExpandableTile when triggered
     expanded[index] = state;
 
     // State is State to upgrade values graphically
     setState(() {});
   }
 
-  // updates Costs when costDeadline is altered
+  // Updates Costs when costDeadline is altered
   updateCostsController({required DateTime dateTime}) {
-    // costDeadline is reassigned
+    // CostDeadline is reassigned
     costDeadline = dateTime;
 
-    // the new value of the specific costs is written in the specific TextEditingController
+    // The new value of the specific costs is written in the specific TextEditingController
     for (int i = 0; i < costsController.length; i++) {
       costsController[i].text =
           "${FormatController.relevantCosts(costs: widget.costs, category: Const.costTypes[i], date: dateTime)?.fold<double>(0, (a, b) => a + (b?.value ?? 0)) ?? 0}${Const.currency}";
     }
 
-    // the total isPrice is accordingly updated with sum of new specific costs
+    // The total isPrice is accordingly updated with sum of new specific costs
     isPrice = costsController
         .map((controller) {
           return double.parse(controller.text.replaceAll(Const.currency, ""));
@@ -124,18 +124,18 @@ class _DetaillsState extends State<Detaills> {
     setState(() {});
   }
 
-  // value of isPrice is updated, when projections are entered
+  // Value of isPrice is updated, when projections are entered
   setIsPrice({required double isPrice}) {
-    // value is assigned to classes variable
+    // Value is assigned to classes variable
     this.isPrice = isPrice;
 
     // State is State to upgrade values graphically
     setState(() {});
   }
 
-  // value of enabled is updated, when the editing mode is activated
+  // Value of enabled is updated, when the editing mode is activated
   setEnabled({required bool enabled}) {
-    // value is assigned to classes variable
+    // Value is assigned to classes variable
     this.enabled = enabled;
 
     // State is State to upgrade values graphically

@@ -20,19 +20,19 @@ class _NewProjectState extends State<NewProject> {
   // TextEditing Controller that handles the value of the project name
   TextEditingController projectName = TextEditingController();
 
-  // formKey that validates the input in controller
+  // FormKey that validates the input in controller
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  // enables access to all methods of the projectController
+  // Enables access to all methods of the projectController
   ProjectController projectController = Get.find();
 
-  // enables access to all methods of the userController
+  // Enables access to all methods of the userController
   UserController userController = Get.find();
 
-  // saves the specific deadline for the project that is going to be created
+  // Saves the specific deadline for the project that is going to be created
   DateTime? deadline;
 
-  // says whether date is defined or not
+  // Says whether date is defined or not
   bool dateExists = true;
 
   @override
@@ -138,7 +138,7 @@ class _NewProjectState extends State<NewProject> {
                   height: 50,
                 ),
 
-                /// is responsible for sending the input to the database
+                /// Is responsible for sending the input to the database
                 ///
                 /// * deadline == null -> sets the bool that checks whether the date is defined to false
                 /// * input valid & dateExists -> sends the input to the database and resets all variables
