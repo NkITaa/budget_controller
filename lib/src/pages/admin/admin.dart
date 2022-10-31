@@ -12,37 +12,37 @@ import 'const_admin.dart';
 class Admin extends StatefulWidget {
   const Admin({super.key, required this.user});
 
-  // current User Object
+  // Current User Object
   final CustomUser user;
   @override
   State<Admin> createState() => _AdminState();
 }
 
 class _AdminState extends State<Admin> {
-  // enables access to all methods of the userController
+  // Enables access to all methods of the userController
   UserController userController = Get.find();
 
-  // gives info on whether a log has been read or not
+  // Gives info on whether a log has been read or not
   List<bool?> tileState = [];
 
-  // says whether the logHistory is depicted or not
+  // Says whether the logHistory is depicted or not
   bool logHistory = false;
 
-  // enables child-widget to update the value of the logHistory
+  // Enables child-widget to update the value of the logHistory
   setLogHistory({required bool value}) {
-    // updates the logHistories value
+    // Updates the logHistories value
     logHistory = value;
 
-    // sets state so the changement can be seen
+    // Sets state so the changement can be seen
     setState(() {});
   }
 
-  // enables child-widget to update the value of a tileState
+  // Enables child-widget to update the value of a tileState
   setTileState({required bool value, required int index}) {
-    // updates the specific tileState value
+    // Updates the specific tileState value
     tileState[index] = value;
 
-    // sets state so the changement can be seen
+    // Sets state so the changement can be seen
     setState(() {});
   }
 
@@ -92,7 +92,7 @@ class _AdminState extends State<Admin> {
                             height: 20,
                           ),
 
-                          // is responsible for handling the future logs
+                          // Is responsible for handling the future Logs
                           FutureBuilder(
                             future: LogController.loadLogs(),
                             builder: (BuildContext context, snapshot) {
@@ -114,10 +114,10 @@ class _AdminState extends State<Admin> {
 
                               final logs = snapshot.requireData;
 
-                              /// build the logs in a ListView
+                              /// Build the logs in a ListView
                               ///
-                              /// * logHistory == true -> all Logs are shown
-                              /// * logHistory == false -> only the relevant logs are shown
+                              /// * LogHistory == true -> all Logs are shown
+                              /// * LogHistory == false -> only the relevant Logs are shown
                               return SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height - 170,

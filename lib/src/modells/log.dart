@@ -23,7 +23,7 @@ class Log {
       this.warning = false,
       this.toManager});
 
-  // serializes Object to JSON
+  // Serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
       "warning": warning,
@@ -38,7 +38,7 @@ class Log {
     };
   }
 
-  // serializes Object from JSON
+  // Serializes Object from JSON
   static Log fromJson(QueryDocumentSnapshot<Map<String, dynamic>> log) {
     return Log(
       warning: log["warning"],

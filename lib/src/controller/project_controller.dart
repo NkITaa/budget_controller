@@ -283,17 +283,17 @@ class ProjectController extends GetxController {
     required Cost costNew,
   }) async {
     try {
-      // first the old cost gets serialized and deleted from the database
+      // First the old cost gets serialized and deleted from the database
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayRemove([costOld.toJson()])
       });
 
-      // after that the new cost is written to the database
+      // After that the new cost is written to the database
       await projectCollection.doc(projectId).update({
         'costs': FieldValue.arrayUnion([costNew.toJson()])
       });
 
-      // writes a Log, when the cost was updated
+      // Writes a Log, when the cost was updated
       await LogController.writeLog(
         warning: true,
         projectId: projectId,
@@ -302,12 +302,12 @@ class ProjectController extends GetxController {
             "${Const.updateCostLog[0]} ${costOld.reason} ${Const.updateCostLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.updateCostLog[2]} $projectId ${Const.updateCostLog[3]}",
       );
 
-      // returns a success SnackBar when all steps were successfull
+      // Returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.costUpdated, error: false);
     }
 
-    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    // When an error with Firebase happened, an error SnackBar with the specific error is returned
     on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
@@ -317,10 +317,10 @@ class ProjectController extends GetxController {
   // Informs Manager, that cost situation in Budget is critical
   Future<void> setCritical({required String projectId}) async {
     try {
-      // first the value of the critical property gets updated
+      // First the value of the critical property gets updated
       await projectCollection.doc(projectId).update({'critical': true});
 
-      // writes a Log, when the critical tile was set
+      // Writes a Log, when the critical tile was set
       await LogController.writeLog(
         warning: true,
         toManager: true,
@@ -331,7 +331,7 @@ class ProjectController extends GetxController {
       );
     }
 
-    // when an error with Firebase happened, a Text is displayed
+    // When an error with Firebase happened, a Text is displayed
     on FirebaseException catch (e) {
       Text(e.toString());
     }
@@ -340,10 +340,10 @@ class ProjectController extends GetxController {
   // Sets the critical situation to normal, when the critical budget is normal again
   Future<void> setUncritical({required String projectId}) async {
     try {
-      // first the value of the critical property gets updated
+      // First the value of the critical property gets updated
       await projectCollection.doc(projectId).update({'critical': false});
 
-      // writes a Log, when the critical tile was set
+      // Writes a Log, when the critical tile was set
       await LogController.writeLog(
         projectId: projectId,
         title: Const.uncriticallisedBudget,
@@ -352,7 +352,7 @@ class ProjectController extends GetxController {
       );
     }
 
-    // when an error with Firebase happened, a Text is displayed
+    // When an error with Firebase happened, a Text is displayed
     on FirebaseException catch (e) {
       Text(e.toString());
     }
@@ -361,10 +361,10 @@ class ProjectController extends GetxController {
   Future<SnackBar> setRead(
       {required String projectId, required String logId}) async {
     try {
-      // after that the toManager variable is set to false
+      // After that the toManager variable is set to false
       await logCollection.doc(logId).update({'toManager': false});
 
-      // writes a Log, when the transgression was read
+      // Writes a Log, when the transgression was read
       await LogController.writeLog(
         toManager: false,
         projectId: projectId,
@@ -373,37 +373,37 @@ class ProjectController extends GetxController {
             "${Const.readBudgettransgressionLog[0]} $projectId ${Const.readBudgettransgressionLog[1]} ${FirebaseAuth.instance.currentUser!.uid} ${Const.readBudgettransgressionLog[2]}",
       );
 
-      // returns a success SnackBar when all steps were successfull
+      // Returns a success SnackBar when all steps were successfull
       return CustomBuilder.customSnackBarObject(
           message: Const.readBudgettransgression, error: false);
     }
 
-    // when an error with Firebase happened, an error SnackBar with the specific error is returned
+    // When an error with Firebase happened, an error SnackBar with the specific error is returned
     on FirebaseException catch (e) {
       return CustomBuilder.customSnackBarObject(
           message: e.toString(), error: true);
     }
   }
 
-  // gets ProjectIDs
+  // Gets ProjectIDs
   Future<List<String?>> getProjectIds() async {
     // List that records projectIds
     List<String> projectIds = [];
 
-    // gets all projects
+    // Gets all projects
     var projects = await projectCollection.get().then((value) {
       return value.docs;
     });
 
     if (projects.isNotEmpty) {
-      // iterates through all Projects
+      // Iterates through all Projects
       for (int i = 0; i < projects.length; i++) {
         var project = projects[i];
 
-        // deserializes projects JSON
+        // Deserializes projects JSON
         Project temp = Project.fromJson(project);
 
-        // adds specific projectId to List
+        // Adds specific projectId to List
         projectIds.add(temp.id);
       }
     }

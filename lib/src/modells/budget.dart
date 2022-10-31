@@ -8,12 +8,12 @@ class Budget {
     required this.value,
   });
 
-  // serializes Object to JSON
+  // Serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {"type": type, "value": value};
   }
 
-  // serializes Object from JSON
+  // Serializes Object from JSON
   static Budget fromJson(dynamic budget) {
     return Budget(
       type: budget["type"],

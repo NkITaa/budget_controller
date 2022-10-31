@@ -16,22 +16,22 @@ import 'const_admin.dart';
 
 // Defines Widget Pieces that are used across the Admin UI
 class AdminBuilder {
-  // returns the popup that enables the creation of a new user
+  // Returns the popup that enables the creation of a new user
   static addUserPopup({
     required UserController userController,
     required BuildContext context,
   }) {
-    // enables access to projectController methods
+    // Enables access to projectController methods
     ProjectController projectController = Get.find();
 
-    // formKey that validates the input in controller
+    // FormKey that validates the input in controller
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    // autogenerates password
+    // Autogenerates password
     final Random generator = Random.secure();
     late String tempPassword = generator.nextDouble().toString();
 
-    // defaultly selected role in dropdown
+    // Defaultly selected role in dropdown
     String selectedRole = Const.userRoles[0];
 
     // TextEditing controller for the mail of the new User
@@ -50,21 +50,21 @@ class AdminBuilder {
         // Animation Controller to handle copy animation
         AnimateIconController controller = AnimateIconController();
 
-        // updates the selected role
+        // Updates the selected role
         stateRole({required String type}) {
-          // the chosen type is written into the selected role variable
+          // The chosen type is written into the selected role variable
           selectedRole = type;
 
-          // the state is called to register the new value graphically
+          // The state is called to register the new value graphically
           setState(() {});
         }
 
-        // updates the selected projectId
+        // Updates the selected projectId
         stateProject({required String type}) {
-          // the chosen type is written into the selected projectId variable
+          // The chosen type is written into the selected projectId variable
           projectController.projectId = type;
 
-          // the state is called to register the new value graphically
+          // The state is called to register the new value graphically
           setState(() {});
         }
 
@@ -156,7 +156,7 @@ class AdminBuilder {
             ));
       }),
 
-      /// defines the actions in the dialog
+      /// Defines the actions in the dialog
       ///
       /// * back -> closes popUp
       /// * add -> Form gets validates, data is added to Firebase & all the controllers are reset
@@ -199,18 +199,18 @@ class AdminBuilder {
     );
   }
 
-  // enables the change of a user Role
+  // Enables the change of a user Role
   static changeRolePopup({
     required UserController userController,
     required BuildContext context,
   }) {
-    // formKey that validates the input in controller
+    // FormKey that validates the input in controller
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    // textEditingController for the userId of the specific user
+    // TextEditingController for the userId of the specific user
     final TextEditingController idController = TextEditingController();
 
-    // defaultly selected role in dropdown
+    // Defaultly selected role in dropdown
     String selectedRole = Const.userRoles[0];
     return AlertDialog(
       title: const Text(
@@ -218,16 +218,16 @@ class AdminBuilder {
         style: TextStyle(color: Colors.black),
       ),
       content: StatefulBuilder(builder: (context, setState) {
-        // updates the selected role
+        // Updates the selected role
         stateRole({required String type}) {
-          // the chosen type is written into the selected row variable
+          // The chosen type is written into the selected row variable
           selectedRole = type;
 
-          // the state is called to also update the value graphically
+          // The state is called to also update the value graphically
           setState(() {});
         }
 
-        /// returns the contens of the PopUp, consisting of a Column, with:
+        /// Returns the contens of the PopUp, consisting of a Column, with:
         ///
         /// * a TextField where the user id is inserted into
         /// * a DropDown, where the specific role is selected
@@ -254,7 +254,7 @@ class AdminBuilder {
                     ]))));
       }),
 
-      /// defines the actions in the dialog
+      /// Defines the actions in the dialog
       ///
       /// * back -> closes popUp
       /// * add -> Form gets validates, data is added to Firebase & all the controllers are reset
@@ -296,15 +296,15 @@ class AdminBuilder {
     );
   }
 
-  // returns PopUp with that a user password can be reset
+  // Returns PopUp with that a user password can be reset
   static resetPassword({
     required UserController userController,
     required BuildContext context,
   }) {
-    // formKey that validates the input in controller
+    // FormKey that validates the input in controller
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    // textEditingController for the email of the specific user
+    // TextEditingController for the email of the specific user
     final TextEditingController emailController = TextEditingController();
     return AlertDialog(
       title: const Text(
@@ -312,7 +312,7 @@ class AdminBuilder {
         style: TextStyle(color: Colors.black),
       ),
 
-      /// returns the contens of the PopUp, consisting of:
+      /// Returns the contens of the PopUp, consisting of:
       ///
       /// * a TextField where the user mail is inserted into
       content: SizedBox(
@@ -330,7 +330,7 @@ class AdminBuilder {
                     ),
                   ])))),
 
-      /// defines the actions in the dialog
+      /// Defines the actions in the dialog
       ///
       /// * back -> closes popUp
       /// * add -> Form gets validates, the reset mail is sent & the controller gets reset
@@ -369,7 +369,7 @@ class AdminBuilder {
     );
   }
 
-  // returns the IconBar where the Admin can fulfill his Actions
+  // Returns the IconBar where the Admin can fulfill his Actions
   static Widget buildIconBar(
       {required Function setLogHistory,
       required BuildContext context,
@@ -381,7 +381,7 @@ class AdminBuilder {
           height: 25,
         ),
 
-        // sets the logHistory to false -> Logs that are unread are shown
+        // Sets the logHistory to false -> Logs that are unread are shown
         IconButton(
             onPressed: () {
               setLogHistory(value: false);
@@ -391,7 +391,7 @@ class AdminBuilder {
               color: logHistory ? Colors.grey : const Color(0xff7434E6),
             )),
 
-        // opens the addUserPopup popUp -> a new user can get created
+        // Opens the addUserPopup popUp -> a new user can get created
         IconButton(
             onPressed: () {
               CustomBuilder.createSubscaffold(
@@ -403,7 +403,7 @@ class AdminBuilder {
             },
             icon: const Icon(Icons.person_add_outlined, color: Colors.grey)),
 
-        // opens the changeRolePopup popUp -> the user can role can be changed
+        // Opens the changeRolePopup popUp -> the user can role can be changed
         IconButton(
             onPressed: () {
               CustomBuilder.createSubscaffold(
@@ -418,7 +418,7 @@ class AdminBuilder {
               color: Colors.grey,
             )),
 
-        // opens the resetPassword popUp -> a user resetmail can be send
+        // Opens the resetPassword popUp -> a user resetmail can be send
         IconButton(
             onPressed: () {
               CustomBuilder.createSubscaffold(
@@ -433,7 +433,7 @@ class AdminBuilder {
               color: Colors.grey,
             )),
 
-        // sets the logHistory to true -> All Logs are shown
+        // Sets the logHistory to true -> All Logs are shown
         IconButton(
             onPressed: () {
               setLogHistory(value: true);
@@ -446,22 +446,22 @@ class AdminBuilder {
     );
   }
 
-  // builds the ListTile of each log
+  // Builds the ListTile of each Log
   static Widget buildLogExpansionTile(
       {required Function setTileState,
       required bool value,
       required int index,
       required Log log}) {
-    /// the Log itself Consists of:
+    /// The Log itself consists of:
     ///
     /// * Title
     /// * Body
     return ExpansionTile(
-      /// the title consists of a row:
+      /// The title consists of a row:
       ///
       /// * with a CheckBox: when
-      ///     * set to check -> log gets set to read
-      ///     * set to unchecked -> lo9g gets set to unread
+      ///     * set to check -> Log gets set to read
+      ///     * set to unchecked -> Log gets set to unread
       /// * and a title
       title: Row(
         children: [
@@ -487,7 +487,7 @@ class AdminBuilder {
         ],
       ),
 
-      /// the body consists of a Column with three parts:
+      /// The body consists of a Column with three parts:
       ///
       /// * the Logs message
       /// * the Logs id
