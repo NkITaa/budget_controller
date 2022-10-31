@@ -15,10 +15,10 @@ class Manager extends StatefulWidget {
 }
 
 class _ManagerState extends State<Manager> {
-  // is the Index of the Page that is selected
+  // Is the Index of the Page that is selected
   int selectedIndex = 0;
 
-  // holds List of all Pages
+  // Holds List of all Pages
   List<Widget> pages = [
     const Messages(),
     const KPIs(),
@@ -42,7 +42,7 @@ class _ManagerState extends State<Manager> {
             ),
             Stack(
               children: [
-                //Title of specific Page
+                // Title of specific Page
                 Center(
                     child: Text(
                   CManager.titles[selectedIndex],
@@ -93,7 +93,7 @@ class _ManagerState extends State<Manager> {
               ],
             ),
 
-            // returns the specific page
+            // Returns the specific page
             pages[selectedIndex]
           ],
         ),

@@ -8,12 +8,12 @@ class CustomUser {
 
   CustomUser({required this.id, required this.projectId, required this.role});
 
-  // serializes Object to JSON
+  // Serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {"id": id, "projectId": projectId, "role": role};
   }
 
-  // serializes Object from JSON
+  // Serializes Object from JSON
   static CustomUser fromJson(DocumentSnapshot<Object?> user) {
     return CustomUser(
       id: user["id"],

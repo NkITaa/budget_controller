@@ -24,7 +24,7 @@ class Project {
     required this.budgets,
   });
 
-  // serializes Object to JSON
+  // Serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
       "critical": critical,
@@ -39,7 +39,7 @@ class Project {
     };
   }
 
-  // serializes Object from JSON
+  // Serializes Object from JSON
   static Project fromJson(DocumentSnapshot<Object?> project) {
     List<dynamic>? costsUnserialized = project["costs"];
     List<dynamic>? budgetsUnserialized = project["budgets"];

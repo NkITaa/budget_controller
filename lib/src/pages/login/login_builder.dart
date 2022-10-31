@@ -4,7 +4,7 @@ import '../../const.dart';
 
 // Defines Widget Pieces that are used across the Login UI
 class LoginBuilder {
-  // specific Login textFormField
+  // Specific Login TextFormField
   static Widget textFormField({
     required TextEditingController controller,
     required String hint,
@@ -18,25 +18,25 @@ class LoginBuilder {
     return SizedBox(
       height: 60,
       child: TextFormField(
-        // passes specific Controller to TextField
+        // Passes specific Controller to TextField
         controller: controller,
 
-        /// alters obscure text
+        /// Alters obscure text
         ///
         /// * password == false -> Text normally shown
         /// * password == true -> Text obscured
         obscureText: password,
 
-        // validates input
+        // Validates input
         validator: (value) {
-          /// when no String is inputted an error is thrown
+          /// When no String is inputted an error is thrown
           ///
           /// * password == false -> nullFieldError
           /// * password == true -> nullPasswordError
           if (value == "") {
             return password ? Const.nullPasswordError : Const.nullFieldError;
           } else {
-            // when the password is smaller than six chars -> lengthError
+            // When the password is smaller than six chars -> lengthError
             if (value!.length < 6 && password) {
               return Const.lengthError;
             } else {
@@ -45,11 +45,11 @@ class LoginBuilder {
           }
         },
 
-        // suggestions & autocorrect disabled
+        // Suggestions & autocorrect disabled
         enableSuggestions: false,
         autocorrect: false,
 
-        // style
+        // Style
         cursorColor: const Color(0xff7434E6),
         style: const TextStyle(color: Color(0xff7434E6)),
         decoration: InputDecoration(

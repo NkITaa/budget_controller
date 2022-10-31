@@ -16,7 +16,7 @@ class Cost {
     required this.responsibility,
   });
 
-  // serializes Object to JSON
+  // Serializes Object to JSON
   Map<String, dynamic> toJson() {
     return {
       "creation": creation,
@@ -28,7 +28,7 @@ class Cost {
     };
   }
 
-  // serializes Object from JSON
+  // Serializes Object from JSON
   static Cost fromJson(dynamic cost) {
     return Cost(
       creation: DateTime.parse(cost["creation"].toDate().toString()),

@@ -29,20 +29,20 @@ class OwnerBuilder {
     DateTime? until,
     List<Cost>? costs,
   }) {
-    // tells whether the costs are critically high
+    // Tells whether the costs are critically high
     bool critical = false;
 
-    // sets the critical bool when a percentile is exceeded
+    // Sets the critical bool when a percentile is exceeded
     isPrice / shouldPrice > COwner.criticalPercentile
         ? critical = true
         : critical = false;
 
-    // sets the cost to critical, when the costs are higher than the budget
+    // Sets the cost to critical, when the costs are higher than the budget
     if (critical && redirect && !criticalFirebase!) {
       projectController!.setCritical(projectId: projectId!);
     }
 
-    // sets the cost to uncritical, when the costs are lower than the budget, but are marked as critical in Firebase
+    // Sets the cost to uncritical, when the costs are lower than the budget, but are marked as critical in Firebase
     if (!critical && redirect && criticalFirebase!) {
       projectController!.setUncritical(projectId: projectId!);
     }
@@ -122,7 +122,7 @@ class OwnerBuilder {
     );
   }
 
-  // returns Widget that makes up the entire table
+  // Returns Widget that makes up the entire table
   static Widget buildTable(
       {required bool enabled,
       required List<Cost>? costs,
@@ -135,10 +135,10 @@ class OwnerBuilder {
       required Function sort,
       required ProjectController projectController,
       required BuildContext context}) {
-    // defines max num of rows that can be depicted on one table page
+    // Defines max num of rows that can be depicted on one table page
     int rowsPerPage = 10;
 
-    // formKey that validates the input that is altered in row
+    // FormKey that validates the input that is altered in row
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     // Object that holds the Table Contents
@@ -265,18 +265,18 @@ class OwnerBuilder {
         titleStyle: const TextStyle(fontSize: 0));
   }
 
-  // returns the PopUp where costs can be added
+  // Returns the PopUp where costs can be added
   static buildAddCostPopup(
       {required String projectId,
       required Function state2,
       required ProjectController projectController}) {
-    // formKey that validates the input that is altered in row
+    // FormKey that validates the input that is altered in row
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    // holds the value of specific date when a cost has been created
+    // Holds the value of specific date when a cost has been created
     DateTime? dateTime;
 
-    // checks whether the compulsory date is defined
+    // Checks whether the compulsory date is defined
     bool? dateExists;
 
     // TextEditingController that contains the costs-reason
@@ -312,7 +312,7 @@ class OwnerBuilder {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    /// upper Row of Content, containing:
+                    /// Upper Row of Content, containing:
                     ///
                     /// * DatePicker, where a cost date gets picked
                     /// * DropDown, where the CostCategory gets selected
@@ -472,7 +472,7 @@ class OwnerBuilder {
     bool? enabled,
     Function? setEnabled,
   }) {
-    // formKey that validates the input that is altered
+    // FormKey that validates the input that is altered
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Form(
       key: formKey,
@@ -616,7 +616,7 @@ class OwnerBuilder {
     );
   }
 
-  // returns textFormField that looks like a usual Text Widget when not enabled
+  // Returns textFormField that looks like a usual Text Widget when not enabled
   static Widget textFormFieldNoDeco(
       {required bool enabled,
       required bool additionalRequirement,
@@ -641,7 +641,7 @@ class OwnerBuilder {
       validator: (value) {
         return
 
-            // if the input is a num following conditions apply:
+            // If the input is a num following conditions apply:
             num
                 ? (value!.length < 2 || nullAllowed
                     ? null
@@ -649,11 +649,11 @@ class OwnerBuilder {
                         ? ""
                         : null)
 
-                // if the input is not a num or user id following conditions apply:
+                // If the input is not a num or user id following conditions apply:
                 : (value!.length < 3 ? "" : null);
       },
 
-      // assigns the TextEditingController from the Constructor to the Textfield
+      // Assigns the TextEditingController from the Constructor to the Textfield
       controller: controller,
 
       // Executes Function after every input
