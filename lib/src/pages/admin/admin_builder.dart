@@ -324,6 +324,7 @@ class AdminBuilder {
                   key: formKey,
                   child: Column(children: [
                     CustomBuilder.defaultTextField(
+                      isMail: true,
                       controller: emailController,
                       hint: CAdmin.addUserHints[0],
                     ),
