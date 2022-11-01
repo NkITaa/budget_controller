@@ -144,7 +144,7 @@ class UserController extends GetxController {
         var owner = users[i];
 
         // If the User is an Owner and doesnt have an Project, he is added to the list
-        if (owner["role"] == Const.userRoles[1] && owner["projectId"] == null) {
+        if (owner["role"] == Const.userRoles[2] && owner["projectId"] == null) {
           // deserializes specific Owner
           CustomUser temp = CustomUser.fromJson(users[i]);
 
