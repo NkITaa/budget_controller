@@ -102,7 +102,9 @@ class _MessagesState extends State<Messages> {
                               children: [
                                 // Depicts the detailled Budget of the decision
                                 ManagerBuilder.projectExpansionTile(
-                                    project: project),
+                                    project: project,
+                                    isBuggetSuggested:
+                                        log.title == Const.budgetSuggested),
 
                                 /// Decides which Options to show
                                 ///

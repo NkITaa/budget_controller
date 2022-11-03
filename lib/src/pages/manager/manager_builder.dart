@@ -39,7 +39,8 @@ class ManagerBuilder {
   }
 
   /// Depicts the submitted costs of a specific ProjectS
-  static Widget projectExpansionTile({required Project project}) {
+  static Widget projectExpansionTile(
+      {required Project project, required bool isBuggetSuggested}) {
     return Column(
       children: [
         SizedBox(
@@ -79,19 +80,19 @@ class ManagerBuilder {
                       enabled: false,
                       controller: TextEditingController(
                           text:
-                              "${project.budgets?[0].value}${Const.currency}"),
+                              "${isBuggetSuggested ? (project.budgets?[0].value) : (project.costs?[0].value)}${Const.currency}"),
                       overlineText: Const.costTypes[0]),
                   ManagerBuilder.costFieldBuilder(
                       enabled: false,
                       controller: TextEditingController(
                           text:
-                              "${project.budgets?[1].value}${Const.currency}"),
+                              "${isBuggetSuggested ? (project.budgets?[1].value) : (project.costs?[1].value)}${Const.currency}"),
                       overlineText: Const.costTypes[1]),
                   ManagerBuilder.costFieldBuilder(
                       enabled: false,
                       controller: TextEditingController(
                           text:
-                              "${project.budgets?[2].value}${Const.currency}"),
+                              "${isBuggetSuggested ? (project.budgets?[2].value) : (project.costs?[2].value)}${Const.currency}"),
                       overlineText: Const.costTypes[2]),
                 ],
               ),
@@ -104,7 +105,7 @@ class ManagerBuilder {
                       enabled: false,
                       controller: TextEditingController(
                           text:
-                              "${project.budgets?[3].value}${Const.currency}"),
+                              "${isBuggetSuggested ? (project.budgets?[3].value) : (project.costs?[3].value)}${Const.currency}"),
                       overlineText: Const.costTypes[3]),
                 ],
               ),
@@ -138,13 +139,13 @@ class ManagerBuilder {
                       enabled: false,
                       controller: TextEditingController(
                           text:
-                              "${project.budgets?[4].value}${Const.currency}"),
+                              "${isBuggetSuggested ? (project.budgets?[4].value) : (project.costs?[4].value)}${Const.currency}"),
                       overlineText: Const.costTypes[4]),
                   ManagerBuilder.costFieldBuilder(
                       enabled: false,
                       controller: TextEditingController(
                           text:
-                              "${project.budgets?[5].value}${Const.currency}"),
+                              "${isBuggetSuggested ? (project.budgets?[5].value) : (project.costs?[5].value)}${Const.currency}"),
                       overlineText: Const.costTypes[5]),
                 ],
               ),
