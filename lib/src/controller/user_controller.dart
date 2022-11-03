@@ -102,7 +102,7 @@ class UserController extends GetxController {
       required BuildContext context}) async {
     try {
       // Updates specific Users Role
-      await userCollection.doc(uid).update({'projectsId': role});
+      await userCollection.doc(uid).update({'role': role});
 
       // Writes a Log, when the Role was updates
       await LogController.writeLog(
