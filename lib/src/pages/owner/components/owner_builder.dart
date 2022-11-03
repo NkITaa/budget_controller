@@ -11,7 +11,7 @@ import '../../../widget_builder.dart';
 import 'table.dart';
 import '../const_owner.dart';
 import '../../../modells/cost.dart';
-import 'detaills.dart';
+import 'details.dart';
 
 // Defines Widget Pieces that are used across the Owner UI
 class OwnerBuilder {
@@ -100,7 +100,7 @@ class OwnerBuilder {
           ],
         ),
 
-        // Info-Icon that redirects to the Detaills Screen
+        // Info-Icon that redirects to the Details Screen
         redirect
             ? IconButton(
                 icon: const Icon(Icons.info_outline),
@@ -109,7 +109,7 @@ class OwnerBuilder {
                 onPressed: () => Navigator.push(
                     context!,
                     MaterialPageRoute(
-                        builder: (context) => Detaills(
+                        builder: (context) => Details(
                               totalBudgets: totalBudgets!,
                               totalCosts: totalCosts!,
                               until: until!,
@@ -457,8 +457,8 @@ class OwnerBuilder {
     );
   }
 
-  // Builds a Column with cost/budgets Listings in Detaillsscreen
-  static Widget detaillsColumn({
+  // Builds a Column with cost/budgets Listings in Detailsscreen
+  static Widget detailsColumn({
     required Function updateExpanded,
     required List<TextEditingController> textController,
     required List<Cost>? costs,
@@ -482,7 +482,7 @@ class OwnerBuilder {
             width: 300,
             child: Column(
               children: [
-                /// Header of the Detaills Sections, depending on value of bool "budget", different Views are shown
+                /// Header of the Details Sections, depending on value of bool "budget", different Views are shown
                 ///
                 /// * budget == true -> Only a Title is shown with due date of Budget
                 /// * budget == false -> Title is shown with the due date of the budget & additionally 2 IconButtons are depicted
@@ -560,7 +560,7 @@ class OwnerBuilder {
                   height: 30,
                 ),
 
-                /// Body of Detaills Section
+                /// Body of Details Section
                 ///
                 /// * budget == true -> Budget values is shown; Editing of Forecats is defaultly disabled
                 /// * budget == false -> Cost values is shown; Editing of Forecats is enabled when pressed on enable button

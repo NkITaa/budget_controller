@@ -10,8 +10,8 @@ import '../../../modells/cost.dart';
 import '../../../widget_builder.dart';
 
 // Enables Forecasts & Comparison between Costs & Budget
-class Detaills extends StatefulWidget {
-  const Detaills(
+class Details extends StatefulWidget {
+  const Details(
       {super.key,
       required this.costs,
       required this.budgets,
@@ -35,11 +35,11 @@ class Detaills extends StatefulWidget {
   final DateTime until;
 
   @override
-  State<Detaills> createState() => _DetaillsState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _DetaillsState extends State<Detaills> {
-  // List of boolean that is altered depending on, wheter the DetaillsColumn Expandable Button is expanded
+class _DetailsState extends State<Details> {
+  // List of boolean that is altered depending on, wheter the DetailsColumn Expandable Button is expanded
   List<bool> expanded = [false, false, false, false, false, false];
 
   // Enables Access to all ProjectController Methods
@@ -164,7 +164,7 @@ class _DetaillsState extends State<Detaills> {
                     ///
                     /// * First: Cost Column
                     /// * Secondly: Budget Column
-                    OwnerBuilder.detaillsColumn(
+                    OwnerBuilder.detailsColumn(
                       costDeadline: costDeadline,
                       updateCostsController: updateCostsController,
                       setIsPrice: setIsPrice,
@@ -177,7 +177,7 @@ class _DetaillsState extends State<Detaills> {
                       context: context,
                       budget: false,
                     ),
-                    OwnerBuilder.detaillsColumn(
+                    OwnerBuilder.detailsColumn(
                       until: widget.until,
                       textController: budgetsController,
                       expanded: expanded,

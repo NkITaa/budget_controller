@@ -6,7 +6,7 @@ class COwner {
 
   static const String shouldPrice = "Soll-Kosten";
 
-  static const String details = "Detaills";
+  static const String details = "Details";
 
   static const String budget = "Budget";
 

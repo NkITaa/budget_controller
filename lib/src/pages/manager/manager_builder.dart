@@ -161,7 +161,7 @@ class ManagerBuilder {
   static Widget showPreview(
       {required ProjectController projectController,
       required BuildContext context}) {
-    // List of boolean that is altered depending on, wheter the DetaillsColumn Expandable Button is expanded
+    // List of boolean that is altered depending on, wheter the DetailsColumn Expandable Button is expanded
     List<bool> expanded = [false, false, false, false, false, false];
 
     // Determines whether editing of costs is enabled or disabled
@@ -298,7 +298,7 @@ class ManagerBuilder {
                       ///
                       /// * First: Cost Column
                       /// * Secondly: Budget Column
-                      OwnerBuilder.detaillsColumn(
+                      OwnerBuilder.detailsColumn(
                         costDeadline: costDeadline,
                         updateCostsController: updateCostsController,
                         setIsPrice: setIsPrice,
@@ -311,7 +311,7 @@ class ManagerBuilder {
                         context: context,
                         budget: false,
                       ),
-                      OwnerBuilder.detaillsColumn(
+                      OwnerBuilder.detailsColumn(
                         until: project.deadline,
                         textController: budgetsController,
                         expanded: expanded,
